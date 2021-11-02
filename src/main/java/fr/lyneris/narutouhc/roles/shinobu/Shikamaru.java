@@ -1,0 +1,427 @@
+package fr.lyneris.narutouhc.roles.shinobu;
+
+import fr.lyneris.narutouhc.crafter.Camp;
+import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.particle.WorldUtils;
+import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.PacketDisplay;
+import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.uhc.utils.item.ItemBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.*;
+
+public class Shikamaru extends NarutoRole {
+
+    public int intonUses = 0;
+    public boolean usedEtreinte = false;
+    public int eyeUses = 0;
+    private final Map<UUID, PacketDisplay> inEye = new HashMap<>();
+    public boolean usedPower = false;
+    public boolean hasNerf = false;
+    public boolean usedSearch = false;
+
+    @Override
+    public String getRoleName() {
+        return "Shikamaru";
+    }
+
+    @Override
+    public List<String> getDescription() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void onDistribute(Player player) {
+        Role.knowsRole(player, "Choji");
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Inton")).toItemStack());
+    }
+
+    @Override
+    public void onPlayerInteract(PlayerInteractEvent event, Player player) {
+
+        if(Item.interactItem(event.getItem(), "Inton")) {
+            Inventory inv = Bukkit.createInventory(null, 9, "Inton");
+
+            inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+            inv.setItem(1, new ItemBuilder(Material.OBSIDIAN).setName("§6Manipulation").setLore(
+                    "§7Lorsqu’il l’utilise, tous les joueurs se",
+                    "§7trouvant à 15 blocs autour de lui sont",
+                    "§7affichés dans ce menu, il dispose aussi d’une",
+                    "§7option qui lui permet de le faire sur tous les",
+                    "§7joueurs qui se situent dans ce même rayon,",
+                    "§7lorsqu’il clique sur la tête d’un des joueurs,",
+                    "§7il est immobilisé ainsi que le joueur ciblé et",
+                    "§7cela pendant 10 secondes, pendant ce laps de",
+                    "§7temps ils recevront tous les deux l’effet",
+                    "§7Résistance 2, lorsque lui et la personne ciblé",
+                    "§7sont immobilisés, ils pourront recevoir des",
+                    "§7coups venant d’autres joueurs, ce pouvoir ne",
+                    "§7peut être utilisé que 3 fois dans la partie",
+                    "§7et ne possède aucun délai.",
+                    " ",
+                    "§f§l» §eCliquez-ici pour y accéder"
+            ).toItemStack());
+            inv.setItem(2, new ItemBuilder(Material.IRON_SWORD).setName("§6Étreinte Mortelle").setLore(
+                    "§7Lorsqu’il l’utilise, tous les joueurs se",
+                    "§7trouvant à 15 blocs autour de lui sont",
+                    "§7affichés dans ce menu, lorsqu’il clique sur",
+                    "§7la tête d’un des joueurs, lui et le joueur",
+                    "§7ciblé reçoivent les mêmes effets que la",
+                    "§7Manipulation cependant le joueur ciblé reçoit",
+                    "§7l’effet Poison 2 pendant 10 secondes, ce",
+                    "§7pouvoir ne peut être utilisé qu’une fois",
+                    "§7dans la partie.",
+                    " ",
+                    "§f§l» §eCliquez-ici pour y accéder"
+            ).toItemStack());
+            inv.setItem(3, new ItemBuilder(Material.EYE_OF_ENDER).setName("§6Oeil").setLore(
+                    "§7Lorsqu’il l’utilise, tous les joueurs se",
+                    "§7trouvant à 15 blocs autour de lui, sont",
+                    "§7affichés dans ce menu, lorsqu’il clique sur",
+                    "§7la tête d’un des joueur, à partir de ce",
+                    "§7moment il pourra voir la vie du joueur ciblé",
+                    "§7au dessus de sa tête jusqu’à la fin de la",
+                    "§7partie, ce pouvoir peut être utilisé 5 fois",
+                    "§7dans la partie.",
+                    " ",
+                    "§f§l» §eCliquez-ici pour y accéder"
+            ).toItemStack());
+            inv.setItem(4, new ItemBuilder(Material.SPIDER_EYE).setName("§6Recherche").setLore(
+                    "§7Lorsqu’il l’utilise, tous les joueurs se",
+                    "§7trouvant à 15 blocs autour de lui, sont",
+                    "§7affichés dans ce menu, lorsqu’il clique",
+                    "§7sur la tête d’un des joueurs, il pourra",
+                    "§7voir si le joueur ciblé a commis des meurtres",
+                    "§7et (si c’est le cas) l’identité du ou des",
+                    "§7joueurs morts, ce pouvoir ne peut être",
+                    "§7utilisé qu’une fois dans la partie.",
+                    " ",
+                    "§f§l» §eCliquez-ici pour y accéder"
+            ).toItemStack());
+
+            player.openInventory(inv);
+        }
+    }
+
+    @Override
+    public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
+
+        int radius = (manager.isDay() ? 15 : 30);
+
+        if(event.getInventory().getName().equals("Inton")) {
+            event.setCancelled(true);
+            if(intonUses >= 3) {
+                player.closeInventory();
+                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir 3 fois.");
+                return;
+            }
+            if(event.getSlot() == 1) {
+                int i = 9;
+                int nearbyPlayer = 0;
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        nearbyPlayer++;
+                    }
+                }
+                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                    i = 18;
+                } else if(nearbyPlayer > 17) {
+                    i = 27;
+                }
+                Inventory inv = Bukkit.createInventory(null, i, "Manipulation");
+                int j = 1;
+                inv.setItem(0, new ItemBuilder(Material.BOOK).setName("§6Tous les joueurs").toItemStack());
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                        j++;
+                    }
+                }
+                player.openInventory(inv);
+            }
+            if(event.getSlot() == 2) {
+                int i = 9;
+                int nearbyPlayer = 0;
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        nearbyPlayer++;
+                    }
+                }
+                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                    i = 18;
+                } else if(nearbyPlayer > 17) {
+                    i = 27;
+                }
+                Inventory inv = Bukkit.createInventory(null, i, "Étreinte Mortelle");
+                int j = 1;
+                inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                        j++;
+                    }
+                }
+                player.openInventory(inv);
+            }
+
+            if(event.getSlot() == 3) {
+                int i = 9;
+                int nearbyPlayer = 0;
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        nearbyPlayer++;
+                    }
+                }
+                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                    i = 18;
+                } else if(nearbyPlayer > 17) {
+                    i = 27;
+                }
+                Inventory inv = Bukkit.createInventory(null, i, "Oeil");
+                int j = 1;
+                inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                        j++;
+                    }
+                }
+                player.openInventory(inv);
+            }
+
+            if(event.getSlot() == 4) {
+                int i = 9;
+                int nearbyPlayer = 0;
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        nearbyPlayer++;
+                    }
+                }
+                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                    i = 18;
+                } else if(nearbyPlayer > 17) {
+                    i = 27;
+                }
+                Inventory inv = Bukkit.createInventory(null, i, "Recherche");
+                int j = 1;
+                inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+                for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+                    if (entity instanceof Player) {
+                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                        j++;
+                    }
+                }
+                player.openInventory(inv);
+            }
+
+        }
+
+        if(event.getInventory().getName().equals("Recherche")) {
+            if(event.getCurrentItem().getType() == Material.SKULL_ITEM) {
+                if (!event.getCurrentItem().hasItemMeta()) return;
+                if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+                player.closeInventory();
+
+                if(usedSearch) {
+                    player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                }
+
+                Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
+
+                if(!manager.getDeath().containsValue(target.getUniqueId())) {
+                    player.sendMessage("§7▎ §cCe joueur n'a pas effectué de meurtre.");
+                    return;
+                }
+
+                manager.getDeath().keySet().forEach(s -> {
+                    if(manager.getDeath().get(s).equals(target.getUniqueId())) {
+                        player.sendMessage("§7▎ §c" + target.getName() + " §fa tué §a" + s);
+                    }
+                });
+
+                usedSearch = true;
+
+            }
+        }
+
+        if(event.getInventory().getName().equals("Manipulation")) {
+            event.setCancelled(true);
+            if(event.getSlot() == 0) {
+                player.closeInventory();
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 100, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10 * 20, 200, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
+                player.getNearbyEntities(radius, radius, radius).stream().filter(e -> e instanceof Player).map(e -> (Player) e).forEach(target -> {
+                    target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 100, false, false));
+                    target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10 * 20, 200, false, false));
+                    target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
+                    player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName());
+                    target.sendMessage("§7▎ §aShikamaru §fa utilisé son pouvoir §aManipulation §fsur vous. De ce fait, vous êtes immobilisé pendant §c10 secondes§f.");
+                });
+
+                if(usedPower && !hasNerf) {
+                    hasNerf = true;
+                    player.sendMessage("§7▎ §cVous avez utilisé deux pouvoirs dans une intervalle de 5 minutes. De ce fait, à chaque fois que vous utiliserais un pouvoir (hormis votre Oeil) vous recevrez Lenteur et Faiblesse pendant 1 minute.");
+                }
+
+                if(hasNerf) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60*20, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
+                }
+
+                usedPower = true;
+                Bukkit.getScheduler().runTaskLater(narutoUHC, () -> usedPower = false, 5*20*60);
+
+                intonUses++;
+            } else if(event.getCurrentItem().getType() == Material.SKULL_ITEM) {
+                if(!event.getCurrentItem().hasItemMeta()) return;
+                if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+                player.closeInventory();
+                intonUses++;
+
+                Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
+
+                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 100, false, false));
+                target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10 * 20, 200, false, false));
+                target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
+
+                player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName());
+                target.sendMessage("§7▎ §aShikamaru §fa utilisé son pouvoir §aManipulation §fsur vous. De ce fait, vous êtes immobilisé pendant §c10 secondes§f.");
+
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 100, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10 * 20, 200, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
+
+                if(usedPower && !hasNerf) {
+                    hasNerf = true;
+                    player.sendMessage("§7▎ §cVous avez utilisé deux pouvoirs dans une intervalle de 5 minutes. De ce fait, à chaque fois que vous utiliserais un pouvoir (hormis votre Oeil) vous recevrez Lenteur et Faiblesse pendant 1 minute.");
+                }
+
+                if(hasNerf) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60*20, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
+                }
+
+                usedPower = true;
+                Bukkit.getScheduler().runTaskLater(narutoUHC, () -> usedPower = false, 5*20*60);
+
+            }
+
+        }
+
+        if(event.getInventory().getName().equals("Étreinte Mortelle")) {
+            event.setCancelled(true);
+            if(!(event.getCurrentItem().getType() == Material.SKULL_ITEM)) return;
+            if(!event.getCurrentItem().hasItemMeta()) return;
+            if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            player.closeInventory();
+
+            if(usedEtreinte) {
+                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                return;
+            }
+
+            Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
+
+            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 100, false, false));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10 * 20, 200, false, false));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
+
+            player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName());
+            target.sendMessage("§7▎ §aShikamaru §fa utilisé son pouvoir §aManipulation §fsur vous. De ce fait, vous êtes immobilisé pendant §c10 secondes§f. Vous recevez également §2Poison 2 §fpendant 10 secondes.");
+
+            target.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 10 * 20, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 100, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10 * 20, 200, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
+
+            usedEtreinte = true;
+
+            if(usedPower && !hasNerf) {
+                hasNerf = true;
+                player.sendMessage("§7▎ §cVous avez utilisé deux pouvoirs dans une intervalle de 5 minutes. De ce fait, à chaque fois que vous utiliserais un pouvoir (hormis votre Oeil) vous recevrez Lenteur et Faiblesse pendant 1 minute.");
+            }
+
+            if(hasNerf) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60*20, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
+            }
+
+            usedPower = true;
+            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> usedPower = false, 5*20*60);
+
+        }
+
+        if(event.getInventory().getName().equals("Oeil")) {
+            event.setCancelled(true);
+            if(!(event.getCurrentItem().getType() == Material.SKULL_ITEM)) return;
+            if(!event.getCurrentItem().hasItemMeta()) return;
+            if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            player.closeInventory();
+
+            if(eyeUses >= 5) {
+                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir 5 fois.");
+                return;
+            }
+
+            eyeUses++;
+
+            Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
+
+            if(inEye.containsKey(target.getUniqueId())) {
+                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir sur ce joueur.");
+                return;
+            }
+
+            player.sendMessage("§7▎ §fVous voyez désormais la vie de §a" + target.getName());
+
+            setupOeil(player, target);
+        }
+
+    }
+
+    @Override
+    public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
+        if(inEye.containsKey(player.getUniqueId())) {
+            PacketDisplay packetDisplay = inEye.get(player.getUniqueId());
+
+            Player shikamaru = Role.findPlayer("Shikamaru");
+            if(shikamaru != null) {
+                if (!packetDisplay.isCustomNameVisible()) {
+                    packetDisplay.setCustomNameVisible(true, shikamaru);
+                }
+                if(!packetDisplay.getText().equals(WorldUtils.getBeautyHealth(player)+" ❤")) {
+                    packetDisplay.rename(WorldUtils.getBeautyHealth(player)+" ❤", shikamaru);
+                }
+                packetDisplay.teleport(player.getLocation(), shikamaru);
+            }
+        }
+    }
+
+    public void setupOeil(Player shikamaru, Player target) {
+        if(target != null) {
+            PacketDisplay display = new PacketDisplay(target.getLocation(), WorldUtils.getBeautyHealth(target)+" ❤");
+
+            display.display(shikamaru);
+
+            inEye.put(target.getUniqueId(), display);
+        }
+    }
+
+    @Override
+    public Camp getCamp() {
+        return Camp.SHINOBI;
+    }
+}

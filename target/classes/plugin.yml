@@ -1,0 +1,9 @@
+main: fr.lyneris.narutouhc.NarutoUHC
+version: 2.0.1
+author: Rhodless
+name: NarutoUHC
+depend:
+  - Lyneris-UHC
+commands:
+  ns:
+    description: Naruto command
