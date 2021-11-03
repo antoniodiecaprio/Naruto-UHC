@@ -23,8 +23,8 @@
         <dependency>
             <groupId>fr.lyneris</groupId>
             <artifactId>UHC-API</artifactId>
-            <version>0.0.1</version>
-            <systemPath>C:/Users/hdufo/Desktop/Développement/Personnal/UHC-API/target/UHC-API-0.1.jar</systemPath>
+            <version>0.1</version>
+            <systemPath>${project.basedir}/../Lyneris-UHC/target/UHC-API-0.1.jar</systemPath>
             <scope>system</scope>
         </dependency>
     </dependencies>
