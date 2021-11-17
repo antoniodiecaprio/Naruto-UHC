@@ -1,6 +1,7 @@
 package fr.lyneris.narutouhc.manager;
 
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import org.bukkit.entity.Player;
 
@@ -14,11 +15,13 @@ public class RoleManager {
     private final NarutoUHC naruto;
     private final List<NarutoRoles> roles;
     private final HashMap<UUID, NarutoRole> playerRole;
+    private final HashMap<UUID, Camp> playerCamp;
 
     public RoleManager(NarutoUHC naruto) {
         this.roles = new ArrayList<>();
         this.naruto = naruto;
         this.playerRole = new HashMap<>();
+        this.playerCamp = new HashMap<>();
     }
 
     public NarutoUHC getNaruto() {
@@ -47,4 +50,18 @@ public class RoleManager {
     public void setRole(Player var1, NarutoRole var2) {
         this.setRole(var1.getUniqueId(), var2);
     }
+
+    public Camp getCamp(UUID var1) {
+        return this.playerCamp.get(var1);
+    }
+    public Camp getCamp(Player var1) {
+        return getCamp(var1.getUniqueId());
+    }
+    public void setCamp(UUID var1, Camp var2) {
+        this.playerCamp.put(var1, var2);
+    }
+    public void setCamp(Player var1, Camp var2) {
+        this.setCamp(var1.getUniqueId(), var2);
+    }
+
 }

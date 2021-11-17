@@ -1,15 +1,13 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.ProgressBar;
 import fr.lyneris.narutouhc.particle.WingsEffect;
-import fr.lyneris.narutouhc.utils.Damage;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
@@ -50,7 +48,7 @@ public class Konan extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(yariCooldown > 0) {
             yariCooldown--;
         }
@@ -88,11 +86,12 @@ public class Konan extends NarutoRole {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Shikigami no Mai")).toItemStack());
 
         List<String> list = new ArrayList<>();
-        UHC.getUhc().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(e -> Bukkit.getPlayer(e).getName()).forEach(list::add);
-        if(Role.findPlayer("Obito") != null) list.add(Role.findPlayer("Obito").getName());
+        //TODO CHECK CAMP
+        UHC.getUHC().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(e -> Bukkit.getPlayer(e).getName()).forEach(list::add);
+        if(Role.findPlayer(NarutoRoles.OBITO) != null) list.add(Role.findPlayer(NarutoRoles.OBITO).getName());
 
 
-        player.sendMessage("§7▎ §cListe des Akatsuki:");
+        player.sendMessage(CC.prefix("§cListe des Akatsuki:"));
         list.forEach(s -> player.sendMessage(" §8- §c" + s));
         player.sendMessage(" ");
     }
@@ -157,7 +156,7 @@ public class Konan extends NarutoRole {
                 player.closeInventory();
                 player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Yari")).toItemStack());
 
-                player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aYari§f.");
+                player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aYari§f."));
 
                 yariCooldown = 5*60;
 
@@ -174,11 +173,11 @@ public class Konan extends NarutoRole {
                 player.setGameMode(GameMode.SPECTATOR);
                 this.oldLocation = player.getLocation();
 
-                player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aBatafurai§f.");
+                player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aBatafurai§f."));
 
                 Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(player));
 
-                Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+                Tasks.runLater(() -> {
                     player.teleport(this.oldLocation);
                     player.setGameMode(GameMode.SURVIVAL);
                     oldLocation = null;
@@ -200,9 +199,9 @@ public class Konan extends NarutoRole {
                 player.setAllowFlight(true);
                 player.setFlying(true);
                 new WingsEffect(8*20, EnumParticle.FLAME).start(player);
-                player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aKami Toku§f.");
+                player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aKami Toku§f."));
 
-                Bukkit.getScheduler().runTaskLater(narutoUHC, () -> player.setAllowFlight(false), 8*20);
+                Tasks.runLater(() -> player.setAllowFlight(false), 8*20);
 
                 kamiTokuCooldown = 10*60;
 
@@ -217,10 +216,8 @@ public class Konan extends NarutoRole {
 
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        nearbyPlayer++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
@@ -230,11 +227,9 @@ public class Konan extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Chissoku");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
-                        j++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                    j++;
                 }
                 player.openInventory(inv);
             }
@@ -249,15 +244,14 @@ public class Konan extends NarutoRole {
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
             if(target == null) {
-                player.sendMessage("§7▎ §cCe joueur n'est pas connecté");
+                player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aChissoku Toku§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aChissoku Toku§f."));
 
             target.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5*20, 0, false, false));
-            target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5*20, 200, false, false));
-            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 200, false, false));
+            //TODO IMMOBILISER target 5s
 
             chissokuCooldown = 20*60;
 
@@ -274,12 +268,12 @@ public class Konan extends NarutoRole {
                 return;
             }
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aBakuhatsu§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aBakuhatsu§f."));
             new BukkitRunnable() {
                 int timer = 60*20;
                 @Override
                 public void run() {
-                    if(!UHC.getUhc().getGameManager().getPlayers().contains(player.getUniqueId()) || player.getGameMode() == GameMode.SPECTATOR) {
+                    if(!UHC.getUHC().getGameManager().getPlayers().contains(player.getUniqueId()) || player.getGameMode() == GameMode.SPECTATOR) {
                         cancel();
                     }
                     Title.sendActionBar(player, "§7Bakuhatsu §f§l» " + ProgressBar.getProgressBar(timer, 60*20, 100, '▎', ChatColor.GREEN, ChatColor.WHITE));
@@ -313,7 +307,7 @@ public class Konan extends NarutoRole {
         if(oldLocation != null) {
             if(player.getLocation().distance(oldLocation) >= 60) {
                 player.teleport(this.oldLocation);
-                player.sendMessage("§7▎ §cVous ne pouvez pas vous déplacer à plus de 60 blocks de votre position initiale.");
+                player.sendMessage(CC.prefix("§cVous ne pouvez pas vous déplacer à plus de 60 blocks de votre position initiale."));
             }
         }
     }

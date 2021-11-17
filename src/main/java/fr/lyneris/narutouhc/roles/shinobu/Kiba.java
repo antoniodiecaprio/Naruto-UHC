@@ -1,8 +1,10 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Loc;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -48,7 +50,7 @@ public class Kiba extends NarutoRole {
         if(Item.interactItem(event.getItem(), "Akamaru")) {
 
             if(usedAkamaru) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
@@ -60,13 +62,13 @@ public class Kiba extends NarutoRole {
             wolf.setAngry(false);
             wolf.setSitting(false);
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aAkamaru§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aAkamaru§f."));
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20*60, 0, false, false));
 
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            Tasks.runLater(() -> {
                 player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
                 wolf.setHealth(0);
-                player.sendMessage("§7▎ §cVous avez perdu votre effet de Force et votre chien.");
+                player.sendMessage(CC.prefix("§cVous avez perdu votre effet de Force et votre chien."));
             }, 10*20*60);
 
         }
@@ -88,7 +90,7 @@ public class Kiba extends NarutoRole {
         if(args[0].equalsIgnoreCase("sniff")) {
 
             if(usedKiba) {
-               player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+               player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                return;
             }
 
@@ -105,7 +107,7 @@ public class Kiba extends NarutoRole {
             }
 
             if(target.getLocation().distance(player.getLocation()) > 20) {
-                player.sendMessage("§7▎ §c" + target.getName() + " n'est pas dans un rayon de 20 blocks autour de vous.");
+                player.sendMessage(CC.prefix("§c" + target.getName() + " n'est pas dans un rayon de 20 blocks autour de vous."));
                 return;
             }
 

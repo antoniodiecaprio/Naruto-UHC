@@ -1,12 +1,10 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Loc;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
 import org.bukkit.Bukkit;
@@ -45,51 +43,51 @@ public class Shino extends NarutoRole {
 
     @Override
     public void onAllPlayerDamage(EntityDamageEvent event, Player entity) {
-        Player shino = Role.findPlayer("Shino");
+        Player shino = Role.findPlayer(NarutoRoles.SHINO);
         if(shino == null) return;
         if(event.getCause() == EntityDamageEvent.DamageCause.CUSTOM || event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
         if(kikaichuTargets.contains(entity.getUniqueId())) {
-            shino.sendMessage("§7▎ §8(§c!§8) §a" + entity.getName() + " §fa prit un dégât de §c" + event.getCause().name().toLowerCase());
+            shino.sendMessage(CC.prefix("§8(§c!§8) §a" + entity.getName() + " §fa prit un dégât de §c" + event.getCause().name().toLowerCase()));
         }
     }
 
     @Override
     public void onAllPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {
-        Player shino = Role.findPlayer("Shino");
+        Player shino = Role.findPlayer(NarutoRoles.SHINO);
         if(shino == null) return;
         if(kikaichuTargets.contains(player.getUniqueId())) {
-            shino.sendMessage("§7▎ §8(§c!§8) §a" + player.getName() + " §fa mangé une §ePomme d'Or§f.");
+            shino.sendMessage(CC.prefix("§8(§c!§8) §a" + player.getName() + " §fa mangé une §ePomme d'Or§f."));
         }
     }
 
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
-        Player shino = Role.findPlayer("Shino");
+        Player shino = Role.findPlayer(NarutoRoles.SHINO);
         if(shino == null) return;
         if(event.getEntity().getKiller() != null && kikaichuTargets.contains(event.getEntity().getKiller().getUniqueId())) {
-            shino.sendMessage("§7▎ §8(§c!§8) §a" + player.getName() + " §fa tué §c" + event.getEntity().getName());
+            shino.sendMessage(CC.prefix("§8(§c!§8) §a" + player.getName() + " §fa tué §c" + event.getEntity().getName()));
         }
 
         if(kikaichuTargets.contains(event.getEntity().getUniqueId())) {
-            shino.sendMessage("§7▎ §8(§c!§8) §a" + player.getName() + " §fs'est fait tuer");
+            shino.sendMessage(CC.prefix("§8(§c!§8) §a" + player.getName() + " §fs'est fait tuer"));
         }
 
     }
 
     @Override
     public void onAllPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player damager) {
-        Player shino = Role.findPlayer("Shino");
+        Player shino = Role.findPlayer(NarutoRoles.SHINO);
         if(shino == null) return;
 
         if(!(event.getEntity() instanceof Player)) return;
 
         if(kikaichuTargets.contains(damager.getUniqueId())) {
-            shino.sendMessage("§7▎ §8(§c!§8) §c" + damager.getName() + " §fa mis un dégât à §a" + event.getEntity().getName());
+            shino.sendMessage(CC.prefix("§8(§c!§8) §c" + damager.getName() + " §fa mis un dégât à §a" + event.getEntity().getName()));
         }
 
         if(kikaichuTargets.contains(event.getEntity().getUniqueId())) {
-            shino.sendMessage("§7▎ §8(§c!§8) §a" + event.getEntity().getName() + " §fs'est prit un dégât de §a" + damager.getName());
+            shino.sendMessage(CC.prefix("§8(§c!§8) §a" + event.getEntity().getName() + " §fs'est prit un dégât de §a" + damager.getName()));
         }
 
     }
@@ -102,19 +100,19 @@ public class Shino extends NarutoRole {
         if(Item.interactItem(player.getItemInHand(), "Kikaichû")) {
 
             if(kikaichuUses >= 5) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir 5 fois.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 5 fois."));
                 return;
             }
 
             if(kikaichuTargets.contains(target.getUniqueId())) {
-                player.sendMessage("§7▎ §cCe joueur est déjà sous l'effet de votre pouvoir.");
+                player.sendMessage(CC.prefix("§cCe joueur est déjà sous l'effet de votre pouvoir."));
                 return;
             }
 
             kikaichuUses++;
 
             kikaichuTargets.add(target.getUniqueId());
-            player.sendMessage("§7▎ §fVous avez utilisé votre §aKikaichû §fsur §c" + target.getName() + "§f. Vous avez utilisé votre pouvoir §c" + kikaichuUses + "§f fois.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre §aKikaichû §fsur §c" + target.getName() + "§f. Vous avez utilisé votre pouvoir §c" + kikaichuUses + "§f fois."));
         }
 
     }
@@ -128,21 +126,21 @@ public class Shino extends NarutoRole {
     public void onSubCommand(Player player, String[] args) {
         if(args[0].equalsIgnoreCase("tracking")) {
 
-            if (args.length != 2) {
-                player.sendMessage(Messages.syntax("/ns tracking <player>"));
-                return;
-            }
+                    if (args.length != 2) {
+                        player.sendMessage(Messages.syntax("/ns tracking <player>"));
+                        return;
+                    }
 
 
-            Player target = Bukkit.getPlayer(args[1]);
+                    Player target = Bukkit.getPlayer(args[1]);
 
-            if (target == null) {
-                player.sendMessage(Messages.offline(args[1]));
-                return;
-            }
+                    if (target == null) {
+                        player.sendMessage(Messages.offline(args[1]));
+                        return;
+                    }
 
             if (!kikaichuTargets.contains(target.getUniqueId())) {
-                player.sendMessage("§7▎ §cPour utiliser cette commande sur ce joueur, vous devez avoir utilisé votre Kikaichû sur lui.");
+                player.sendMessage(CC.prefix("§cPour utiliser cette commande sur ce joueur, vous devez avoir utilisé votre Kikaichû sur lui."));
                 return;
             }
 
@@ -152,17 +150,20 @@ public class Shino extends NarutoRole {
             final String targetOldName;
             targetOldName = target.getName();
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre §aTrack §fsur §c" + target.getName());
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre §aTrack §fsur §c" + target.getName()));
 
+            Tasks.runTimer(() -> {
+                Player newPlayer = Bukkit.getPlayer(oldName);
+                Player newTarget = Bukkit.getPlayer(targetOldName);
+
+                if(newPlayer != null && newTarget != null) {
+                    Title.sendActionBar(newPlayer, Loc.getDirectionMate(newPlayer, newTarget));
+                }
+            }, 0, 20);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    final Player newPlayer = Bukkit.getPlayer(oldName);
-                    final Player newTarget = Bukkit.getPlayer(targetOldName);
 
-                    if(newPlayer != null && newTarget != null) {
-                        Title.sendActionBar(newPlayer, Loc.getDirectionMate(newPlayer, newTarget));
-                    }
                 }
             }.runTaskTimer(narutoUHC, 0, 20);
 
@@ -186,14 +187,14 @@ public class Shino extends NarutoRole {
                 }
 
                 if (!kikaichuTargets.contains(target.getUniqueId())) {
-                    player.sendMessage("§7▎ §cPour utiliser cette commande sur ce joueur, vous devez avoir utilisé votre Kikaichû sur lui.");
+                    player.sendMessage(CC.prefix("§cPour utiliser cette commande sur ce joueur, vous devez avoir utilisé votre Kikaichû sur lui."));
                     return;
                 }
 
-                player.sendMessage("§7▎ §fVous avez utilisé votre §aFeed §fsur §c" + target.getName());
+                player.sendMessage(CC.prefix("§fVous avez utilisé votre §aFeed §fsur §c" + target.getName()));
                 target.setMaxHealth(target.getMaxHealth()-2);
                 player.setMaxHealth(player.getMaxHealth()+2);
-                target.sendMessage("§7▎ §cShino §fa utilisé son §aFeed §fsur vous. De ce fait, vous perdez §c1 coeur §fpermanent.");
+                target.sendMessage(CC.prefix("§cShino §fa utilisé son §aFeed §fsur vous. De ce fait, vous perdez §c1 coeur §fpermanent."));
 
                 kikaichuTargets.remove(target.getUniqueId());
 

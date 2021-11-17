@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.utils;
 
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Item {
@@ -15,6 +16,10 @@ public class Item {
     public static boolean interactItem(ItemStack var1, String var2) {
         if(!hasDisplayName(var1)) return false;
         return var1.getItemMeta().getDisplayName().equals("§7▎ §6§l" + var2 + " §8(§7Clic-droit§8)");
+    }
+
+    public static boolean interactItem(PlayerInteractEvent var1, String var2) {
+        return interactItem(var1.getItem(), var2);
     }
 
     public static boolean specialItem(ItemStack var1, String var2) {

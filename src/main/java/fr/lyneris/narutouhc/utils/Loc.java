@@ -1,8 +1,13 @@
 package fr.lyneris.narutouhc.utils;
 
+import fr.lyneris.uhc.UHC;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Loc {
 
@@ -32,6 +37,16 @@ public class Loc {
         } else {
             return "Aucune";
         }
+    }
+
+    public static List<Player> getNearbyPlayers(Player player, int var1, int var2, int var3) {
+        List<Player> toReturn = new ArrayList<>();
+        player.getNearbyEntities(var1, var2, var3).stream()
+                .filter(entity -> entity instanceof Player)
+                .map(entity -> (Player)entity)
+                .filter(uuid -> UHC.getUHC().getGameManager().getPlayers().contains(uuid.getUniqueId()))
+                .forEach(toReturn::add);
+        return toReturn;
     }
 
     public static char getCharCardinalDirection(Player player) {
@@ -75,6 +90,50 @@ public class Loc {
             d1 += 360.0;
         }
         return d1;
+    }
+
+    public static String getDirectionMate(Player player, Player mate, int distance) {
+        if (player.getWorld().equals(mate.getWorld())) {
+            if(player.getLocation().distance(mate.getLocation()) > distance) {
+                if (getDirectionTo(player, mate.getLocation().clone()) <= 45.0) {
+                    return "§6" + mate.getName() + "§f \u2b06 ? ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 90.0) {
+                    return "§6" + mate.getName() + "§f \u2b08 ? ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 135.0) {
+                    return "§6" + mate.getName() + "§f➨ ? ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 180.0) {
+                    return "§6" + mate.getName() + "§f \u2b0a ? ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 225.0) {
+                    return "§6" + mate.getName() + "§f \u2b07 ? ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 270.0) {
+                    return "§6" + mate.getName() + "§f \u2b0b ? ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 315.0) {
+                    return "§6" + mate.getName() + "§f \u2b05 ? ";
+                } else {
+                    return "§6" + mate.getName() + "§f \u2b09 ? ";
+                }
+            } else {
+                if (getDirectionTo(player, mate.getLocation().clone()) <= 45.0) {
+                    return "§6" + mate.getName() + "§f \u2b06 " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 90.0) {
+                    return "§6" + mate.getName() + "§f \u2b08 " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 135.0) {
+                    return "§6" + mate.getName() + "§f➨ " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 180.0) {
+                    return "§6" + mate.getName() + "§f \u2b0a " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 225.0) {
+                    return "§6" + mate.getName() + "§f \u2b07 " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 270.0) {
+                    return "§6" + mate.getName() + "§f \u2b0b " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else if (getDirectionTo(player, mate.getLocation().clone()) <= 315.0) {
+                    return "§6" + mate.getName() + "§f \u2b05 " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                } else {
+                    return "§6" + mate.getName() + "§f \u2b09 " + ((int) player.getLocation().distance(mate.getLocation())) + " ";
+                }
+            }
+        } else {
+            return "§6" + mate.getName() + " §f? ";
+        }
     }
 
     public static String getDirectionMate(Player player, Player mate) {

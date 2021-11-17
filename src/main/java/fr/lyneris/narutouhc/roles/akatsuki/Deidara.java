@@ -6,9 +6,8 @@ import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.DoubleCircleEffect;
 import fr.lyneris.narutouhc.particle.ProgressBar;
 import fr.lyneris.narutouhc.particle.WorldUtils;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.Utils;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -45,7 +44,7 @@ public class Deidara extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(c1Cooldown > 0) {
             c1Cooldown--;
         }
@@ -78,7 +77,7 @@ public class Deidara extends NarutoRole {
     @Override
     public void onDistribute(Player player) {
         player.getInventory().addItem(new ItemStack(Material.ARROW, 32));
-        Role.knowsRole(player, "Sasori");
+        Role.knowsRole(player, NarutoRoles.SASORI);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Bakuton")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.BOW).setName(Item.specialItem("Deidara")).toItemStack());
     }
@@ -134,17 +133,15 @@ public class Deidara extends NarutoRole {
             event.setCancelled(true);
             if(event.getSlot() == 1) {
                 state = BowState.C1;
-                player.sendMessage("§7▎ §fVotre arc est désormais sous l'effet §cC1§f.");
+                player.sendMessage(CC.prefix("§fVotre arc est désormais sous l'effet §cC1§f."));
                 player.closeInventory();
             }
 
             if(event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        nearbyPlayer++;
-                    }
+                for (Player ignored : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
@@ -154,23 +151,21 @@ public class Deidara extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "C2");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
-                        j++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                    j++;
                 }
                 player.openInventory(inv);
             }
 
             if(event.getSlot() == 3) {
                 state = BowState.C3;
-                player.sendMessage("§7▎ §fVotre arc est désormais sous l'effet §cC3§f.");
+                player.sendMessage(CC.prefix("§fVotre arc est désormais sous l'effet §cC3§f."));
                 player.closeInventory();
             }
 
             if(event.getSlot() == 4) {
-                player.sendMessage("§7▎ §fVous venez de déclancher votre §aArt Ultime§f.");
+                player.sendMessage(CC.prefix("§fVous venez de déclancher votre §aArt Ultime§f."));
 
                 new DoubleCircleEffect(20*10, EnumParticle.SMOKE_NORMAL).start(player);
 
@@ -185,9 +180,7 @@ public class Deidara extends NarutoRole {
                     }
                 }
 
-                player.setWalkSpeed(0.0F);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10*20, 200, false, false));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10*20, 200, false, false));
+                //TODO IMMOBILISER joueur 10s
 
                 new BukkitRunnable() {
 
@@ -199,15 +192,14 @@ public class Deidara extends NarutoRole {
 
                         if(timer == 0) {
                             if(Bukkit.getPlayer(player.getName()) != null) {
-                                if(UHC.getUhc().getGameManager().getPlayers().contains(player.getUniqueId())) {
+                                if(UHC.getUHC().getGameManager().getPlayers().contains(player.getUniqueId())) {
                                     player.damage(100D);
                                     if(player.getWorld() != Bukkit.getWorld("kamui")) {
                                         WorldUtils.createBeautyExplosion(player.getLocation(), 30, false);
                                     }
-                                    player.setWalkSpeed(0.2F);
                                     for(Player players : Bukkit.getOnlinePlayers()) {
                                         if(players.getWorld() == player.getWorld()) {
-                                            if(players.getGameMode() != GameMode.SPECTATOR && UHC.getUhc().getGameManager().getPlayers().contains(players.getUniqueId())) {
+                                            if(players.getGameMode() != GameMode.SPECTATOR && UHC.getUHC().getGameManager().getPlayers().contains(players.getUniqueId())) {
                                                 if(players.getLocation().distance(player.getLocation()) <= 30) {
                                                     players.damage(100D);
                                                 }

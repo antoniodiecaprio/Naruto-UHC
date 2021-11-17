@@ -4,6 +4,9 @@ import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.manager.Manager;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.manager.RoleManager;
+import fr.lyneris.narutouhc.utils.CC;
+import fr.lyneris.uhc.utils.Utils;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,7 +34,7 @@ public abstract class NarutoRole {
     public void onNight(Player player) {}
 
     public void resetCooldowns() {}
-    public void startRunnableTask() {}
+    public void runnableTask() {}
 
     public Chakra getChakra() {
         return Chakra.AUCUN;
@@ -52,6 +55,7 @@ public abstract class NarutoRole {
     public void onPlayerMove(PlayerMoveEvent event, Player player) {}
     public void onPlayerInteractAtPlayer(PlayerInteractAtEntityEvent event, Player target) {}
     public void onPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {}
+    public void onPlayerHealthRegain(EntityRegainHealthEvent event, Player player) {}
 
     public void onAllPlayerMove(PlayerMoveEvent event, Player player) {}
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {}
@@ -65,5 +69,11 @@ public abstract class NarutoRole {
 
     public void onMinute(int minute, Player player) {}
     public void onSecond(int timer, Player player) {}
+
+    public void onArrowHitPlayerEvent(EntityDamageByEntityEvent event, Player player, Player shooter, Arrow arrow) {}
+
+    public String prefix(String var1) {
+        return CC.prefix(var1);
+    }
 
 }

@@ -4,6 +4,7 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -21,13 +22,12 @@ import java.util.List;
 public class YondaimeRaikage extends NarutoRole {
 
     public boolean usingArmor = false;
-    public int armorTime = 20*60;
+    public int armorTime = 20 * 60;
 
     @Override
     public String getRoleName() {
         return "Yondaime Raikage";
     }
-
 
 
     @Override
@@ -43,22 +43,22 @@ public class YondaimeRaikage extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Armure de foudre")) {
+        if (Item.interactItem(event.getItem(), "Armure de foudre")) {
 
-            if(usingArmor) {
+            if (usingArmor) {
                 usingArmor = false;
-                player.sendMessage("§7▎ §fVous avez désactivé votre §c  Armure§f.");
+                player.sendMessage(CC.prefix("§fVous avez désactivé votre §c  Armure§f."));
                 player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
             } else {
                 usingArmor = true;
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, armorTime*20, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, armorTime * 20, 0, false, false));
 
-                player.sendMessage("§7▎ §fVous avez activé votre §aArmure§f.");
+                player.sendMessage(CC.prefix("§fVous avez activé votre §aArmure§f."));
 
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(usingArmor) {
+                        if (usingArmor) {
                             armorTime--;
                         } else {
                             cancel();
@@ -72,14 +72,14 @@ public class YondaimeRaikage extends NarutoRole {
 
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
-        Player yondaime = Role.findPlayer("Yondaime Raikage");
-        if(yondaime == null) return;
+        Player yondaime = Role.findPlayer(NarutoRoles.YONDAIME_RAIKAGE);
+        if (yondaime == null) return;
 
-        if(Role.isRole(player, "Killer Bee")) {
-            if(event.getEntity().getKiller() == null) {
-                yondaime.sendMessage("§7▎ §aKiller Bee §fest mort de §cPVE§f.");
+        if (Role.isRole(player, NarutoRoles.KILLER_BEE)) {
+            if (event.getEntity().getKiller() == null) {
+                yondaime.sendMessage(CC.prefix("§aKiller Bee §fest mort de §cPVE§f."));
             } else {
-                yondaime.sendMessage("§7▎ §aKiller Bee §fs'est fait tué par §c" + event.getEntity().getKiller().getName());
+                yondaime.sendMessage(CC.prefix("§aKiller Bee §fs'est fait tué par §c" + event.getEntity().getKiller().getName()));
             }
             yondaime.setMaxHealth(player.getMaxHealth() + 4);
         }

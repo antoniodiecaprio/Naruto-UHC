@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.utils;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,7 +16,7 @@ public class Damage {
 
     public static void addTempNoDamage(UUID var1, EntityDamageEvent.DamageCause var2, int var3) {
         noDamage.put(var1, var2);
-        Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> noDamage.remove(var1), var3*20L);
+        Tasks.runLater(() -> noDamage.remove(var1), var3*20L);
     }
 
     public static void addTempNoDamage(Player var1, EntityDamageEvent.DamageCause var2, int var3) {

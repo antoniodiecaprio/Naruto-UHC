@@ -1,13 +1,13 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -46,7 +46,7 @@ public class Sai extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(montureCooldown > 0) {
             montureCooldown--;
         }
@@ -127,7 +127,7 @@ public class Sai extends NarutoRole {
             if(var1 != null && minuteHasPassed) {
                 var1.setGameMode(GameMode.SURVIVAL);
                 var1.teleport(event.getEntity().getLocation());
-                var1.sendMessage("§7▎ §cSaï §fest mort. Vous avez donc été téléporté à sa position.");
+                var1.sendMessage(CC.prefix("§cSaï §fest mort. Vous avez donc été téléporté à sa position."));
                 saiTarget = null;
             }
         }
@@ -136,9 +136,6 @@ public class Sai extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-
-        float oldWalkSpeed;
-        oldWalkSpeed = player.getWalkSpeed();
 
         if(event.getInventory().getName().equals("Toile aux Monstres Fantomatiques")) {
             event.setCancelled(true);
@@ -149,12 +146,8 @@ public class Sai extends NarutoRole {
                         player.sendMessage(Messages.cooldown(montureCooldown));
                         break;
                     }
-                    player.setWalkSpeed(0);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 200, false, false));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5*20, 200, false, false));
-                    
-                    Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> {
-                        player.setWalkSpeed(oldWalkSpeed);
+                    //TODO IMMOBILISER player 5s
+                    Tasks.runLater(() -> {
                         Horse horse = (Horse) player.getWorld().spawnEntity(player.getLocation(), EntityType.HORSE);
                         horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
                         horse.setTamed(true);
@@ -176,24 +169,19 @@ public class Sai extends NarutoRole {
                         break;
                     }
                     Player target = null;
-                    for (Entity nearbyEntity : player.getNearbyEntities(20, 20, 20)) {
-                        if(nearbyEntity instanceof Player) {
-                            target = (Player) nearbyEntity;
-                            break;
-                        }
+                    for (Player nearbyEntity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                        target = nearbyEntity;
+                        break;
                     }
                     if(target == null) {
-                        player.sendMessage("§7▎ §cIl n'y aucun joueur à proximité de vous.");
+                        player.sendMessage(CC.prefix("§cIl n'y aucun joueur à proximité de vous."));
                         player.closeInventory();
                         return;
                     }
                     Player finalTarget = target;
-                    player.setWalkSpeed(0);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 200, false, false));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5*20, 200, false, false));
+                    //TODO IMMOBILISER player 5s
                     
-                    Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> {
-                        player.setWalkSpeed(oldWalkSpeed);
+                    Tasks.runLater(() -> {
                         for(int i = 0; i <= 5; i++) {
                             Silverfish fish = (Silverfish) player.getWorld().spawnEntity(player.getLocation(), EntityType.SILVERFISH);
                             fish.setTarget(finalTarget);
@@ -205,12 +193,12 @@ public class Sai extends NarutoRole {
                     break;
                 case 3:
                     if(usedFuinjutsu) {
-                        player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                        player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                         return;
                     }
                     int i = 9;
                     int nearbyPlayer = 0;
-                    for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
+                    for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
                         if (entity instanceof Player) {
                             nearbyPlayer++;
                         }
@@ -222,7 +210,7 @@ public class Sai extends NarutoRole {
                     }
                     nearbyPlayer = 0;
                     Inventory inv = Bukkit.createInventory(null, i, "Choisir un joueur");
-                    for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
+                    for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
                         if (entity instanceof Player) {
                             inv.setItem(nearbyPlayer, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                             nearbyPlayer++;
@@ -240,25 +228,18 @@ public class Sai extends NarutoRole {
             if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
             if(target == null) {
-                player.sendMessage("§7▎ §cCe joueur n'est pas connecté");
+                player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
-            player.setWalkSpeed(0);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 200, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60*20, 200, false, false));
-            Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> {
-                player.setWalkSpeed(oldWalkSpeed);
-                if(UHC.getUhc().getGameManager().getPlayers().contains(player.getUniqueId())) {
+            //TODO IMMOBILISER player 60s
+            Tasks.runLater(() -> {
+                if(UHC.getUHC().getGameManager().getPlayers().contains(player.getUniqueId())) {
                     if(saiTarget != null) {
                         Bukkit.getPlayer(saiTarget).setGameMode(GameMode.SPECTATOR);
                         new BukkitRunnable() {
                             @Override
                             public void run() {
-                                if(saiTarget == null) {
-                                    cancel();
-                                } else {
-                                    player.setPassenger(target);
-                                }
+                                if(saiTarget == null) cancel(); else player.setPassenger(target);
                             }
                         }.runTaskTimer(NarutoUHC.getNaruto(), 0, 20);
                     }
@@ -267,8 +248,8 @@ public class Sai extends NarutoRole {
                 }
                 minuteHasPassed = true;
              }, 60*20);
-            target.sendMessage("§7▎ §cSaï §fest en train de vous sceller. vous avez 1 minute pour l'éliminer.");
-            target.sendMessage("§7▎ §fVous avez scellé §c" + target.getName() + "§f.");
+            target.sendMessage(CC.prefix("§cSaï §fest en train de vous sceller. vous avez 1 minute pour l'éliminer."));
+            target.sendMessage(CC.prefix("§fVous avez scellé §c" + target.getName() + "§f."));
             usedFuinjutsu = true;
             saiTarget = target.getUniqueId();
             player.closeInventory();
@@ -289,9 +270,9 @@ public class Sai extends NarutoRole {
 
     @Override
     public void onPlayerKill(PlayerDeathEvent event, Player killer) {
-        if(Role.isRole(event.getEntity(), "Sasuke")) {
+        if(Role.isRole(event.getEntity(), NarutoRoles.SASUKE)) {
             killer.setMaxHealth(killer.getMaxHealth() + 4);
-            Role.knowsRole(killer, "Sakura");
+            Role.knowsRole(killer, NarutoRoles.SAKURA);
         }
     }
 

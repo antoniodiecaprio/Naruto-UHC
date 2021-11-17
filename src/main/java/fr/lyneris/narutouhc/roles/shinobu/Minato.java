@@ -1,12 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -48,7 +48,7 @@ public class Minato extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(kuramaCooldown > 0) {
             kuramaCooldown--;
         }
@@ -74,7 +74,7 @@ public class Minato extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        Role.knowsRole(player, "Naruto");
+        Role.knowsRole(player, NarutoRoles.NARUTO);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false));
         player.getInventory().addItem(new ItemBuilder(Material.BOW).addEnchant(Enchantment.DURABILITY, 5).setName(Item.specialItem("Shuriken Jutsu")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kurama")).toItemStack());
@@ -92,10 +92,10 @@ public class Minato extends NarutoRole {
 
             usedKurama = true;
             kuramaCooldown = 20*60;
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aKurama§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aKurama§f."));
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
-            Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> usedKurama = false, 5*20*60);
+            Tasks.runLater(() -> usedKurama = false, 5*20*60);
         }
 
         if(Item.interactItem(event.getItem(), "Shuriken Jutsu")) {
@@ -107,10 +107,8 @@ public class Minato extends NarutoRole {
             } else {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        nearbyPlayer++;
-                    }
+                for (Player ignored : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    nearbyPlayer++;
                 }
                 if(nearbyPlayer > 7 && nearbyPlayer <= 16) {
                     i = 18;
@@ -120,11 +118,9 @@ public class Minato extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Shuriken Jutsu");
                 inv.setItem(1, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + player.getName()).setSkullOwner(player.getName()).toItemStack());
                 int j = 2;
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
-                        j++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                    j++;
                 }
                 player.openInventory(inv);
             }
@@ -142,7 +138,7 @@ public class Minato extends NarutoRole {
             if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
             if(target == null) {
-                player.sendMessage("§7▎ §cCe joueur n'est pas connecté");
+                player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
             Inventory inv = Bukkit.createInventory(null, 9, "Balises » " + target.getName());
@@ -170,14 +166,14 @@ public class Minato extends NarutoRole {
             }
 
             if(target == null) {
-                player.sendMessage("§7▎ §cCe joueur n'est pas connecté");
+                player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
 
             baliseCooldown = 5*60;
             target.teleport(balise);
-            player.sendMessage("§7▎ §fVous avez téléporté §a" + target.getName() + " §fsur une de vos balises");
-            target.sendMessage("§7▎ §cMinato §fvous a téléporté sur une de ses balises.");
+            player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fsur une de vos balises"));
+            target.sendMessage(CC.prefix("§cMinato §fvous a téléporté sur une de ses balises."));
         }
 
     }
@@ -221,8 +217,8 @@ public class Minato extends NarutoRole {
             killer.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2*20*60, 2, false, false));
             killer.removePotionEffect(PotionEffectType.SPEED);
 
-            killer.sendMessage("§7▎ §fVous avez tué un joueur du camp opposé, vous obtenez donc un effet de §bSpeed 3 §fpendant 2 minutes.");
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            killer.sendMessage(CC.prefix("§fVous avez tué un joueur du camp opposé, vous obtenez donc un effet de §bSpeed 3 §fpendant 2 minutes."));
+            Tasks.runLater(() -> {
                 killer.removePotionEffect(PotionEffectType.SPEED);
                 killer.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false));
             }, 2*20*60);
@@ -244,7 +240,7 @@ public class Minato extends NarutoRole {
             }
 
             if(!usedKurama) {
-                player.sendMessage("§7▎ §cVous  n'êtes pas en train d'utiliser l'item Kurama");
+                player.sendMessage(CC.prefix("§cVous  n'êtes pas en train d'utiliser l'item Kurama"));
                 return;
             }
 
@@ -252,7 +248,7 @@ public class Minato extends NarutoRole {
 
             NarutoRole targetRole = NarutoUHC.getNaruto().getRoleManager().getRole(target);
             if(targetRole == null) {
-                player.sendMessage("§7▎ §cCe joueur n'a pas de rôle.");
+                player.sendMessage(CC.prefix("§cCe joueur n'a pas de rôle."));
                 return;
             }
 
@@ -262,7 +258,7 @@ public class Minato extends NarutoRole {
             }
 
             if(targetRole.getRoleName().equalsIgnoreCase("SAI")) {
-                var1 = Role.findPlayer("Sasuke") != null && Role.findPlayer("Sasuke").getLocation().distance(target.getLocation()) <= 30;
+                var1 = Role.findPlayer(NarutoRoles.SASUKE) != null && Role.findPlayer(NarutoRoles.SASUKE).getLocation().distance(target.getLocation()) <= 30;
             } else if(targetRole.getRoleName().equalsIgnoreCase("ITACHI") || targetRole.getRoleName().equalsIgnoreCase("KARIN") || targetRole.getRoleName().equalsIgnoreCase("OBITO")) {
                 var1 = false;
             }
@@ -270,18 +266,18 @@ public class Minato extends NarutoRole {
             usedKurama = false;
 
             if(var1) {
-                player.sendMessage("§7▎ §c" + target.getName() + " §fpossède d'intentions meurtrières.");
+                player.sendMessage(CC.prefix("§c" + target.getName() + " §fpossède d'intentions meurtrières."));
             } else {
-                player.sendMessage("§7▎ §a" + target.getName() + " §fne possède pas d'intentions meurtrières.");
+                player.sendMessage(CC.prefix("§a" + target.getName() + " §fne possède pas d'intentions meurtrières."));
             }
         }
 
         if(args[0].equalsIgnoreCase("balise")) {
             if(balises.size() >= 5) {
-                player.sendMessage("§7▎ §cVous avez déjà posé 5 balises.");
+                player.sendMessage(CC.prefix("§cVous avez déjà posé 5 balises."));
             } else {
                 this.balises.add(player.getLocation());
-                player.sendMessage("§7▎ §fVous venez de poser une §aBalise§f.");
+                player.sendMessage(CC.prefix("§fVous venez de poser une §aBalise§f."));
             }
 
         }

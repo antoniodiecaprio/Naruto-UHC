@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -19,9 +21,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class Ino extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(chatCooldown > 0) {
             chatCooldown--;
         }
@@ -58,7 +58,7 @@ public class Ino extends NarutoRole {
 
     public void openInoMenu(Player player) {
         List<Player> players = new ArrayList<>();
-        UHC.getUhc().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(Bukkit::getPlayer).forEach(players::add);
+        UHC.getUHC().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(Bukkit::getPlayer).forEach(players::add);
 
         int inventorySize;
 
@@ -98,7 +98,7 @@ public class Ino extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        Role.knowsRole(player, "Shikamaru");
+        Role.knowsRole(player, NarutoRoles.SHIKAMARU);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Ino")).toItemStack());
     }
 
@@ -117,7 +117,7 @@ public class Ino extends NarutoRole {
             if(event.getSlot() != 0 && event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.SKULL_ITEM) {
                 Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
                 if(target == null) {
-                    player.sendMessage("§7▎ §cCe joueur n'est pas connecté.");
+                    player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté."));
                     return;
                 }
                 if(chosen.contains(target.getName())) {
@@ -144,15 +144,15 @@ public class Ino extends NarutoRole {
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
         if(transfer != null && transfer.equals(player.getUniqueId())) {
-            player.sendMessage("§7▎ §fVous avez §c30 secondes §fpour utiliser votre dernière volontée.");
+            player.sendMessage(CC.prefix("§fVous avez §c30 secondes §fpour utiliser votre dernière volontée."));
             TextComponent text = new TextComponent("§7▎ §aCliquez-ici pour commencer à la rédiger.");
             text.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ns lastword "));
             player.spigot().sendMessage(text);
-            UHC.getUhc().getGameManager().getPlayers().stream()
+            UHC.getUHC().getGameManager().getPlayers().stream()
                     .filter(uuid -> Bukkit.getPlayer(uuid) != null)
                     .filter(uuid -> Bukkit.getPlayer(uuid).getLocation().distance(player.getLocation()) <= 200)
                     .forEach(nearPlayers::add);
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> transfer = null, 30*20);
+            Tasks.runLater(() -> transfer = null, 30*20);
         }
 
     }
@@ -163,7 +163,7 @@ public class Ino extends NarutoRole {
         if(args[0].equals("transfer")) {
 
             if(usedTransfer) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
@@ -178,11 +178,11 @@ public class Ino extends NarutoRole {
                 return;
             }
 
-            this.transfer = target.getUniqueId();
-            target.sendMessage("§7▎ §aIno §fa utilisé son pouvoir de transfert sur vous. De ce fait lors de votre mort, vous pourrez envoyer un message de dernière volontée. Attention, si vous mourrez dans §c20 minutes§f ou plus, vous ne pourrez pas utiliser cette dernière volontée.");
-            player.sendMessage("§7▎ §Vous avez utilisé votre pouvoir sur §a" + target.getName());
+            transfer = target.getUniqueId();
+            target.sendMessage(CC.prefix("§aIno §fa utilisé son pouvoir de transfert sur vous. De ce fait lors de votre mort, vous pourrez envoyer un message de dernière volontée. Attention, si vous mourrez dans §c20 minutes§f ou plus, vous ne pourrez pas utiliser cette dernière volontée."));
+            player.sendMessage(CC.prefix("§Vous avez utilisé votre pouvoir sur §a" + target.getName()));
             usedTransfer = true;
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> transfer = null, 20*20*60);
+            Tasks.runLater(() -> transfer = null, 20*20*60);
         }
 
         if(args[0].equalsIgnoreCase("chat")) {
@@ -198,7 +198,7 @@ public class Ino extends NarutoRole {
             }
 
             if(chosen.size() == 0) {
-                player.sendMessage("§7▎ §cIl n'y a personne dans votre liste.");
+                player.sendMessage(CC.prefix("§cIl n'y a personne dans votre liste."));
                 return;
             }
 
@@ -207,10 +207,8 @@ public class Ino extends NarutoRole {
                 message.append(args[i]).append(" ");
             }
 
-            chosen.stream().filter(s -> Bukkit.getPlayer(s) != null).map(Bukkit::getPlayer).forEach(target -> {
-                target.sendMessage("§7▎ §6Ino: §f" + message);
-            });
-            player.sendMessage("§7▎ §6Ino: §f" + message);
+            chosen.stream().filter(s -> Bukkit.getPlayer(s) != null).map(Bukkit::getPlayer).forEach(target -> target.sendMessage(CC.prefix("§6Ino: §f" + message)));
+            player.sendMessage(CC.prefix("§6Ino: §f" + message));
 
             chatCooldown = 10*60;
 

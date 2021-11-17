@@ -2,6 +2,7 @@ package fr.lyneris.narutouhc.commands;
 
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.commands.naruto.LastWord;
+import fr.lyneris.narutouhc.crafter.NarutoRole;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,8 +17,16 @@ public class NarutoCommand implements CommandExecutor {
         Player player = (Player) commandSender;
 
         if(args.length == 0) {
-            //HELP MESSAGE
+            //TODO HELP MESSAGE
             return true;
+        }
+
+        if(args[0].equalsIgnoreCase("resetcd")) {
+            NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
+            if(role != null && player.isOp()) {
+                role.resetCooldowns();
+                return true;
+            }
         }
 
         if(args[0].equalsIgnoreCase("lastword")) {

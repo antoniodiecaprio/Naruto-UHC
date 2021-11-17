@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.DoubleCircleEffect;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -36,7 +38,7 @@ public class RockLee extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        Role.knowsRole(player, "Gai Maito");
+        Role.knowsRole(player, NarutoRoles.GAI_MAITO);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Trois Portes")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Six Portes")).toItemStack());
     }
@@ -44,12 +46,12 @@ public class RockLee extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
-        Player rockLee = Role.findPlayer("Rock Lee");
+        Player rockLee = Role.findPlayer(NarutoRoles.ROCK_LEE);
 
         if(rockLee == null) return;
 
-        if(Role.isRole(player, "GAI MAITO")) {
-            rockLee.sendMessage("§7▎ §cGaï Maito §fest mort, vous obtenez donc son item §aHuit Portes§f.");
+        if(Role.isRole(player, NarutoRoles.GAI_MAITO)) {
+            rockLee.sendMessage(CC.prefix("§cGaï Maito §fest mort, vous obtenez donc son item §aHuit Portes§f."));
             rockLee.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Huit Portes")).toItemStack());
         }
 
@@ -59,24 +61,24 @@ public class RockLee extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event.getItem(), "Trois Portes")) {
             if(usedEight) {
-                player.sendMessage("§7▎ §cVous ne pouvez plus utiliser vos pouvoirs car vous avez utilisé l'item Huit Portes.");
+                player.sendMessage(CC.prefix("§cVous ne pouvez plus utiliser vos pouvoirs car vous avez utilisé l'item Huit Portes."));
                 return;
             }
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2 * 20 * 60, 0, false, false));
             player.setMaxHealth(player.getMaxHealth() - 1);
-            player.sendMessage("§7▎ §fVous avez utilisé l'item §aTrois Portes§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aTrois Portes§f."));
         }
 
         if (Item.interactItem(event.getItem(), "Six Portes")) {
             if(usedEight) {
-                player.sendMessage("§7▎ §cVous ne pouvez plus utiliser vos pouvoirs car vous avez utilisé l'item Huit Portes.");
+                player.sendMessage(CC.prefix("§cVous ne pouvez plus utiliser vos pouvoirs car vous avez utilisé l'item Huit Portes."));
                 return;
             }
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));
             player.setMaxHealth(player.getMaxHealth() - 1);
             new DoubleCircleEffect(20 * 2 * 60, EnumParticle.VILLAGER_HAPPY).start(player);
-            player.sendMessage("§7▎ §fVous avez utilisé l'item §aSix Portes§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aSix Portes§f."));
         }
 
         if (Item.interactItem(event.getItem(), "Huit Portes")) {
@@ -89,32 +91,32 @@ public class RockLee extends NarutoRole {
             player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 2*20*60, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2*20*60, 0, false, false));
             player.setMaxHealth(player.getMaxHealth() + 10);
-            player.sendMessage("§7▎ §fVous avez utilisé l'item §aHuit Portes§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aHuit Portes§f."));
 
             player.setItemInHand(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Gaï de la Nuit")).toItemStack());
 
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
-                player.sendMessage("§7▎ §fLes deux minutes sont écoulés, vous avez désormais §c6 coeurs§f permanent ainsi que §8Faiblesse §fpendant 15 minutes.");
+            Tasks.runLater(() -> {
+                player.sendMessage(CC.prefix("§fLes deux minutes sont écoulés, vous avez désormais §c6 coeurs§f permanent ainsi que §8Faiblesse §fpendant 15 minutes."));
                 player.setMaxHealth(16);
             }, 2*20*60);
         }
 
         if(Item.interactItem(event.getItem(), "Gaï de la Nuit")) {
             if(usedNight) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
             usedNight = true;
 
-            player.sendMessage("§7▎ §fVous avez utilisé l'item §aGaï de la Nuit§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aGaï de la Nuit§f."));
 
             player.removePotionEffect(PotionEffectType.SPEED);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10*20, 2, true, true));
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20, 2, true, true));
 
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> player.setHealth(0), 10*20);
+            Tasks.runLater(() -> player.setHealth(0), 10*20);
         }
 
     }

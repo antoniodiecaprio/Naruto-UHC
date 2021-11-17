@@ -2,6 +2,7 @@ package fr.lyneris.narutouhc.roles.akatsuki;
 
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.UHC;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -50,10 +51,10 @@ public class ZetsuNoir extends NarutoRole {
                 builder.append(args[i]).append(" ");
             }
 
-            UHC.getUhc().getGameManager().getPlayers().stream().filter(uuid -> Bukkit.getPlayer(uuid) != null).map(Bukkit::getPlayer).forEach(target -> {
-                target.sendMessage("§7▎ §aZetsu Noir §f§l» §7" + builder);
+            UHC.getUHC().getGameManager().getPlayers().stream().filter(uuid -> Bukkit.getPlayer(uuid) != null).map(Bukkit::getPlayer).forEach(target -> {
+                target.sendMessage(CC.prefix("§aZetsu Noir §f§l» §7" + builder));
             });
-            player.sendMessage("§7▎ §aZetsu Noir §f§l» §7" + builder);
+            player.sendMessage(CC.prefix("§aZetsu Noir §f§l» §7" + builder));
 
         }
 
@@ -70,13 +71,13 @@ public class ZetsuNoir extends NarutoRole {
             }
 
             if(!effectsMap.containsKey(target.getName())) {
-                player.sendMessage("§7▎ §cVous n'avez pas tué ce joueur.");
+                player.sendMessage(CC.prefix("§cVous n'avez pas tué ce joueur."));
                 return;
             }
 
             effectsMap.get(target.getName()).stream().filter(pe -> !player.hasPotionEffect(pe.getType())).forEach(player::addPotionEffect);
 
-            player.sendMessage("§7▎ §fVous avez reçu tous les effets de §a" + target.getName());
+            player.sendMessage(CC.prefix("§fVous avez reçu tous les effets de §a" + target.getName()));
             effectsMap.remove(target.getName());
 
         }

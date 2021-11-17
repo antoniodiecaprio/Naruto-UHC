@@ -7,6 +7,7 @@ import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.changer.IdentityChanger;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.Utils;
@@ -85,7 +86,7 @@ public class ZetsuBlanc extends NarutoRole {
 
             new MetamorphoseTask().runTaskTimer(narutoUHC, 0, 20);
 
-            player.sendMessage("§7▎ §fVous êtes maintenant métamorphosé en §a" + target.getName() + "§f.");
+            player.sendMessage(CC.prefix("§fVous êtes maintenant métamorphosé en §a" + target.getName() + "§f."));
 
 
             metamorphoseCooldown = 20*60;
@@ -93,7 +94,7 @@ public class ZetsuBlanc extends NarutoRole {
                 @Override
                 public void run() {
                     if(metamorphoseCooldown <= 0) {
-                        player.sendMessage("§7▎ §fVotre cooldown de la commande §a/ns métamorphose §fvient d'expirer.");
+                        player.sendMessage(CC.prefix("§fVotre cooldown de la commande §a/ns métamorphose §fvient d'expirer."));
                         cancel();
                     } else {
                         metamorphoseCooldown--;
@@ -111,7 +112,7 @@ public class ZetsuBlanc extends NarutoRole {
             }
 
             if(usedReset) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
@@ -121,10 +122,9 @@ public class ZetsuBlanc extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
-
-            player.sendMessage("§7▎ §fVous avez reset les délais de §a" + target.getName());
+            player.sendMessage(CC.prefix("§fVous avez reset les délais de §a" + target.getName()));
             roleManager.getRole(target).resetCooldowns();
-            target.sendMessage("§7▎ §fLe §aZetsu Blanc §fa reset vos cooldowns.");
+            target.sendMessage(CC.prefix("§fLe §aZetsu Blanc §fa reset vos cooldowns."));
             player.setMaxHealth(player.getMaxHealth()-4);
 
             usedReset = true;
@@ -177,14 +177,14 @@ public class ZetsuBlanc extends NarutoRole {
 
         @Override
         public void run() {
-            Player zetsuPlayer = Role.findPlayer("Zetsu Blanc");
+            Player zetsuPlayer = Role.findPlayer(NarutoRoles.ZETSU_BLANC);
             if(timer == 0) {
                 if(zetsuPlayer != null){
                     IdentityChanger.changePlayerName(zetsuPlayer, getOriginalName());
                     IdentityChanger.changeSkin(zetsuPlayer, getOriginalSkin(), false);
                     setCopiedName(null);
                     setCopiedSkin(null);
-                    zetsuPlayer.sendMessage("§7▎ §cVous avez perdu votre métamorphose.");
+                    zetsuPlayer.sendMessage(CC.prefix("§cVous avez perdu votre métamorphose."));
                 }
                 cancel();
             }

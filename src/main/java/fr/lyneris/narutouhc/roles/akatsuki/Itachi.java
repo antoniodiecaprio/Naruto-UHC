@@ -1,11 +1,11 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -48,7 +48,7 @@ public class Itachi extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(attaqueCooldown > 0) {
             attaqueCooldown--;
         }
@@ -74,7 +74,7 @@ public class Itachi extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        Role.knowsRole(player, "Kisame");
+        Role.knowsRole(player, NarutoRoles.KISAME);
         player.setMaxHealth(player.getMaxHealth() + 4);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
@@ -114,7 +114,7 @@ public class Itachi extends NarutoRole {
         if(Item.interactItem(event.getItem(), "Susano")) {
 
             if(usedIzanagi) {
-                player.sendMessage("§7▎ §cVous ne pouvez pas utiliser cet item si vous avez utilisé le pouvoir Izanagi.");
+                player.sendMessage(CC.prefix("§cVous ne pouvez pas utiliser cet item si vous avez utilisé le pouvoir Izanagi."));
                 return;
             }
 
@@ -126,7 +126,7 @@ public class Itachi extends NarutoRole {
             usingSusano = true;
             player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Epee")).toItemStack());
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            Tasks.runLater(() -> {
                 for (ItemStack content : player.getInventory().getContents()) {
                     if(content != null && content.getType() == Material.IRON_SWORD && content.hasItemMeta() && content.getItemMeta().getDisplayName().equals(Item.specialItem("Epee"))) {
                         player.getInventory().removeItem(content);
@@ -168,35 +168,32 @@ public class Itachi extends NarutoRole {
         if(event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);
             if(event.getSlot() == 1) {
-                if(player.getNearbyEntities(20, 20, 20).stream().filter(e -> e instanceof Player).toArray().length == 0) {
-                    player.sendMessage("§7▎ §cIl n'y a personne autour de vous.");
+                if(Loc.getNearbyPlayers(player, 20, 20, 20).size() == 0) {
+                    player.sendMessage(CC.prefix("§cIl n'y a personne autour de vous."));
                     return;
                 }
 
                 if(tsukuyomiUses >= 2) {
-                    player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir 2 fois.");
+                    player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                     return;
                 }
 
                 tsukuyomiUses++;
 
-                player.getNearbyEntities(20, 20, 20).stream().filter(e -> e instanceof Player).map(e -> (Player)e).forEach(target -> {
+                Loc.getNearbyPlayers(player, 20, 20, 20).forEach(target -> {
                     cannotMove.add(target.getUniqueId());
-                    target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 8*20, 200, false, false));
-                    target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 8*20, 200, false, false));
-                    player.sendMessage("§7▎ §fVous avez immobilisé §c" + target.getName());
+                    //TODO IMMOBILISER target 8s
+                    player.sendMessage(CC.prefix("§fVous avez immobilisé §c" + target.getName()));
                 });
-                Bukkit.getScheduler().runTaskLater(narutoUHC, () -> cannotMove.clear(), 8*20);
+                Tasks.runLater(() -> cannotMove.clear(), 8*20);
                 player.closeInventory();
             }
 
             if(event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        nearbyPlayer++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
@@ -206,11 +203,9 @@ public class Itachi extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Attaque");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    if (entity instanceof Player) {
-                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
-                        j++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                    j++;
                 }
                 player.openInventory(inv);
             }
@@ -229,7 +224,7 @@ public class Itachi extends NarutoRole {
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
             if(target == null) {
-                player.sendMessage("§7▎ §cCe joueur n'est pas connecté");
+                player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
 
@@ -243,7 +238,7 @@ public class Itachi extends NarutoRole {
 
             player.teleport(targetLocation);
 
-            player.sendMessage("§7▎ §fVous vous êtes téléporté derrière §a" + target.getName());
+            player.sendMessage(CC.prefix("§fVous vous êtes téléporté derrière §a" + target.getName()));
             attaqueCooldown = 5*60;
 
         }
@@ -266,11 +261,11 @@ public class Itachi extends NarutoRole {
 
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
-        Player itachi = Role.findPlayer("Itachi");
+        Player itachi = Role.findPlayer(NarutoRoles.ITACHI);
         if(itachi == null) return;
 
-        if(Role.isRole(player, "Sasuke")) {
-            itachi.sendMessage("§7▎ §cSasuke §fest mort. Vous obtenez un effet de §7Faiblesse 1 §fet vous perdez §c2 coeurs §fpermanent.");
+        if(Role.isRole(player, NarutoRoles.SASUKE)) {
+            itachi.sendMessage(CC.prefix("§cSasuke §fest mort. Vous obtenez un effet de §7Faiblesse 1 §fet vous perdez §c2 coeurs §fpermanent."));
             itachi.setMaxHealth(itachi.getMaxHealth() - 4);
             itachi.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, Integer.MAX_VALUE, 0, false, false));
         }
@@ -293,11 +288,11 @@ public class Itachi extends NarutoRole {
         if(args[0].equalsIgnoreCase("izanagi")) {
 
             if(usedIzanagi) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aIzanagi§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aIzanagi§f."));
 
             player.getInventory().addItem(new ItemBuilder(Material.GOLDEN_APPLE, 5).toItemStack());
             player.setHealth(player.getMaxHealth());
@@ -312,7 +307,7 @@ public class Itachi extends NarutoRole {
             }
 
             if(sharinganUses >= 2) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir 2 fois.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
@@ -325,17 +320,17 @@ public class Itachi extends NarutoRole {
 
             player.sendMessage("§8§m-------------------------------");
             if(manager.getDeath().keySet().stream().noneMatch(s -> manager.getDeath().get(s).equals(target.getUniqueId()))) {
-                player.sendMessage("§7▎ §c" + target.getName() + " §fn'a tué §cpersonne§f.");
+                player.sendMessage(CC.prefix("§c" + target.getName() + " §fn'a tué §cpersonne§f."));
             }
             manager.getDeath().keySet().forEach(s -> {
                 if(manager.getDeath().get(s).equals(target.getUniqueId())) {
-                    player.sendMessage("§7▎ §c" + target.getName() + " §fa tué §a" + s);
+                    player.sendMessage(CC.prefix("§c" + target.getName() + " §fa tué §a" + s));
                 }
             });
             if(roleManager.getRole(target) == null) {
-                player.sendMessage("§7▎ §cCe joueur n'a pas de rôle");
+                player.sendMessage(CC.prefix("§cCe joueur n'a pas de rôle"));
             } else {
-                player.sendMessage("§7▎ §a" + target.getName() + " §fest §a" + roleManager.getRole(target).getRoleName());
+                player.sendMessage(CC.prefix("§a" + target.getName() + " §fest §a" + roleManager.getRole(target).getRoleName()));
             }
 
             int apple = 0;
@@ -346,7 +341,7 @@ public class Itachi extends NarutoRole {
                 }
             }
 
-            player.sendMessage("§7▎ §a" + target.getName() + " §fa un total de §6" + apple + " §fpommes d'ors.");
+            player.sendMessage(CC.prefix("§a" + target.getName() + " §fa un total de §6" + apple + " §fpommes d'ors."));
             player.sendMessage("§8§m-------------------------------");
             sharinganUses++;
 

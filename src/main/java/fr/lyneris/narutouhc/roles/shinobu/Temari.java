@@ -3,7 +3,9 @@ package fr.lyneris.narutouhc.roles.shinobu;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Loc;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.DyeColor;
@@ -34,7 +36,7 @@ public class Temari extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(eventailCooldown > 0) {
             eventailCooldown--;
         }
@@ -76,14 +78,14 @@ public class Temari extends NarutoRole {
                 return;
             }
 
-            for(Entity entity : player.getNearbyEntities(20, 20, 20)) {
+            for(Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
                 Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                 entity.setVelocity(new Vector(0, 1.3, 0));
                 fromPlayerToTarget.multiply(50);
                 fromPlayerToTarget.setY(2);
                 entity.setVelocity(fromPlayerToTarget.normalize());
             }
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aÉventail§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aÉventail§f."));
 
             eventailCooldown = 20*60;
 
@@ -92,7 +94,7 @@ public class Temari extends NarutoRole {
         if(Item.interactItem(event.getItem(), "Kamatari")) {
 
             if(usedKamatari) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
@@ -107,7 +109,7 @@ public class Temari extends NarutoRole {
 
             usedKamatari = true;
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aKamatari§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aKamatari§f."));
         }
     }
 

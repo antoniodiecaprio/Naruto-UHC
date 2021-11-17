@@ -1,10 +1,13 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Loc;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -37,7 +40,7 @@ public class Tsunade extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(katsuyuCooldown > 0) {
             katsuyuCooldown--;
         }
@@ -68,9 +71,7 @@ public class Tsunade extends NarutoRole {
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
 
         if(usingKatsuyu) {
-            player.getNearbyEntities(30, 30, 30).stream().filter(e -> e instanceof Player).map(e -> (Player)e).forEach(target -> {
-                target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5*20, 2, false, false));
-            });
+            Loc.getNearbyPlayers(player, 30, 30, 30).forEach(target -> target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5*20, 2, false, false)));
         }
 
     }
@@ -84,9 +85,9 @@ public class Tsunade extends NarutoRole {
 
         if(damageTaken >= 30) {
             player.removePotionEffect(PotionEffectType.REGENERATION);
-            player.setMaxHealth(player.getMaxHealth()-4);
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> player.setMaxHealth(player.getMaxHealth()+4), 15*20*60);
-            player.sendMessage("§7▎ §cVous avez pris plus de 15 coeurs de dégâts. De ce fait, vous perdez votre effet de §dRégénération §fainsi que §b2 coeurs §fpendant 15 minutes.");
+            player.setMaxHealth(player.getMaxHealth() - 4);
+            Tasks.runLater(() -> player.setMaxHealth(player.getMaxHealth() + 4), 15*20*60);
+            player.sendMessage(CC.prefix("§cVous avez pris plus de 15 coeurs de dégâts. De ce fait, vous perdez votre effet de §dRégénération §fainsi que §b2 coeurs §fpendant 15 minutes."));
             usingByakugo = false;
             damageTaken = 0;
         }
@@ -99,7 +100,7 @@ public class Tsunade extends NarutoRole {
         int random = (int) (Math.random() * 100);
 
         if (random < 5) {
-            player.sendMessage("§7▎ §fVous avez de la chance, §c" + event.getEntity().getName() + " §fa reçu des §ceffets négatifs§f.");
+            player.sendMessage(CC.prefix("§fVous avez de la chance, §c" + event.getEntity().getName() + " §fa reçu des §ceffets négatifs§f."));
             ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, false, false));
             ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3*20, 3, false, false));
         }
@@ -117,17 +118,17 @@ public class Tsunade extends NarutoRole {
 
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3*20*60, 0, false, false));
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            Tasks.runLater(() -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
             }, 5*20*60);
 
-            player.sendMessage("§7▎ §fVous avez utilisé l'item §aKatsuyu§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aKatsuyu§f."));
 
 
             usingKatsuyu = true;
 
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
-                player.sendMessage("§7▎ §fVotre §cKatsuyu §fvient d'expirer.");
+            Tasks.runLater(() -> {
+                player.sendMessage(CC.prefix("§fVotre §cKatsuyu §fvient d'expirer."));
                 usingKatsuyu = false;
             }, 20 * 60);
 
@@ -145,7 +146,7 @@ public class Tsunade extends NarutoRole {
             usingByakugo = true;
             damageTaken = 0;
 
-            player.sendMessage("§7▎ §fVous avez utilisé l'item §aByakugô§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aByakugô§f."));
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 4, false, false));
 

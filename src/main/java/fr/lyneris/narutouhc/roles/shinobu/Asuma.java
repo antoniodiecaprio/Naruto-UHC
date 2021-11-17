@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -29,13 +31,15 @@ public class Asuma extends NarutoRole {
     public int avancement = 0;
     public Player latest = null;
 
+
+
     @Override
     public void resetCooldowns() {
         nueesCooldown = 0;
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(nueesCooldown > 0) {
             nueesCooldown--;
         }
@@ -65,11 +69,11 @@ public class Asuma extends NarutoRole {
         if(avancement >= 2500) {
             Player target = latest;
             if(target != null) {
-                player.sendMessage("§7▎ §fProgression §aterminée§f. Voici l’identité du joueur auquel la progression est terminée : §a§l" + latest.getName());
+                player.sendMessage(CC.prefix("§fProgression §aterminée§f. Voici l’identité du joueur auquel la progression est terminée : §a§l" + latest.getName()));
                 latest = null;
             }
         } else {
-            Player ino = Role.findPlayer("Ino");
+            Player ino = Role.findPlayer(NarutoRoles.INO);
             if(ino != null) {
                 int distance = (int) ino.getLocation().distance(player.getLocation());
                 if(distance <= 5) {
@@ -84,7 +88,7 @@ public class Asuma extends NarutoRole {
                 }
             }
 
-            Player shikamaru = Role.findPlayer("Shikamaru");
+            Player shikamaru = Role.findPlayer(NarutoRoles.SHIKAMARU);
             if(shikamaru != null) {
                 int distance = (int) shikamaru.getLocation().distance(player.getLocation());
                 if(distance <= 5) {
@@ -99,7 +103,7 @@ public class Asuma extends NarutoRole {
                 }
             }
 
-            Player choji = Role.findPlayer("Choji");
+            Player choji = Role.findPlayer(NarutoRoles.CHOJI);
             if(choji != null) {
                 int distance = (int) choji.getLocation().distance(player.getLocation());
                 if(distance <= 5) {
@@ -128,9 +132,9 @@ public class Asuma extends NarutoRole {
 
             final Location front;
             front = player.getLocation();
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> front.getWorld().createExplosion(front, 3.0f), 3*20);
+            Tasks.runLater(() -> front.getWorld().createExplosion(front, 3.0f), 3*20);
 
-            player.sendMessage("§7▎ §fUne explosion va retentir dans §a3 secondes§f.");
+            player.sendMessage(CC.prefix("§fUne explosion va retentir dans §a3 secondes§f."));
 
             nueesCooldown = 5*60;
 

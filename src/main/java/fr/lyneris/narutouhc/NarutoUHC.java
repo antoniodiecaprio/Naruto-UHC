@@ -27,9 +27,10 @@ public class NarutoUHC extends JavaPlugin {
     public void onEnable() {
 
         this.module = new NarutoModule();
-        UHC.getUhc().setModule(module);
-        UHC.getUhc().getGameManager().getGameConfiguration().setRolesTime(5);
-        UHC.getUhc().getGameManager().getGameConfiguration().setPvpTime(5);
+        UHC.getUHC().setModule(module);
+
+        UHC.getUHC().getGameManager().getGameConfiguration().setRolesTime(5);
+        UHC.getUHC().getGameManager().getGameConfiguration().setPvpTime(5);
 
         WorldGeneration.setFinished(true);
 

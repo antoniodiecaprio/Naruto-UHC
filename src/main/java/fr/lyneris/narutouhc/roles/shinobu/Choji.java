@@ -1,11 +1,13 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.DoubleCircleEffect;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -36,7 +38,7 @@ public class Choji extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(bouletCooldown > 0) {
             bouletCooldown--;
         }
@@ -58,7 +60,7 @@ public class Choji extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        Role.knowsRole(player, "Ino");
+        Role.knowsRole(player, NarutoRoles.INO);
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Décuplement Partiel")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Boulet Humain")).toItemStack());
@@ -74,10 +76,10 @@ public class Choji extends NarutoRole {
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30*20, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30*20, 0    , false, false));
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            Tasks.runLater(() -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
-                player.sendMessage("§7▎ §cL'indigestion commence à se faire ressentir...");
+                player.sendMessage(CC.prefix("§cL'indigestion commence à se faire ressentir..."));
             }, 31*20);
         }
 
@@ -94,7 +96,7 @@ public class Choji extends NarutoRole {
 
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20*20, 1, false, false));
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false)), 21*20);
+            Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false)), 21*20);
 
             decuplementCooldown = 10*60;
         }

@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Damage;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -32,7 +34,7 @@ public class Konohamaru extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(rasenganCooldown > 0) {
             rasenganCooldown--;
         }
@@ -57,7 +59,7 @@ public class Konohamaru extends NarutoRole {
         Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.BLOCK_EXPLOSION, 5);
         Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.ENTITY_EXPLOSION, 5);
 
-        Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> player.getWorld().createExplosion(event.getEntity().getLocation(), 3.0f), 3);
+        Tasks.runLater(() -> player.getWorld().createExplosion(event.getEntity().getLocation(), 3.0f), 3);
 
         isUsingRasengan = false;
 
@@ -70,7 +72,7 @@ public class Konohamaru extends NarutoRole {
                 player.sendMessage(Messages.cooldown(rasenganCooldown));
                 return;
             }
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aRasengan§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aRasengan§f."));
 
             rasenganCooldown = 5 * 60;
             isUsingRasengan = true;

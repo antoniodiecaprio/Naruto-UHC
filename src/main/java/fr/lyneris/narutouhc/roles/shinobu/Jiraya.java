@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -31,7 +33,7 @@ public class Jiraya extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(senjutsuCooldown > 0) {
             senjutsuCooldown--;
         }
@@ -65,23 +67,23 @@ public class Jiraya extends NarutoRole {
         }
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 1, false, false));
-        Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+        Tasks.runLater(() -> {
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         }, 5*20*60);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
 
-        Player naruto = Role.findPlayer("Naruto");
+        Player naruto = Role.findPlayer(NarutoRoles.NARUTO);
 
         if(naruto != null) {
             int x = player.getLocation().getBlockX();
             int y = player.getLocation().getBlockY();
             int z = player.getLocation().getBlockZ();
-            naruto.sendMessage("§7▎ §aJiraya §fa utilisé son §aSenjutsu§f. Voici ses coordonnées:");
+            naruto.sendMessage(CC.prefix("§aJiraya §fa utilisé son §aSenjutsu§f. Voici ses coordonnées:"));
             naruto.sendMessage(" §f§l» §a" + x + "§f, §a" + y + "§f, §a" + z);
         }
 
-        player.sendMessage("§7▎ §fVous avez utilisé votre §aSenjutsu§f. Attention, vos §ccoordonnées§f ont été envoyées à §aNaruto§f.");
+        player.sendMessage(CC.prefix("§fVous avez utilisé votre §aSenjutsu§f. Attention, vos §ccoordonnées§f ont été envoyées à §aNaruto§f."));
 
         senjutsuCooldown = 30*60;
 

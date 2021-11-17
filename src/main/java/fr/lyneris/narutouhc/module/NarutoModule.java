@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.module;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.uhc.UHC;
@@ -13,12 +14,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Supplier;
 
 public class NarutoModule implements Module {
 
     int timer = 0;
+    int second = 0;
 
     @Override
     public String getName() {
@@ -48,43 +51,31 @@ public class NarutoModule implements Module {
     @Override
     public void onRoleEnable() {
 
-        for(UUID id : UHC.getUhc().getGameManager().getPlayers()) {
-            if(Bukkit.getPlayer(id) == null) {
-                UHC.getUhc().getGameManager().getPlayers().remove(id);
-                Bukkit.broadcastMessage("§7▎ §c" + Bukkit.getOfflinePlayer(id) + " §fa été éliminé.");
-            }
-        }
+        UHC.getUHC().getGameManager().getPlayers().stream().filter(uuid -> Bukkit.getPlayer(uuid) == null).forEach(uuid -> {
+            UHC.getUHC().getGameManager().getPlayers().remove(uuid);
+            Bukkit.broadcastMessage("§7▎ §c" + Bukkit.getOfflinePlayer(uuid) + " §fa été éliminé.");
+        });
 
-        try {
-            NarutoUHC.getNaruto().getManager().distributeRoles();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NarutoUHC.getNaruto().getManager().distributeRoles();
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                timer++;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
-                        NarutoUHC.getNaruto().getRoleManager().getRole(player).onMinute(timer, player);
-                    }
+        Tasks.runTimer(() -> {
+            timer++;
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
+                    NarutoUHC.getNaruto().getRoleManager().getRole(player).onMinute(timer, player);
                 }
             }
-        }.runTaskTimer(NarutoUHC.getNaruto(), 0, 60*20);
+        }, 0, 20*60);
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                timer++;
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
-                        NarutoUHC.getNaruto().getRoleManager().getRole(player).onSecond(timer, player);
-                    }
+        Tasks.runTimer(() -> {
+            second++;
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
+                    NarutoUHC.getNaruto().getRoleManager().getRole(player).onSecond(second, player);
+                    NarutoUHC.getNaruto().getRoleManager().getRole(player).runnableTask();
                 }
             }
-        }.runTaskTimer(NarutoUHC.getNaruto(), 0, 20);
-
+        }, 0, 20);
 
     }
 
@@ -111,12 +102,11 @@ public class NarutoModule implements Module {
     @Override
     public void onNextEpisode() {
 
-        for (UUID player : UHC.getUhc().getGameManager().getPlayers()) {
-            if(Bukkit.getPlayer(player) != null && NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
-                NarutoUHC.getNaruto().getRoleManager().getRole(player).onNewEpisode(Bukkit.getPlayer(player));
-            }
-        }
-        
+        UHC.getUHC().getGameManager().getPlayers().stream()
+                .filter(uuid -> Bukkit.getPlayer(uuid) != null)
+                .filter(uuid -> NarutoUHC.getNaruto().getRoleManager().getRole(uuid) != null)
+                .map(Bukkit::getPlayer)
+                .forEach(player -> NarutoUHC.getNaruto().getRoleManager().getRole(player).onNewEpisode(player));
     }
 
     @Override
@@ -132,11 +122,14 @@ public class NarutoModule implements Module {
 
         for (NarutoRoles n : NarutoRoles.values()) {
             if (n.getNarutoRole() != null) {
-                try {
-                    slots[i] = new ItemBuilder(Material.INK_SACK).setDurability(NarutoUHC.getNaruto().getRoleManager().getRoles().contains(n) ? 12 : 8).setName("§6" + n.getNarutoRole().newInstance().getRoleName()).toItemStack();
-                } catch (InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
+
+                int amount = 0;
+
+                for (NarutoRoles role : NarutoUHC.getNaruto().getRoleManager().getRoles()) {
+                    if(role.getName().equals(n.getName())) amount++;
                 }
+
+                slots[i] = new ItemBuilder(Material.INK_SACK).setAmount(amount).setDurability(NarutoUHC.getNaruto().getRoleManager().getRoles().contains(n) ? 12 : 8).setName("§6" + n.getName()).toItemStack();
                 i++;
             }
         }
@@ -145,16 +138,16 @@ public class NarutoModule implements Module {
     }
 
     @Override
-    public void onMainInventoryClick(Player player, Inventory inventory, ItemStack itemStack, int i) {
+    public void onMainInventoryClick(Player player, Inventory inventory, ItemStack is, int i, boolean rightClick) {
 
-        for(NarutoRoles n : NarutoRoles.values()) {
-            if(n.getNarutoRole() != null) {
-                if(itemStack.getItemMeta().getDisplayName().replace("§6", "").equals(n.getNarutoRole().getName())) {
-                    NarutoUHC.getNaruto().getRoleManager().addRole(n);
-                    UHC.getUhc().getGameManager().getGuiManager().open(player, ModuleMenu.class);
-                }
-            }
-        }
-
+        Arrays.stream(NarutoRoles.values())
+                .filter(n -> n.getNarutoRole() != null)
+                .filter(n -> is.hasItemMeta())
+                .filter(n -> is.getItemMeta().hasDisplayName())
+                .filter(n -> n.getName().equals(is.getItemMeta().getDisplayName().substring(2)))
+                .forEach(n -> {
+                    if(rightClick) NarutoUHC.getNaruto().getRoleManager().addRole(n); else NarutoUHC.getNaruto().getRoleManager().removeRole(n);
+                    UHC.getUHC().getGameManager().getGuiManager().open(player, ModuleMenu.class);
+                });
     }
 }

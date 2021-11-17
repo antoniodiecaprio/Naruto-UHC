@@ -4,6 +4,7 @@ import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.particle.MathL;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -30,7 +31,7 @@ public class TenTen extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(parcheminCooldown > 0) {
             parcheminCooldown--;
         }
@@ -80,7 +81,7 @@ public class TenTen extends NarutoRole {
                 arrow.setShooter(player);
             }
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aParchemin§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aParchemin§f."));
 
 
             parcheminCooldown = 5*60;

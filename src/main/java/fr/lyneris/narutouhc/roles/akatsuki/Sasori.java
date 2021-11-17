@@ -3,6 +3,7 @@ package fr.lyneris.narutouhc.roles.akatsuki;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -26,7 +27,7 @@ import java.util.*;
 
 public class Sasori extends NarutoRole {
 
-    public static PotionEffectType[] positivePotionEffects = new PotionEffectType[] {
+    public PotionEffectType[] positivePotionEffects = new PotionEffectType[] {
             PotionEffectType.SPEED,
             PotionEffectType.FAST_DIGGING,
             PotionEffectType.INCREASE_DAMAGE,
@@ -51,7 +52,7 @@ public class Sasori extends NarutoRole {
     @Override
     public void onDistribute(Player player) {
         player.setMaxHealth(30);
-        Role.knowsRole(player, "Deidara");
+        Role.knowsRole(player, NarutoRoles.DEIDARA);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Marionnettisme")).toItemStack());
     }
 
@@ -126,12 +127,12 @@ public class Sasori extends NarutoRole {
                 return;
             }
 
-            if(UHC.getUhc().getGameManager().getPlayers().contains(target.getUniqueId())) {
-                player.sendMessage("§7▎ §cCe joueur est en vie.");
+            if(UHC.getUHC().getGameManager().getPlayers().contains(target.getUniqueId())) {
+                player.sendMessage(CC.prefix("§cCe joueur est en vie."));
                 return;
             }
 
-            UHC.getUhc().getGameManager().getPlayers().add(target.getUniqueId());
+            UHC.getUHC().getGameManager().getPlayers().add(target.getUniqueId());
             target.setGameMode(GameMode.SURVIVAL);
             target.teleport(player.getLocation());
             giveStuff(target);
@@ -143,15 +144,15 @@ public class Sasori extends NarutoRole {
             Collections.shuffle(list);
             map.put(target.getUniqueId(), list.get(0));
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir sur §a" + target.getName() + "§f.");
-            target.sendMessage("§7▎ §fVous avez été ressuscité par §aSasori§f.");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir sur §a" + target.getName() + "§f."));
+            target.sendMessage(CC.prefix("§fVous avez été ressuscité par §aSasori§f."));
 
         }
     }
 
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
-        Player sasori = Role.findPlayer("Sasori");
+        Player sasori = Role.findPlayer(NarutoRoles.SASORI);
         if(sasori == null) return;
         if(!map.containsKey(player.getUniqueId())) return;
 

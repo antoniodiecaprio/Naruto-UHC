@@ -1,9 +1,12 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Loc;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -33,7 +36,7 @@ public class Kakuzu extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(corpsCooldown > 0) {
             corpsCooldown--;
         }
@@ -76,7 +79,7 @@ public class Kakuzu extends NarutoRole {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40*20, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40*20, 1, false, false));
             healthCooldown = true;
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> healthCooldown = false, 5*20*60);
+            Tasks.runLater(() -> healthCooldown = false, 5*20*60);
             healthUse++;
         }
     }
@@ -89,13 +92,12 @@ public class Kakuzu extends NarutoRole {
                 return;
             }
 
-            player.getNearbyEntities(20, 20, 20).stream().filter(e -> e instanceof Player).map(e -> (Player)e).forEach(player1 -> {
+            Loc.getNearbyPlayers(player, 20, 20, 20).forEach(player1 -> {
                 if(roleManager.getRole(player1) != null) {
                     //TODO CAMP
                     if(roleManager.getRole(player1).getCamp() != getCamp()) {
-                        player1.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 200, false, false));
-                        player1.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5*20, 200, false, false));
-                        player.sendMessage("§7▎ §fVous avez immobilisé §c" + player1.getName() + "§f.");
+                        //TODO IMMOBILISER player 5s
+                        player.sendMessage(CC.prefix("§fVous avez immobilisé §c" + player1.getName() + "§f."));
                     }
                 }
             });

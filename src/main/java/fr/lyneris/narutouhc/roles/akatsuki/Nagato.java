@@ -1,11 +1,10 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
-import fr.lyneris.narutouhc.utils.Damage;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -42,7 +41,7 @@ public class Nagato extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(banshoCooldown > 0) {
             banshoCooldown--;
         }
@@ -68,14 +67,15 @@ public class Nagato extends NarutoRole {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         player.setMaxHealth(player.getMaxHealth() + 4);
 
-        List<String> list = new ArrayList<>();
-        UHC.getUhc().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(e -> Bukkit.getPlayer(e).getName()).forEach(list::add);
-        if(Role.findPlayer("Obito") != null) list.add(Role.findPlayer("Obito").getName());
-
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Chibaku Tensei")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Oiseau")).toItemStack());
 
-        player.sendMessage("§7▎ §cListe des Akatsuki:");
+        List<String> list = new ArrayList<>();
+        //TODO CHECK CAMP
+        UHC.getUHC().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(e -> Bukkit.getPlayer(e).getName()).forEach(list::add);
+        if(Role.findPlayer(NarutoRoles.OBITO) != null) list.add(Role.findPlayer(NarutoRoles.OBITO).getName());
+
+        player.sendMessage(CC.prefix("§cListe des Akatsuki:"));
         list.forEach(s -> player.sendMessage(" §8- §c" + s));
         player.sendMessage(" ");
 
@@ -88,12 +88,12 @@ public class Nagato extends NarutoRole {
             player.setAllowFlight(true);
             player.setFlying(true);
 
-            player.sendMessage("§7▎ §fVous pouvez §avoler §fpendant §a10 secondes§f.");
+            player.sendMessage(CC.prefix("§fVous pouvez §avoler §fpendant §a10 secondes§f."));
 
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            Tasks.runLater(() -> {
                 player.setAllowFlight(false);
                 Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 10);
-                player.sendMessage("§7▎ §fVous ne pouvez plus §avoler§f.");
+                player.sendMessage(CC.prefix("§fVous ne pouvez plus §avoler§f."));
             }, 10*20);
 
         }
@@ -128,7 +128,7 @@ public class Nagato extends NarutoRole {
             latestDeaths.add(player.getUniqueId());
             final UUID uuid;
             uuid = player.getUniqueId();
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> {
+            Tasks.runLater(() -> {
                 latestDeaths.remove(uuid);
             }, 10*20*60);
         }
@@ -140,18 +140,18 @@ public class Nagato extends NarutoRole {
         if(args[0].equalsIgnoreCase("osama")) {
 
             if(usedOsama) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
             usedOsama = true;
 
             latestDeaths.stream().filter(uuid -> Bukkit.getPlayer(uuid) != null).map(Bukkit::getPlayer).forEach(target -> {
-                player.sendMessage("§7▎ §fVous avez ressuscité §a" + target.getName());
+                player.sendMessage(CC.prefix("§fVous avez ressuscité §a" + target.getName()));
                 //TODO REVIVE TARGET
             });
 
-            Bukkit.getScheduler().runTaskLater(narutoUHC, () -> player.setHealth(0), 60*20);
+            Tasks.runLater(() -> player.setHealth(0), 60*20);
 
         }
 
@@ -162,7 +162,7 @@ public class Nagato extends NarutoRole {
             }
 
             if(sharinganUses >= 2) {
-                player.sendMessage("§7▎ §cVous avez déjà utilisé ce pouvoir 2 fois.");
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
@@ -175,17 +175,17 @@ public class Nagato extends NarutoRole {
 
             player.sendMessage("§8§m-------------------------------");
             if(manager.getDeath().keySet().stream().noneMatch(s -> manager.getDeath().get(s).equals(target.getUniqueId()))) {
-                player.sendMessage("§7▎ §c" + target.getName() + " §fn'a tué §cpersonne§f.");
+                player.sendMessage(CC.prefix("§c" + target.getName() + " §fn'a tué §cpersonne§f."));
             }
             manager.getDeath().keySet().forEach(s -> {
                 if(manager.getDeath().get(s).equals(target.getUniqueId())) {
-                    player.sendMessage("§7▎ §c" + target.getName() + " §fa tué §a" + s);
+                    player.sendMessage(CC.prefix("§c" + target.getName() + " §fa tué §a" + s));
                 }
             });
             if(roleManager.getRole(target) == null) {
-                player.sendMessage("§7▎ §cCe joueur n'a pas de rôle");
+                player.sendMessage(CC.prefix("§cCe joueur n'a pas de rôle"));
             } else {
-                player.sendMessage("§7▎ §a" + target.getName() + " §fest §a" + roleManager.getRole(target).getRoleName());
+                player.sendMessage(CC.prefix("§a" + target.getName() + " §fest §a" + roleManager.getRole(target).getRoleName()));
             }
 
             int apple = 0;
@@ -196,7 +196,7 @@ public class Nagato extends NarutoRole {
                 }
             }
 
-            player.sendMessage("§7▎ §a" + target.getName() + " §fa un total de §6" + apple + " §fpommes d'ors.");
+            player.sendMessage(CC.prefix("§a" + target.getName() + " §fa un total de §6" + apple + " §fpommes d'ors."));
             player.sendMessage("§8§m-------------------------------");
             sharinganUses++;
 
@@ -210,10 +210,8 @@ public class Nagato extends NarutoRole {
             if(event.getSlot() == 1) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
-                    if (entity instanceof Player) {
-                        nearbyPlayer++;
-                    }
+                for (Player ignored : Loc.getNearbyPlayers(player, 30, 30, 30)) {
+                    nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
@@ -223,11 +221,9 @@ public class Nagato extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Banshô Ten’in");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
-                    if (entity instanceof Player) {
-                        inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
-                        j++;
-                    }
+                for (Player entity : Loc.getNearbyPlayers(player, 30, 30, 30)) {
+                    inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
+                    j++;
                 }
                 player.openInventory(inv);
             }
@@ -239,9 +235,9 @@ public class Nagato extends NarutoRole {
                     return;
                 }
 
-                player.sendMessage("§7▎ §fVous avez utilisé votre pouvoir §aShinra Tensei§f.");
+                player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aShinra Tensei§f."));
 
-                for(Entity entity : player.getNearbyEntities(20, 20, 20)) {
+                for(Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
                     Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                     entity.setVelocity(new Vector(0, 0.3, 0));
                     fromPlayerToTarget.multiply(6);
@@ -267,13 +263,13 @@ public class Nagato extends NarutoRole {
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
             if(target == null) {
-                player.sendMessage("§7▎ §cCe joueur n'est pas connecté");
+                player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
 
             target.teleport(player);
-            player.sendMessage("§7▎ §fVous avez téléporté §a" + target.getName() + " §fà vous.");
-            target.sendMessage("§7▎ §cNagato §fvous a téléporté sur lui.");
+            player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fà vous."));
+            target.sendMessage(CC.prefix("§cNagato §fvous a téléporté sur lui."));
 
             banshoCooldown = 5*60;
 
@@ -288,7 +284,7 @@ public class Nagato extends NarutoRole {
         if(random == 2) {
             if(player.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) return;
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 25*20, 0, false, false));
-            player.sendMessage("§7▎ §fVous avez eu de la §achance§f. Vous obtenez §aRésistance §fpendant 25 secondes.");
+            player.sendMessage(CC.prefix("§fVous avez eu de la §achance§f. Vous obtenez §aRésistance §fpendant 25 secondes."));
         }
 
     }

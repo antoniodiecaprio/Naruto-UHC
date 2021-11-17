@@ -18,6 +18,9 @@ public class Manager {
     private final Location kamuiSpawn;
     private boolean isDay;
     private final HashMap<String, UUID> death;
+    private final HashMap<UUID, Integer> strength;
+    private final HashMap<UUID, Integer> resistance;
+    private final HashMap<UUID, Location> deathLocation;
 
     public Manager(NarutoUHC naruto) {
         this.narutoWorld = new WorldCreator("kamui").createWorld();
@@ -25,6 +28,21 @@ public class Manager {
         this.kamuiSpawn = new Location(narutoWorld, 25108, 14, 25015);
         this.isDay = false;
         this.death = new HashMap<>();
+        this.strength = new HashMap<>();
+        this.resistance = new HashMap<>();
+        this.deathLocation = new HashMap<>();
+    }
+
+    public HashMap<UUID, Location> getDeathLocation() {
+        return deathLocation;
+    }
+
+    public HashMap<UUID, Integer> getStrength() {
+        return strength;
+    }
+
+    public HashMap<UUID, Integer> getResistance() {
+        return resistance;
     }
 
     public HashMap<String, UUID> getDeath() {
@@ -43,24 +61,25 @@ public class Manager {
         return naruto;
     }
 
-    public void distributeRoles() throws Exception {
+    public void distributeRoles() {
         ArrayList<NarutoRoles> roles = new ArrayList<>(NarutoUHC.getNaruto().getRoleManager().getRoles());
         Collections.shuffle(roles);
 
-        for (UUID player : UHC.getUhc().getGameManager().getPlayers()) {
-
-            if(roles.size() == 0) break;
-
+        UHC.getUHC().getGameManager().getPlayers().stream().filter(uuid -> roles.size() != 0).forEach(uuid -> {
             NarutoRoles role = roles.get(0);
-            NarutoUHC.getNaruto().getRoleManager().setRole(player, role.getNarutoRole().newInstance());
-            NarutoRole roleInstance = NarutoUHC.getNaruto().getRoleManager().getRole(player);
-            for (String s : roleInstance.getDescription()) {
-                Bukkit.getPlayer(player).sendMessage(s);
+            try {
+                NarutoUHC.getNaruto().getRoleManager().setRole(uuid, role.getNarutoRole().newInstance());
+                NarutoUHC.getNaruto().getRoleManager().setCamp(uuid, NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getCamp());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
             }
-            roleInstance.onDistribute(Bukkit.getPlayer(player));
+            NarutoRole roleInstance = NarutoUHC.getNaruto().getRoleManager().getRole(uuid);
+            for (String s : roleInstance.getDescription()) {
+                Bukkit.getPlayer(uuid).sendMessage(s);
+            }
+            roleInstance.onDistribute(Bukkit.getPlayer(uuid));
             roles.remove(role);
-        }
-
+        });
     }
 
     public boolean isDay() {

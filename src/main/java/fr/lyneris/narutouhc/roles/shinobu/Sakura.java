@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import org.bukkit.Bukkit;
@@ -31,7 +33,7 @@ public class Sakura extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(jutsuCooldown > 0) {
             jutsuCooldown--;
         }
@@ -44,15 +46,13 @@ public class Sakura extends NarutoRole {
 
     @Override
     public List<String> getDescription() {
-        return new ArrayList<>(Arrays.asList("t'es sakura frérot", "ça va ?"));
+        return new ArrayList<>();
     }
 
     @Override
     public void onDistribute(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 7*60*20, 0, false, false));
-        Bukkit.getScheduler().runTaskTimer(NarutoUHC.getNaruto(), () -> {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 7*60*20, 0, false, false));
-        }, 0, 11*20*60);
+        Tasks.runTimer(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 7*60*20, 0, false, false)), 0, 11*20*60);
     }
 
     @Override
@@ -89,20 +89,20 @@ public class Sakura extends NarutoRole {
         }
 
         if(Objects.equals(target.getName(), player.getName())) {
-            player.sendMessage("§7▎ §cVous ne pouvez pas utiliser ce pouvoir sur vous-même.");
+            player.sendMessage(CC.prefix("§cVous ne pouvez pas utiliser ce pouvoir sur vous-même."));
             return;
         }
 
         if(target.getLocation().distance(player.getLocation()) > 5) {
-            player.sendMessage("§7▎ §cCe joueur n'est pas à 5 blocks de vous.");
+            player.sendMessage(CC.prefix("§cCe joueur n'est pas à 5 blocks de vous."));
             return;
         }
 
         usingJutsu = true;
         jutsuPlayer = target;
 
-        player.sendMessage("§7▎ §fVous avez utilisé votre §aJutsu §fsur §a" + target.getName() + "§f. Si un de vous deux bouge, §a" + target.getName() + " §fperdra son effet de §dRégénération§f.");
-        target.sendMessage("§7▎ §aNaruto §fa utilisé son §aJutsu §fsur vous. Si un de vous deux bouge vous perdrez votre effet de §dRégénération§f.");
+        player.sendMessage(CC.prefix("§fVous avez utilisé votre §aJutsu §fsur §a" + target.getName() + "§f. Si un de vous deux bouge, §a" + target.getName() + " §fperdra son effet de §dRégénération§f."));
+        target.sendMessage(CC.prefix("§aNaruto §fa utilisé son §aJutsu §fsur vous. Si un de vous deux bouge vous perdrez votre effet de §dRégénération§f."));
         target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 2, false, false));
 
         jutsuCooldown = 10*60;
@@ -112,7 +112,11 @@ public class Sakura extends NarutoRole {
     @Override
     public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
 
-        Player sakura = Role.findPlayer("Sakura");
+        if(event.getFrom().getBlockX() == event.getTo().getBlockX() &&
+                event.getFrom().getBlockY() == event.getTo().getBlockY() &&
+                event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
+
+        Player sakura = Role.findPlayer(NarutoRoles.SAKURA);
         Player jutsu = jutsuPlayer;
 
         if(!event.getPlayer().equals(sakura) && !event.getPlayer().equals(jutsu)) return;
@@ -121,8 +125,8 @@ public class Sakura extends NarutoRole {
         if(!usingJutsu) return;
 
         jutsu.removePotionEffect(PotionEffectType.REGENERATION);
-        jutsu.sendMessage("§7▎ §a" + event.getPlayer().getName() + " §fa bougé.");
-        sakura.sendMessage("§7▎ §a" + event.getPlayer().getName() + " §fa bougé.");
+        jutsu.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
+        sakura.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
         usingJutsu = false;
         jutsuPlayer = null;
 

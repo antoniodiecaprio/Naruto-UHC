@@ -30,14 +30,14 @@ public class Hidan extends NarutoRole {
     public void onDistribute(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
-        Role.knowsRole(player, "Kakuzu");
+        Role.knowsRole(player, NarutoRoles.KAKUZU);
         player.getInventory().addItem(new ItemBuilder(Material.REDSTONE_BLOCK).setName(Item.specialItem(Item.specialItem("Redstone"))).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_HOE).setName(Item.specialItem(Item.specialItem("Houe"))).toItemStack());
     }
 
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
-        Player kakuzu = Role.findPlayer("Kakuzu");
+        Player kakuzu = Role.findPlayer(NarutoRoles.KAKUZU);
         if(kakuzu == null) return;
         if(kakuzu.getLocation().distance(player.getLocation()) <= 10) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 3*20, 0, false, false));

@@ -1,9 +1,12 @@
 package fr.lyneris.narutouhc.events;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.utils.Damage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,15 +18,35 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class NarutoListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        for (UUID uuid : Damage.noDamage.keySet()) {
-            if(event.getEntity().getUniqueId().equals(uuid) && event.getCause() == Damage.noDamage.get(uuid)) {
-                event.setCancelled(true);
+        Damage.noDamage.keySet().stream()
+                .filter(uuid -> event.getEntity().getUniqueId().equals(uuid))
+                .filter(uuid -> event.getCause() == Damage.noDamage.get(uuid))
+                .forEach(uuid -> event.setCancelled(true));
+
+        if(NarutoUHC.getNaruto().getManager().getResistance().containsKey(event.getEntity().getUniqueId())) {
+            int var1 = NarutoUHC.getNaruto().getManager().getResistance().get(event.getEntity().getUniqueId());
+            if(var1 != 0) {
+                int var2 = 1 - (var1/100);
+                event.setDamage(event.getFinalDamage()*var2);
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onDamageOnEntity(EntityDamageByEntityEvent event) {
+        if(NarutoUHC.getNaruto().getManager().getStrength().containsKey(event.getDamager().getUniqueId())) {
+            int var1 = NarutoUHC.getNaruto().getManager().getStrength().get(event.getDamager().getUniqueId());
+            if(var1 != 0) {
+                int var2 = 1 + (var1/100);
+                event.setDamage(event.getFinalDamage()*var2);
             }
         }
     }
@@ -32,6 +55,28 @@ public class NarutoListener implements Listener {
     public void onRoleConsume(PlayerItemConsumeEvent event) {
         if(NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
         NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerItemConsume(event, event.getPlayer());
+    }
+
+    @EventHandler
+    public void onRoleConsume(EntityRegainHealthEvent event) {
+        if(!(event.getEntity() instanceof Player)) return;
+        if(NarutoUHC.getNaruto().getRoleManager().getRole((Player) event.getEntity()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole((Player) event.getEntity()).onPlayerHealthRegain(event, (Player) event.getEntity());
+    }
+
+    @EventHandler
+    public void onDamage2(EntityDamageByEntityEvent event) {
+        if(!(event.getDamager() instanceof Arrow)) return;
+        if(!(event.getEntity() instanceof Player)) return;
+        if(!(((Arrow) event.getDamager()).getShooter() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
+        Arrow arrow = (Arrow) event.getDamager();
+        Player shooter = (Player) arrow.getShooter();
+
+        NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(shooter);
+        if(role == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(shooter).onArrowHitPlayerEvent(event, player, shooter, arrow);
+
     }
 
     @EventHandler
@@ -203,7 +248,7 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void onWater(PlayerBucketEmptyEvent event) {
         if(event.getPlayer().getWorld().getName().equals("kamui")) {
-            Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> event.getBlockClicked().getRelative(event.getBlockFace()).setType(Material.AIR), 60*20);
+            Tasks.runLater(() -> event.getBlockClicked().getRelative(event.getBlockFace()).setType(Material.AIR), 60*20);
         }
     }
 

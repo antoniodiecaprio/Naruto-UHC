@@ -3,10 +3,8 @@ package fr.lyneris.narutouhc.roles.shinobu;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Loc;
-import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,7 +30,7 @@ public class Hinata extends NarutoRole {
     }
 
     @Override
-    public void startRunnableTask() {
+    public void runnableTask() {
         if(byakuganCooldown > 0) {
             byakuganCooldown--;
         }
@@ -54,7 +52,7 @@ public class Hinata extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        Role.knowsRole(player, "Naruto");
+        Role.knowsRole(player, NarutoRoles.NARUTO);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Byakugan")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Hakke")).toItemStack());
 
@@ -63,13 +61,13 @@ public class Hinata extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
-        Player hinata = Role.findPlayer("Hinata");
+        Player hinata = Role.findPlayer(NarutoRoles.HINATA);
 
         if(hinata == null) return;
 
-        if(Role.isRole(player, "Neji")) {
+        if(Role.isRole(player, NarutoRoles.NEJI)) {
             hinata.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
-            hinata.sendMessage("§7▎ §cNeji §fest mort. Vous obtenez donc §cForce 1 §fpermanent.");
+            hinata.sendMessage(CC.prefix("§cNeji §fest mort. Vous obtenez donc §cForce 1 §fpermanent."));
         }
 
     }
@@ -84,13 +82,13 @@ public class Hinata extends NarutoRole {
             }
 
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aByakugan");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aByakugan"));
 
-            player.getNearbyEntities(60, 60, 60).stream().filter(e -> e instanceof Player).map(e -> (Player)e).forEach(target -> {
+            Loc.getNearbyPlayers(player, 60, 60, 60).forEach(target -> {
                 String position = Loc.getCardinalDirection(target);
                 int distance = (int) target.getLocation().distance(player.getLocation());
 
-                player.sendMessage("§7▎ §9" + target.getName() + " §f§l» §fPosition: §e" + position + "§f, Distance: §e" + distance);
+                player.sendMessage(CC.prefix("§9" + target.getName() + " §f§l» §fPosition: §e" + position + "§f, Distance: §e" + distance));
 
             });
 
@@ -105,14 +103,14 @@ public class Hinata extends NarutoRole {
                 return;
             }
 
-            player.sendMessage("§7▎ §fVous avez utilisé votre item §aHakke");
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aHakke"));
 
-            player.getNearbyEntities(10, 10, 10).stream().filter(e -> e instanceof Player).map(e -> (Player)e).forEach(target -> {
+            Loc.getNearbyPlayers(player, 10, 10, 10).forEach(target -> {
                 target.damage(0.1);
                 target.setHealth(target.getHealth()-6);
                 target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, false, false));
                 target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3*20, 0, false, false));
-                target.sendMessage("§7▎ §aHinata §fa utilisé son pouvoir sur vous, vous venez de perdre §c3 coeurs §fet reçu §8Blindness §fet §7Slowness §fpour 4 secondes.");
+                target.sendMessage(CC.prefix("§aHinata §fa utilisé son pouvoir sur vous, vous venez de perdre §c3 coeurs §fet reçu §8Blindness §fet §7Slowness §fpour 4 secondes."));
             });
 
             hakkeCooldown = 20*60;
@@ -123,7 +121,7 @@ public class Hinata extends NarutoRole {
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
 
-        Player naruto = Role.findPlayer("Naruto");
+        Player naruto = Role.findPlayer(NarutoRoles.NARUTO);
 
         if(naruto == null) return;
 
@@ -136,7 +134,7 @@ public class Hinata extends NarutoRole {
     @Override
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
 
-        Player naruto = Role.findPlayer("Naruto");
+        Player naruto = Role.findPlayer(NarutoRoles.NARUTO);
 
         if(naruto == null) return;
 
@@ -148,10 +146,10 @@ public class Hinata extends NarutoRole {
 
     @Override
     public void onAllPlayerPowerUse(Player player) {
-        Player hinata = Role.findPlayer("Hinata");
+        Player hinata = Role.findPlayer(NarutoRoles.HINATA);
         if(hinata == null) return;
         if(player.getLocation().distance(hinata.getLocation()) <= 20) {
-            hinata.sendMessage("§7▎ §a" + roleManager.getRole(player).getRoleName() + " §fvient d'utiliser son pouvoir autour de vous.");
+            hinata.sendMessage(CC.prefix("§a" + roleManager.getRole(player).getRoleName() + " §fvient d'utiliser son pouvoir autour de vous."));
         }
     }
 
