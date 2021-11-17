@@ -1,7 +1,9 @@
 package fr.lyneris.narutouhc.commands;
 
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.commands.naruto.AliveRolesCommand;
 import fr.lyneris.narutouhc.commands.naruto.LastWord;
+import fr.lyneris.narutouhc.commands.naruto.MyRoleCommand;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +20,16 @@ public class NarutoCommand implements CommandExecutor {
 
         if(args.length == 0) {
             //TODO HELP MESSAGE
+            return true;
+        }
+
+        if(args[0].equalsIgnoreCase("me")) {
+            new MyRoleCommand(player, args);
+            return true;
+        }
+
+        if(args[0].equalsIgnoreCase("roles") || args[0].equalsIgnoreCase("role")) {
+            new AliveRolesCommand(player, args);
             return true;
         }
 

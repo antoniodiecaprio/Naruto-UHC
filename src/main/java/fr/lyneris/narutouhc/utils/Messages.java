@@ -1,6 +1,7 @@
 package fr.lyneris.narutouhc.utils;
 
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,10 +23,10 @@ public class Messages {
     public static void sendDeathMessage(Player player) {
         NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
         if(role == null) return;
-        Bukkit.broadcastMessage("§f§m----------------------------------------");
+        Bukkit.broadcastMessage(CC.CC_BAR);
         Bukkit.broadcastMessage("§7▎ §fLe joueur §c" + player.getName() + " §fest mort.");
-        Bukkit.broadcastMessage("§7▎ §fIl était " + role.getCamp().getColor() + role.getRoleName() + "§f.");
-        Bukkit.broadcastMessage("§f§m----------------------------------------");
+        Bukkit.broadcastMessage("§7▎ §fIl était " + Role.getCamp(player).getColor() + role.getRoleName() + "§f.");
+        Bukkit.broadcastMessage(CC.CC_BAR);
     }
 
     public static String not(String var1) {

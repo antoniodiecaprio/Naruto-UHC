@@ -318,7 +318,7 @@ public class Itachi extends NarutoRole {
                 return;
             }
 
-            player.sendMessage("§8§m-------------------------------");
+            player.sendMessage(CC.CC_BAR);
             if(manager.getDeath().keySet().stream().noneMatch(s -> manager.getDeath().get(s).equals(target.getUniqueId()))) {
                 player.sendMessage(CC.prefix("§c" + target.getName() + " §fn'a tué §cpersonne§f."));
             }
@@ -342,7 +342,7 @@ public class Itachi extends NarutoRole {
             }
 
             player.sendMessage(CC.prefix("§a" + target.getName() + " §fa un total de §6" + apple + " §fpommes d'ors."));
-            player.sendMessage("§8§m-------------------------------");
+            player.sendMessage(CC.CC_BAR);
             sharinganUses++;
 
         }

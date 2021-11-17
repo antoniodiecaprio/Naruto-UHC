@@ -12,4 +12,6 @@ public class CC {
         return "§7▎ §f" + ChatColor.translateAlternateColorCodes('&', var1);
     }
 
+    public static final String CC_BAR = CC.translate("&f&m----------------------------");
+
 }

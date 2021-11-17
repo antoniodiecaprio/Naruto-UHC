@@ -3,19 +3,22 @@ package fr.lyneris.narutouhc.module;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.Messages;
+import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.gui.config.ModuleMenu;
 import fr.lyneris.uhc.module.Module;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class NarutoModule implements Module {
@@ -39,8 +42,21 @@ public class NarutoModule implements Module {
     }
 
     @Override
-    public void onPlayerDeath(Player player, Player player1) {
+    public void onPlayerDeath(Player player, Player killer) {
+        UHC.getUHC().getGameManager().getPlayers().remove(player.getUniqueId());
+        Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).forEach(is ->
+            player.getWorld().dropItemNaturally(player.getLocation(), is)
+        );
+        Arrays.stream(player.getInventory().getArmorContents()).filter(Objects::nonNull).forEach(is ->
+                player.getWorld().dropItemNaturally(player.getLocation(), is)
+        );
+        UHC.getUHC().getGameManager().clearPlayer(player);
+        player.setGameMode(GameMode.ADVENTURE);
+        Messages.sendDeathMessage(player);
 
+        Bukkit.getOnlinePlayers().forEach(players -> players.playSound(players.getLocation(), Sound.WITHER_DEATH, 1f, 1f));
+
+        Role.attemptWin();
     }
 
     @Override

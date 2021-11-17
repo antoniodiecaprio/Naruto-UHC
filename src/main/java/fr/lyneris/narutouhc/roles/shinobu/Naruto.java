@@ -114,10 +114,10 @@ public class Naruto extends NarutoRole {
                     int x = player.getLocation().getBlockX();
                     int y = player.getLocation().getBlockY();
                     int z = player.getLocation().getBlockZ();
-                    akatsuki.sendMessage("§f§m----------------------");
+                    akatsuki.sendMessage(CC.CC_BAR);
                     akatsuki.sendMessage(CC.prefix("§fCoordonnées de §aNaruto§f:"));
                     akatsuki.sendMessage(" §f§l» §a" + x + "§8, §a" + y + "§8, " + z);
-                    akatsuki.sendMessage("§f§m----------------------");
+                    akatsuki.sendMessage(CC.CC_BAR);
                 }
             }
         }
