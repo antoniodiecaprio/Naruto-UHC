@@ -12,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sasuke extends NarutoRole {
@@ -22,7 +23,7 @@ public class Sasuke extends NarutoRole {
 
     @Override
     public List<String> getDescription() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

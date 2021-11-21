@@ -169,7 +169,7 @@ public class Sai extends NarutoRole {
                         break;
                     }
                     Player target = null;
-                    for (Player nearbyEntity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    for (Player nearbyEntity : Loc.getNearbyPlayers(player, 20)) {
                         target = nearbyEntity;
                         break;
                     }
@@ -180,11 +180,16 @@ public class Sai extends NarutoRole {
                     }
                     Player finalTarget = target;
                     //TODO IMMOBILISER player 5s
-                    
+
+                    Player finalTarget2 = target;
                     Tasks.runLater(() -> {
                         for(int i = 0; i <= 5; i++) {
                             Silverfish fish = (Silverfish) player.getWorld().spawnEntity(player.getLocation(), EntityType.SILVERFISH);
-                            fish.setTarget(finalTarget);
+                            Tasks.runTimer(() -> {
+                                if(fish != null && Bukkit.getPlayer(finalTarget2.getUniqueId()) != null) {
+                                    fish.setTarget(finalTarget);
+                                }
+                            }, 0, 20);
                             fish.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                             fish.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 2));
                         }
@@ -198,7 +203,7 @@ public class Sai extends NarutoRole {
                     }
                     int i = 9;
                     int nearbyPlayer = 0;
-                    for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                         if (entity instanceof Player) {
                             nearbyPlayer++;
                         }
@@ -210,7 +215,7 @@ public class Sai extends NarutoRole {
                     }
                     nearbyPlayer = 0;
                     Inventory inv = Bukkit.createInventory(null, i, "Choisir un joueur");
-                    for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                    for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                         if (entity instanceof Player) {
                             inv.setItem(nearbyPlayer, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                             nearbyPlayer++;
@@ -249,7 +254,7 @@ public class Sai extends NarutoRole {
                 minuteHasPassed = true;
              }, 60*20);
             target.sendMessage(CC.prefix("§cSaï §fest en train de vous sceller. vous avez 1 minute pour l'éliminer."));
-            target.sendMessage(CC.prefix("§fVous avez scellé §c" + target.getName() + "§f."));
+            player.sendMessage(CC.prefix("§fVous avez scellé §c" + target.getName() + "§f."));
             usedFuinjutsu = true;
             saiTarget = target.getUniqueId();
             player.closeInventory();

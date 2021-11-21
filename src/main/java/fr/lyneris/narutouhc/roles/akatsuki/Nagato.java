@@ -8,8 +8,10 @@ import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -134,6 +136,27 @@ public class Nagato extends NarutoRole {
         }
     }
 
+    private void giveStuff(Player player) {
+        player.getInventory().clear();
+        player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_DAMAGE, 1).toItemStack());
+        player.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 3));
+        player.getInventory().addItem(new ItemStack(Material.WATER_BUCKET));
+        player.getInventory().addItem(new ItemStack(Material.LOG, 64));
+        player.getInventory().addItem(new ItemStack(Material.IRON_PICKAXE));
+        player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 64));
+        player.getInventory().setHelmet(new ItemBuilder(Material.IRON_HELMET).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).toItemStack());
+        player.getInventory().setChestplate(new ItemBuilder(Material.DIAMOND_CHESTPLATE).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).toItemStack());
+        player.getInventory().setLeggings(new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).toItemStack());
+        player.getInventory().setBoots(new ItemBuilder(Material.DIAMOND_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).toItemStack());
+
+        if(roleManager.getRole(player) != null) {
+            roleManager.getRole(player).onDistribute(player);
+        }
+
+    }
+
+
     @Override
     public void onSubCommand(Player player, String[] args) {
 
@@ -148,7 +171,11 @@ public class Nagato extends NarutoRole {
 
             latestDeaths.stream().filter(uuid -> Bukkit.getPlayer(uuid) != null).map(Bukkit::getPlayer).forEach(target -> {
                 player.sendMessage(CC.prefix("§fVous avez ressuscité §a" + target.getName()));
-                //TODO REVIVE TARGET
+
+                target.teleport(player);
+                target.setGameMode(GameMode.SURVIVAL);
+                giveStuff(target);
+                UHC.getUHC().getGameManager().getPlayers().add(target.getUniqueId());
             });
 
             Tasks.runLater(() -> player.setHealth(0), 60*20);
@@ -210,7 +237,7 @@ public class Nagato extends NarutoRole {
             if(event.getSlot() == 1) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, 30, 30, 30)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, 30)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -221,7 +248,7 @@ public class Nagato extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Banshô Ten’in");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, 30, 30, 30)) {
+                for (Player entity : Loc.getNearbyPlayers(player, 30)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }
@@ -237,7 +264,7 @@ public class Nagato extends NarutoRole {
 
                 player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aShinra Tensei§f."));
 
-                for(Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for(Player entity : Loc.getNearbyPlayers(player, 20)) {
                     Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                     entity.setVelocity(new Vector(0, 0.3, 0));
                     fromPlayerToTarget.multiply(6);

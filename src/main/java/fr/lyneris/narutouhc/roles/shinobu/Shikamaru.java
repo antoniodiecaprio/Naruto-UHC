@@ -128,7 +128,7 @@ public class Shikamaru extends NarutoRole {
             if(event.getSlot() == 1) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -139,7 +139,7 @@ public class Shikamaru extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Manipulation");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.BOOK).setName("§6Tous les joueurs").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player entity : Loc.getNearbyPlayers(player, radius)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }
@@ -148,7 +148,7 @@ public class Shikamaru extends NarutoRole {
             if(event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -159,7 +159,7 @@ public class Shikamaru extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Étreinte Mortelle");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player entity : Loc.getNearbyPlayers(player, radius)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }
@@ -169,7 +169,7 @@ public class Shikamaru extends NarutoRole {
             if(event.getSlot() == 3) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -180,7 +180,7 @@ public class Shikamaru extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Oeil");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player entity : Loc.getNearbyPlayers(player, radius)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }
@@ -190,7 +190,7 @@ public class Shikamaru extends NarutoRole {
             if(event.getSlot() == 4) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -201,7 +201,7 @@ public class Shikamaru extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Recherche");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, radius, radius, radius)) {
+                for (Player entity : Loc.getNearbyPlayers(player, radius)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }
@@ -244,7 +244,7 @@ public class Shikamaru extends NarutoRole {
                 player.closeInventory();
                 //TODO IMMOBILISER player 10s
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
-                Loc.getNearbyPlayers(player, radius, radius, radius).forEach(target -> {
+                Loc.getNearbyPlayers(player, radius).forEach(target -> {
                     //TODO IMMOBILISER target 10s
                     target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
                     player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName()));

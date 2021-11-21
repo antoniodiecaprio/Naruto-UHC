@@ -78,7 +78,7 @@ public class Temari extends NarutoRole {
                 return;
             }
 
-            for(Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+            for(Player entity : Loc.getNearbyPlayers(player, 20)) {
                 Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                 entity.setVelocity(new Vector(0, 1.3, 0));
                 fromPlayerToTarget.multiply(50);

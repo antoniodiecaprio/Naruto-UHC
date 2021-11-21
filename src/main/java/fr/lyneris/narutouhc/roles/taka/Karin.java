@@ -72,7 +72,7 @@ public class Karin extends NarutoRole {
         if(Item.interactItem(event, "Karin")) {
             player.sendMessage(" ");
             player.sendMessage(prefix("&aVoici les joueurs autour de vous :"));
-            Loc.getNearbyPlayers(player, 100, 100, 100).forEach(target -> player.sendMessage(" &8- &c" + target.getName()));
+            Loc.getNearbyPlayers(player, 100).forEach(target -> player.sendMessage(" &8- &c" + target.getName()));
             player.sendMessage(" ");
         }
     }
@@ -143,7 +143,7 @@ public class Karin extends NarutoRole {
             Title.sendActionBar(player, Loc.getDirectionMate(player, Bukkit.getPlayer(this.kagurashinganTarget), 200));
         }
 
-        Loc.getNearbyPlayers(player, 20, 20, 20).forEach(target -> {
+        Loc.getNearbyPlayers(player, 20).forEach(target -> {
             avancement.put(target.getUniqueId(), avancement.getOrDefault(target.getUniqueId(), 0) + 1);
             //CHECK ROLE OF target
             NarutoRole role = roleManager.getRole(target.getUniqueId());

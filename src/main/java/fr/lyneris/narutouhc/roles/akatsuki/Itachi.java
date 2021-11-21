@@ -168,7 +168,7 @@ public class Itachi extends NarutoRole {
         if(event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);
             if(event.getSlot() == 1) {
-                if(Loc.getNearbyPlayers(player, 20, 20, 20).size() == 0) {
+                if(Loc.getNearbyPlayers(player, 20).size() == 0) {
                     player.sendMessage(CC.prefix("§cIl n'y a personne autour de vous."));
                     return;
                 }
@@ -180,7 +180,7 @@ public class Itachi extends NarutoRole {
 
                 tsukuyomiUses++;
 
-                Loc.getNearbyPlayers(player, 20, 20, 20).forEach(target -> {
+                Loc.getNearbyPlayers(player, 20).forEach(target -> {
                     cannotMove.add(target.getUniqueId());
                     //TODO IMMOBILISER target 8s
                     player.sendMessage(CC.prefix("§fVous avez immobilisé §c" + target.getName()));
@@ -192,7 +192,7 @@ public class Itachi extends NarutoRole {
             if(event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -203,7 +203,7 @@ public class Itachi extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Attaque");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }

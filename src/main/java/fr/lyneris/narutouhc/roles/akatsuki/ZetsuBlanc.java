@@ -179,7 +179,7 @@ public class ZetsuBlanc extends NarutoRole {
         public void run() {
             Player zetsuPlayer = Role.findPlayer(NarutoRoles.ZETSU_BLANC);
             if(timer == 0) {
-                if(zetsuPlayer != null){
+                if(zetsuPlayer != null) {
                     IdentityChanger.changePlayerName(zetsuPlayer, getOriginalName());
                     IdentityChanger.changeSkin(zetsuPlayer, getOriginalSkin(), false);
                     setCopiedName(null);
@@ -188,7 +188,7 @@ public class ZetsuBlanc extends NarutoRole {
                 }
                 cancel();
             }
-            if(zetsuPlayer != null){
+            if(zetsuPlayer != null) {
                 Title.sendActionBar(zetsuPlayer, "§7▎ §aMétamorphose §f§l» §7" + Utils.getFormattedTime(this.timer));
             }
             timer--;

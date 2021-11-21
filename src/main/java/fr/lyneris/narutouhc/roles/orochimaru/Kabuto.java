@@ -64,7 +64,7 @@ public class Kabuto extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if(Item.interactItem(event.getItem(), "Senpô")) {
-            Loc.getNearbyPlayers(player, 15, 15,15).forEach(target -> {
+            Loc.getNearbyPlayers(player, 15).forEach(target -> {
                 target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10*20, 0, false, false));
                 target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10*20, 3, false, false));
                 target.sendMessage(CC.prefix("§cKabuto §fa utilisé son §aSenpô §fsur vous."));

@@ -11,7 +11,9 @@ import com.mojang.authlib.*;
 import org.bukkit.*;
 
 public class IdentityChanger {
+
     public static void changeSkin(final Player player, final Property skin, final boolean forPlayer) {
+
         final CraftPlayer craftPlayer = (CraftPlayer)player;
         final EntityPlayer entity = ((CraftPlayer)player).getHandle();
         final GameProfile profile = craftPlayer.getProfile();

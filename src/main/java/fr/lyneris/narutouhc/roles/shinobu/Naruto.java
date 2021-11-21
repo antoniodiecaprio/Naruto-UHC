@@ -256,6 +256,13 @@ public class Naruto extends NarutoRole {
                 return;
             }
 
+            if(Role.isRole(target, NarutoRoles.GAI_MAITO)) {
+                if(GaiMaito.isUsingGai) {
+                    GaiMaito.paumeSaved = true;
+                    target.sendMessage(prefix("&fVous n'allez pas mourrir à la fin de votre &aGaï de la nuit&f."));
+                }
+            }
+
             if(paumeUse >= 2) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;

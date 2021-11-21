@@ -198,7 +198,7 @@ public class Kimimaro extends NarutoRole {
             this.item = CraftItemStack.asBukkitCopy(nmsStack);
         }
 
-        public ItemStack getItem(){
+        public ItemStack getItem() {
             return this.item;
         }
     }
@@ -218,14 +218,14 @@ public class Kimimaro extends NarutoRole {
         @Override
         public void run() {
             Player player = Bukkit.getPlayer(playerID);
-            if(this.timer == 0){
+            if(this.timer == 0) {
                 blocks.forEach(block -> block.setType(Material.AIR));
-                if(player != null){
+                if(player != null) {
                     player.sendMessage(CC.prefix("Votre forêt s'est détruite !"));
                 }
                 cancel();
             }
-            if(player != null){
+            if(player != null) {
                 Title.sendActionBar(player, "§7▎ §7Forêt en Os §f§l» " + Utils.getFormattedTime(this.timer));
             }
             this.timer--;

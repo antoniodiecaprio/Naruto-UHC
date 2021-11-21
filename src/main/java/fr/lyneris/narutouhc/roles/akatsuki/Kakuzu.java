@@ -92,7 +92,7 @@ public class Kakuzu extends NarutoRole {
                 return;
             }
 
-            Loc.getNearbyPlayers(player, 20, 20, 20).forEach(player1 -> {
+            Loc.getNearbyPlayers(player, 20).forEach(player1 -> {
                 if(roleManager.getRole(player1) != null) {
                     //TODO CAMP
                     if(roleManager.getRole(player1).getCamp() != getCamp()) {

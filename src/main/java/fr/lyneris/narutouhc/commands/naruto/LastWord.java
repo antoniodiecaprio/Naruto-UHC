@@ -16,7 +16,7 @@ public class LastWord {
             }
 
             StringBuilder builder = new StringBuilder();
-            for(int i = 1; i <= 20; i++) {
+            for(int i = 1; i <= args.length; i++) {
                 builder.append(args[i]).append(" ");
             }
 

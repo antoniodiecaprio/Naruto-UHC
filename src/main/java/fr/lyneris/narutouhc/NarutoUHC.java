@@ -4,10 +4,11 @@ import fr.lyneris.narutouhc.commands.NarutoCommand;
 import fr.lyneris.narutouhc.events.NarutoListener;
 import fr.lyneris.narutouhc.manager.Manager;
 import fr.lyneris.narutouhc.manager.RoleManager;
+import fr.lyneris.narutouhc.module.NarutoGui;
 import fr.lyneris.narutouhc.module.NarutoModule;
 import fr.lyneris.narutouhc.packet.NPCManager;
 import fr.lyneris.narutouhc.packet.PacketManager;
-import fr.lyneris.narutouhc.packet.npc.NPC;
+import fr.lyneris.narutouhc.roles.jubi.Madara;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.game.config.WorldGeneration;
 import fr.lyneris.uhc.module.Module;
@@ -41,6 +42,8 @@ public class NarutoUHC extends JavaPlugin {
         this.npcManager = new NPCManager(this.packetManager);
 
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);
+        this.getServer().getPluginManager().registerEvents(new Madara(), this);
+        this.getServer().getPluginManager().registerEvents(new NarutoGui(), this);
         this.getCommand("ns").setExecutor(new NarutoCommand());
 
     }

@@ -84,7 +84,7 @@ public class Hinata extends NarutoRole {
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aByakugan"));
 
-            Loc.getNearbyPlayers(player, 60, 60, 60).forEach(target -> {
+            Loc.getNearbyPlayers(player, 60).forEach(target -> {
                 String position = Loc.getCardinalDirection(target);
                 int distance = (int) target.getLocation().distance(player.getLocation());
 
@@ -105,7 +105,7 @@ public class Hinata extends NarutoRole {
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aHakke"));
 
-            Loc.getNearbyPlayers(player, 10, 10, 10).forEach(target -> {
+            Loc.getNearbyPlayers(player, 10).forEach(target -> {
                 target.damage(0.1);
                 target.setHealth(target.getHealth()-6);
                 target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, false, false));

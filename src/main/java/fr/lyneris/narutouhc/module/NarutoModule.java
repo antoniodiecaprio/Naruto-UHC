@@ -2,23 +2,21 @@ package fr.lyneris.narutouhc.module;
 
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
-import fr.lyneris.uhc.gui.config.ModuleMenu;
 import fr.lyneris.uhc.module.Module;
+import fr.lyneris.uhc.utils.Utils;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class NarutoModule implements Module {
@@ -44,19 +42,23 @@ public class NarutoModule implements Module {
     @Override
     public void onPlayerDeath(Player player, Player killer) {
         UHC.getUHC().getGameManager().getPlayers().remove(player.getUniqueId());
-        Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).forEach(is ->
+        Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(is -> is.getType() != Material.AIR).forEach(is ->
             player.getWorld().dropItemNaturally(player.getLocation(), is)
         );
-        Arrays.stream(player.getInventory().getArmorContents()).filter(Objects::nonNull).forEach(is ->
+        Arrays.stream(player.getInventory().getArmorContents()).filter(Objects::nonNull).filter(is -> is.getType() != Material.AIR).forEach(is ->
                 player.getWorld().dropItemNaturally(player.getLocation(), is)
         );
-        UHC.getUHC().getGameManager().clearPlayer(player);
-        player.setGameMode(GameMode.ADVENTURE);
+        Location loc = player.getLocation();
+        Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> {
+            UHC.getUHC().getGameManager().clearPlayer(player);
+            player.spigot().respawn();
+            player.setGameMode(GameMode.SPECTATOR);
+            player.teleport(loc);
+        }, 1);
         Messages.sendDeathMessage(player);
-
         Bukkit.getOnlinePlayers().forEach(players -> players.playSound(players.getLocation(), Sound.WITHER_DEATH, 1f, 1f));
 
-        Role.attemptWin();
+        //Role.attemptWin();
     }
 
     @Override
@@ -134,36 +136,54 @@ public class NarutoModule implements Module {
 
         ItemStack[] slots = new ItemStack[mainInventorySize()*9];
 
-        int i = 0;
+        HashMap<Camp, Integer> map = new HashMap<>();
 
-        for (NarutoRoles n : NarutoRoles.values()) {
-            if (n.getNarutoRole() != null) {
-
-                int amount = 0;
-
-                for (NarutoRoles role : NarutoUHC.getNaruto().getRoleManager().getRoles()) {
-                    if(role.getName().equals(n.getName())) amount++;
-                }
-
-                slots[i] = new ItemBuilder(Material.INK_SACK).setAmount(amount).setDurability(NarutoUHC.getNaruto().getRoleManager().getRoles().contains(n) ? 12 : 8).setName("§6" + n.getName()).toItemStack();
-                i++;
+        for (NarutoRoles value : NarutoRoles.values()) {
+            if(value.getNarutoRole() != null) {
+                map.put(value.getCamp(), map.getOrDefault(value.getCamp(), 0) + 1);
             }
         }
+
+        List<String> lore = new ArrayList<>();
+        map.keySet().forEach(camp -> {
+            lore.add(CC.prefix(camp.getFormat() + "§8: §f" + map.getOrDefault(camp, 0)));
+        });
+
+        for (int i : Utils.getGlassInInventory(mainInventorySize())) {
+            slots[i] = new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack();
+        }
+        slots[12] = new ItemBuilder(Material.INK_SACK).setDurability(10).setName(Camp.SHINOBI.getFormat()).toItemStack();
+        slots[22] = new ItemBuilder(Material.WATCH).setName("§6Rôles activés").setLore(lore).toItemStack();
+        slots[14] = new ItemBuilder(Material.INK_SACK).setDurability(1).setName(Camp.AKATSUKI.getFormat()).toItemStack();
+
+        slots[21] = new ItemBuilder(Material.INK_SACK).setDurability(14).setName(Camp.OROCHIMARU.getFormat()).toItemStack();
+        slots[13] = new ItemBuilder(Material.INK_SACK).setDurability(13).setName(Camp.TAKA.getFormat()).toItemStack();
+        slots[23] = new ItemBuilder(Material.INK_SACK).setDurability(6).setName(Camp.MADARA_OBITO.getFormat()).toItemStack();
+
+        slots[30] = new ItemBuilder(Material.INK_SACK).setDurability(11).setName(Camp.ZABUZA_HAKU.getFormat()).toItemStack();
+        slots[31] = new ItemBuilder(Material.INK_SACK).setDurability(2).setName(Camp.SANKYODAI.getFormat()).toItemStack();
+        slots[32] = new ItemBuilder(Material.INK_SACK).setDurability(7).setName(Camp.SOLO.getFormat()).toItemStack();
 
         return () -> slots;
     }
 
     @Override
-    public void onMainInventoryClick(Player player, Inventory inventory, ItemStack is, int i, boolean rightClick) {
+    public void onMainInventoryClick(Player player, Inventory inventory, ItemStack is, int slot, boolean rightClick) {
 
-        Arrays.stream(NarutoRoles.values())
-                .filter(n -> n.getNarutoRole() != null)
-                .filter(n -> is.hasItemMeta())
-                .filter(n -> is.getItemMeta().hasDisplayName())
-                .filter(n -> n.getName().equals(is.getItemMeta().getDisplayName().substring(2)))
-                .forEach(n -> {
-                    if(rightClick) NarutoUHC.getNaruto().getRoleManager().addRole(n); else NarutoUHC.getNaruto().getRoleManager().removeRole(n);
-                    UHC.getUHC().getGameManager().getGuiManager().open(player, ModuleMenu.class);
-                });
+        Camp camp = null;
+
+        for (Camp value : Camp.values()) {
+            if(is.hasItemMeta() && is.getItemMeta().getDisplayName().equalsIgnoreCase(value.getFormat())) {
+                camp = value;
+            }
+        }
+
+        if(camp != null) {
+            new NarutoGui.CampSelector(player, camp);
+        }
+
     }
+
+
+
 }

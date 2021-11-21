@@ -2,6 +2,7 @@ package fr.lyneris.narutouhc.utils;
 
 import fr.lyneris.uhc.UHC;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -39,12 +40,12 @@ public class Loc {
         }
     }
 
-    public static List<Player> getNearbyPlayers(Player player, int var1, int var2, int var3) {
+    public static List<Player> getNearbyPlayers(Player player, int distance) {
         List<Player> toReturn = new ArrayList<>();
-        player.getNearbyEntities(var1, var2, var3).stream()
-                .filter(entity -> entity instanceof Player)
-                .map(entity -> (Player)entity)
-                .filter(uuid -> UHC.getUHC().getGameManager().getPlayers().contains(uuid.getUniqueId()))
+        Bukkit.getOnlinePlayers().stream()
+                .filter(target -> UHC.getUHC().getGameManager().getPlayers().contains(target.getUniqueId()))
+                .filter(target -> target.getGameMode() != GameMode.SPECTATOR)
+                .filter(target -> target.getLocation().distance(player.getLocation()) <= distance)
                 .forEach(toReturn::add);
         return toReturn;
     }

@@ -21,16 +21,20 @@ public class Role {
     public static Player findPlayer(NarutoRoles var1) {
         Player player = null;
         for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
-            try {
-                if(NarutoUHC.getNaruto().getRoleManager().getRole(uuid) != null && NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getRoleName().equals(var1.getNarutoRole().newInstance().getRoleName()) && Bukkit.getPlayer(uuid) != null) {
-                    player = Bukkit.getPlayer(uuid);
-                    break;
-                }
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+            if(NarutoUHC.getNaruto().getRoleManager().getRole(uuid) != null && NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getClass().getName().equals(var1.getName()) && Bukkit.getPlayer(uuid) != null) {
+                player = Bukkit.getPlayer(uuid);
+                break;
             }
         }
         return player;
+    }
+
+    public static boolean isAlive(Player player) {
+        return isAlive(player.getUniqueId());
+    }
+
+    public static boolean isAlive(UUID uuid) {
+        return UHC.getUHC().getGameManager().getPlayers().contains(uuid);
     }
 
     public static List<Player> getAliveOnlinePlayers() {
@@ -39,7 +43,7 @@ public class Role {
         UHC.getUHC().getGameManager().getPlayers().stream()
                 .filter(uuid -> Bukkit.getPlayer(uuid) != null)
                 .map(Bukkit::getPlayer)
-                .filter(player -> player.getGameMode() == GameMode.SPECTATOR)
+                .filter(player -> player.getGameMode() != GameMode.SPECTATOR)
                 .forEach(toReturn::add);
 
         return toReturn;
@@ -48,12 +52,8 @@ public class Role {
     public static boolean isRole(Player var1, NarutoRoles var2) {
         if(NarutoUHC.getNaruto().getRoleManager().getRole(var1) == null) {
             return false;
-        } else {
-            try {
-                return NarutoUHC.getNaruto().getRoleManager().getRole(var1).getRoleName().equals(var2.getNarutoRole().newInstance().getRoleName());
-            } catch (InstantiationException | IllegalAccessException ignored) {
-                return false;
-            }
+            } else {
+            return NarutoUHC.getNaruto().getRoleManager().getRole(var1).getClass().getName().equals(var2.getNarutoRole().getName());
         }
     }
 
@@ -107,7 +107,6 @@ public class Role {
             winners = camp1;
             break;
         }
-
         won = true;
         String victoryTitle = CC.translate("&fVictoire du camp " + winners.getColor() + winners.getName());
         Bukkit.getOnlinePlayers().forEach(player -> Title.sendTitle(player, 10, 3*20, 10, "", victoryTitle));
@@ -121,7 +120,13 @@ public class Role {
             }
         });
         Bukkit.broadcastMessage(CC.CC_BAR);
+        Bukkit.broadcastMessage(CC.prefix("&cFermeture du serveur dans 60 secondes..."));
 
+
+        Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> {
+            Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("Fermeture du serveur..."));
+            Bukkit.getServer().shutdown();
+        }, 60*20);
     }
 
 }

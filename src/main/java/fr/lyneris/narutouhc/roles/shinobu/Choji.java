@@ -74,12 +74,14 @@ public class Choji extends NarutoRole {
             new DoubleCircleEffect(20 * 60, EnumParticle.WATER_SPLASH).start(player);
 
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+            player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30*20, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 30*20, 0    , false, false));
             Tasks.runLater(() -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
                 player.sendMessage(CC.prefix("§cL'indigestion commence à se faire ressentir..."));
+
             }, 31*20);
         }
 

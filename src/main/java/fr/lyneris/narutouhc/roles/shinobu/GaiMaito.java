@@ -23,6 +23,8 @@ public class GaiMaito extends NarutoRole {
 
     public boolean usedEight = false;
     public boolean usedNight = false;
+    public static boolean isUsingGai = false;
+    public static boolean paumeSaved = false;
 
     @Override
     public String getRoleName() {
@@ -94,6 +96,8 @@ public class GaiMaito extends NarutoRole {
                 return;
             }
 
+            isUsingGai = true;
+
             usedNight = true;
 
             player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aGaï de la Nuit§f."));
@@ -103,7 +107,11 @@ public class GaiMaito extends NarutoRole {
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10 * 20, 2, true, true));
 
-            Tasks.runLater(() -> player.setHealth(0), 10 * 20);
+            Tasks.runLater(() -> {
+                if(!paumeSaved) {
+                    player.setHealth(0);
+                }
+            }, 10 * 20);
         }
 
     }

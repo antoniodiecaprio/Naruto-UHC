@@ -10,10 +10,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -56,6 +53,8 @@ public abstract class NarutoRole {
     public void onPlayerInteractAtPlayer(PlayerInteractAtEntityEvent event, Player target) {}
     public void onPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {}
     public void onPlayerHealthRegain(EntityRegainHealthEvent event, Player player) {}
+    public void onPlayerJoin(PlayerJoinEvent event, Player player) {}
+    public void onPlayerChat(AsyncPlayerChatEvent event, Player player) {}
 
     public void onAllPlayerMove(PlayerMoveEvent event, Player player) {}
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {}
@@ -66,6 +65,7 @@ public abstract class NarutoRole {
     public void onAllPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player damager) {}
     public void onAllPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {}
     public void onAllPlayerItemInteract(PlayerInteractEvent event, Player player) {}
+    public void onAllPlayerJoin(PlayerJoinEvent event, Player player) {}
 
     public void onMinute(int minute, Player player) {}
     public void onSecond(int timer, Player player) {}

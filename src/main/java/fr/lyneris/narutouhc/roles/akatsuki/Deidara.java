@@ -140,7 +140,7 @@ public class Deidara extends NarutoRole {
             if(event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -151,7 +151,7 @@ public class Deidara extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "C2");
                 int j = 1;
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }

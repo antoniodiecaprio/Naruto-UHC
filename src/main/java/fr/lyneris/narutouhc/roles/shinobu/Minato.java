@@ -107,7 +107,7 @@ public class Minato extends NarutoRole {
             } else {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player ignored : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
                 if(nearbyPlayer > 7 && nearbyPlayer <= 16) {
@@ -118,7 +118,7 @@ public class Minato extends NarutoRole {
                 Inventory inv = Bukkit.createInventory(null, i, "Shuriken Jutsu");
                 inv.setItem(1, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + player.getName()).setSkullOwner(player.getName()).toItemStack());
                 int j = 2;
-                for (Player entity : Loc.getNearbyPlayers(player, 20, 20, 20)) {
+                for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setName("§6" + entity.getName()).setSkullOwner(entity.getName()).toItemStack());
                     j++;
                 }

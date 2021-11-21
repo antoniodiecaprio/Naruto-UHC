@@ -18,9 +18,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class NarutoListener implements Listener {
 
     @EventHandler
@@ -55,6 +52,18 @@ public class NarutoListener implements Listener {
     public void onRoleConsume(PlayerItemConsumeEvent event) {
         if(NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
         NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerItemConsume(event, event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        if(NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerJoin(event, event.getPlayer());
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        if(NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerChat(event, event.getPlayer());
     }
 
     @EventHandler
@@ -133,6 +142,15 @@ public class NarutoListener implements Listener {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if(NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
             NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDeath(event, event.getEntity());
+        }
+    }
+
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if(NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerJoin(event, event.getPlayer());
         }
     }
 
@@ -251,6 +269,7 @@ public class NarutoListener implements Listener {
             Tasks.runLater(() -> event.getBlockClicked().getRelative(event.getBlockFace()).setType(Material.AIR), 60*20);
         }
     }
+
 
 
 }

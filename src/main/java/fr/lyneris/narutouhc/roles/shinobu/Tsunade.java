@@ -71,7 +71,7 @@ public class Tsunade extends NarutoRole {
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
 
         if(usingKatsuyu) {
-            Loc.getNearbyPlayers(player, 30, 30, 30).forEach(target -> target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5*20, 2, false, false)));
+            Loc.getNearbyPlayers(player, 30).forEach(target -> target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5*20, 2, false, false)));
         }
 
     }
@@ -87,7 +87,7 @@ public class Tsunade extends NarutoRole {
             player.removePotionEffect(PotionEffectType.REGENERATION);
             player.setMaxHealth(player.getMaxHealth() - 4);
             Tasks.runLater(() -> player.setMaxHealth(player.getMaxHealth() + 4), 15*20*60);
-            player.sendMessage(CC.prefix("§cVous avez pris plus de 15 coeurs de dégâts. De ce fait, vous perdez votre effet de §dRégénération §fainsi que §b2 coeurs §fpendant 15 minutes."));
+            player.sendMessage(CC.prefix("§fVous avez pris plus de 15 coeurs de dégâts. De ce fait, vous perdez votre effet de §dRégénération §fainsi que §b2 coeurs §fpendant 15 minutes."));
             usingByakugo = false;
             damageTaken = 0;
         }

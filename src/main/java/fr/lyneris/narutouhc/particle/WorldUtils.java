@@ -82,7 +82,11 @@ public class WorldUtils {
         final double zDiff = maxZ - minZ;
         return Math.sqrt(xDiff * xDiff + zDiff * zDiff);
     }
-    
+
+    public static void createBeautyExplosion(final Location loc, final int power) {
+        createBeautyExplosion(loc, power, false);
+    }
+
     public static void createBeautyExplosion(final Location loc, final int power, final boolean fire) {
         List<Location> blocks = generateSphere(loc, power, false);
         for (final Location blockLoc : blocks) {

@@ -73,8 +73,7 @@ public class KillerBee extends NarutoRole {
 
         if(Item.interactItem(event.getItem(), "Revive")) {
             player.getInventory().removeItem(player.getItemInHand());
-            timer = 100;
-            player.sendMessage(CC.prefix("§fVous êtes désormais §avisible§f."));
+            timer = 99;
         }
 
     }

@@ -66,6 +66,7 @@ public class Jiraya extends NarutoRole {
             return;
         }
 
+        player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 1, false, false));
         Tasks.runLater(() -> {
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
