@@ -31,9 +31,11 @@ public class RoleManager {
     public List<NarutoRoles> getRoles() {
         return roles;
     }
+
     public void addRole(NarutoRoles var1) {
         this.roles.add(var1);
     }
+
     public void removeRole(NarutoRoles var1) {
         this.roles.remove(var1);
     }
@@ -41,12 +43,15 @@ public class RoleManager {
     public NarutoRole getRole(UUID var1) {
         return this.playerRole.get(var1);
     }
+
     public NarutoRole getRole(Player var1) {
         return this.getRole(var1.getUniqueId());
     }
+
     public void setRole(UUID var1, NarutoRole var2) {
         this.playerRole.put(var1, var2);
     }
+
     public void setRole(Player var1, NarutoRole var2) {
         this.setRole(var1.getUniqueId(), var2);
     }
@@ -54,12 +59,15 @@ public class RoleManager {
     public Camp getCamp(UUID var1) {
         return this.playerCamp.get(var1);
     }
+
     public Camp getCamp(Player var1) {
         return getCamp(var1.getUniqueId());
     }
+
     public void setCamp(UUID var1, Camp var2) {
         this.playerCamp.put(var1, var2);
     }
+
     public void setCamp(Player var1, Camp var2) {
         this.setCamp(var1.getUniqueId(), var2);
     }

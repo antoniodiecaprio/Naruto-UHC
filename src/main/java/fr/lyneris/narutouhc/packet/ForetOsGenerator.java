@@ -1,11 +1,16 @@
 package fr.lyneris.narutouhc.packet;
 
 import fr.lyneris.narutouhc.particle.WorldUtils;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.TreeType;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class ForetOsGenerator {
@@ -26,7 +31,7 @@ public class ForetOsGenerator {
         List<Location> cylinder = generateCylinder(center, radius);
         List<Location> treeSpawns = new ArrayList<>();
 
-        for (int i = 0; i < cylinder.size()/2; i++) {
+        for (int i = 0; i < cylinder.size() / 2; i++) {
             int index = new Random().nextInt(cylinder.size());
             treeSpawns.add(cylinder.get(index));
             cylinder.remove(index);
@@ -34,7 +39,7 @@ public class ForetOsGenerator {
 
         for (Location treeSpawn : treeSpawns) {
             Block down = treeSpawn.getWorld().getHighestBlockAt(treeSpawn).getRelative(BlockFace.DOWN);
-            if(down.getType() != Material.QUARTZ_BLOCK) down.setType(Material.GRASS);
+            if (down.getType() != Material.QUARTZ_BLOCK) down.setType(Material.GRASS);
             center.getWorld().generateTree(treeSpawn, TreeType.SMALL_JUNGLE, delegate);
         }
         return delegate.getBlocks();
@@ -47,8 +52,8 @@ public class ForetOsGenerator {
         int cx = center.getBlockX();
         int cz = center.getBlockZ();
         int rSquared = radius * radius;
-        for (int x = cx - radius; x <= cx +radius; x++) {
-            for (int z = cz - radius; z <= cz +radius; z++) {
+        for (int x = cx - radius; x <= cx + radius; x++) {
+            for (int z = cz - radius; z <= cz + radius; z++) {
                 if ((cx - x) * (cx - x) + (cz - z) * (cz - z) <= rSquared) {
                     locs.add(new Location(world, x, world.getHighestBlockYAt(x, z), z));
                 }

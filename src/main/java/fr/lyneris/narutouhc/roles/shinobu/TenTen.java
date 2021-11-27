@@ -1,21 +1,19 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
-import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.MathL;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -25,6 +23,10 @@ public class TenTen extends NarutoRole {
 
     public int parcheminCooldown = 0;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.TEN_TEN;
+    }
+
     @Override
     public void resetCooldowns() {
         parcheminCooldown = 0;
@@ -32,11 +34,11 @@ public class TenTen extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(parcheminCooldown > 0) {
+        if (parcheminCooldown > 0) {
             parcheminCooldown--;
         }
     }
-    
+
     @Override
     public String getRoleName() {
         return "Tenten";
@@ -57,9 +59,9 @@ public class TenTen extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Parchemin")) {
+        if (Item.interactItem(event.getItem(), "Parchemin")) {
 
-            if(parcheminCooldown > 0) {
+            if (parcheminCooldown > 0) {
                 player.sendMessage(Messages.cooldown(parcheminCooldown));
                 return;
             }
@@ -77,14 +79,14 @@ public class TenTen extends NarutoRole {
                 double dy = 1.25;
                 double dz = radius * MathL.sin(angle);
                 Arrow arrow = player.getWorld().spawn(player.getLocation().clone().add(dx, dy, dz), Arrow.class);
-                arrow.setVelocity(new Vector(dx/powerHorizontal,powerVertical,dz/powerHorizontal));
+                arrow.setVelocity(new Vector(dx / powerHorizontal, powerVertical, dz / powerHorizontal));
                 arrow.setShooter(player);
             }
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aParchemin§f."));
 
 
-            parcheminCooldown = 5*60;
+            parcheminCooldown = 5 * 60;
         }
     }
 

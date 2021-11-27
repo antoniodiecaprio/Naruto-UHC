@@ -36,6 +36,10 @@ public class Kimimaro extends NarutoRole {
     private boolean usedForest = false;
     private int marqueCooldown = 0;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.KIMIMARO;
+    }
+
     @Override
     public void resetCooldowns() {
         marqueCooldown = 0;
@@ -43,7 +47,7 @@ public class Kimimaro extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(marqueCooldown > 0) {
+        if (marqueCooldown > 0) {
             marqueCooldown--;
         }
     }
@@ -73,12 +77,12 @@ public class Kimimaro extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Shikotsumyaku")) {
+        if (Item.interactItem(event.getItem(), "Shikotsumyaku")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Shikotsumyaku");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
             inv.setItem(1, new ItemBuilder(Material.NETHER_STAR).setName("§6Epee en os").setLore(
-                "§7Lorsqu’il utilise son pouvoir, il obtient",
+                    "§7Lorsqu’il utilise son pouvoir, il obtient",
                     "§7un os aussi fort qu’une épée en diamant",
                     "§7Tranchant 5, cependant son os disparaît",
                     "§71 minute après l’avoir utilisé. Il peut",
@@ -96,9 +100,9 @@ public class Kimimaro extends NarutoRole {
             player.openInventory(inv);
         }
 
-        if(Item.interactItem(event.getItem(), "Marque Maudite")) {
+        if (Item.interactItem(event.getItem(), "Marque Maudite")) {
 
-            if(marqueCooldown > 0) {
+            if (marqueCooldown > 0) {
                 player.sendMessage(Messages.cooldown(marqueCooldown));
             }
 
@@ -111,8 +115,8 @@ public class Kimimaro extends NarutoRole {
             player.removePotionEffect(PotionEffectType.REGENERATION);
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 60 * 2, 0, false, false));
 
-            player.setMaxHealth(player.getMaxHealth() + (3D*2D));
-            player.setHealth(player.getHealth() + (3D*2D));
+            player.setMaxHealth(player.getMaxHealth() + (3D * 2D));
+            player.setHealth(player.getHealth() + (3D * 2D));
 
             Tasks.runLater(() -> {
                 player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
@@ -122,10 +126,10 @@ public class Kimimaro extends NarutoRole {
                 player.removePotionEffect(PotionEffectType.WEAKNESS);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 60 * 5, 0, false, false));
 
-                player.setMaxHealth(player.getMaxHealth() - (3D*2D));
-            }, 20*60*2);
+                player.setMaxHealth(player.getMaxHealth() - (3D * 2D));
+            }, 20 * 60 * 2);
 
-            marqueCooldown = 20*60;
+            marqueCooldown = 20 * 60;
 
         }
 
@@ -133,9 +137,9 @@ public class Kimimaro extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-        if(event.getInventory().getName().equals("Shikotsumyaku")) {
-            if(event.getSlot() == 1) {
-                if(osUses >= 5) {
+        if (event.getInventory().getName().equals("Shikotsumyaku")) {
+            if (event.getSlot() == 1) {
+                if (osUses >= 5) {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 5 fois."));
                     return;
                 }
@@ -148,12 +152,12 @@ public class Kimimaro extends NarutoRole {
                 Tasks.runLater(() -> {
                     player.getInventory().remove(Material.BONE);
                     player.sendMessage(CC.prefix("§cVotre épée à été détruite."));
-                }, 60*20);
+                }, 60 * 20);
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
 
-                if(usedForest) {
+                if (usedForest) {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                     return;
                 }
@@ -208,7 +212,7 @@ public class Kimimaro extends NarutoRole {
         private final UUID playerID;
         private final List<Block> blocks;
 
-        private int timer = 3*60;
+        private int timer = 3 * 60;
 
         public ForetOsTask(UUID playerID, List<Block> blocks) {
             this.playerID = playerID;
@@ -218,14 +222,14 @@ public class Kimimaro extends NarutoRole {
         @Override
         public void run() {
             Player player = Bukkit.getPlayer(playerID);
-            if(this.timer == 0) {
+            if (this.timer == 0) {
                 blocks.forEach(block -> block.setType(Material.AIR));
-                if(player != null) {
+                if (player != null) {
                     player.sendMessage(CC.prefix("Votre forêt s'est détruite !"));
                 }
                 cancel();
             }
-            if(player != null) {
+            if (player != null) {
                 Title.sendActionBar(player, "§7▎ §7Forêt en Os §f§l» " + Utils.getFormattedTime(this.timer));
             }
             this.timer--;

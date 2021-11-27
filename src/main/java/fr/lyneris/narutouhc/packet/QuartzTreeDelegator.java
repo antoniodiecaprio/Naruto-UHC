@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuartzTreeDelegator implements BlockChangeDelegate {
-    
+
     private final World world;
     private final List<Block> blocks;
 

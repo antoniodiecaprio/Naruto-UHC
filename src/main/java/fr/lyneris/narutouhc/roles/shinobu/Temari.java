@@ -3,6 +3,7 @@ package fr.lyneris.narutouhc.roles.shinobu;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Loc;
@@ -11,7 +12,6 @@ import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -30,6 +29,10 @@ public class Temari extends NarutoRole {
     private boolean usedKamatari = false;
     private int eventailCooldown = 0;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.TEMARI;
+    }
+
     @Override
     public void resetCooldowns() {
         eventailCooldown = 0;
@@ -37,7 +40,7 @@ public class Temari extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(eventailCooldown > 0) {
+        if (eventailCooldown > 0) {
             eventailCooldown--;
         }
 
@@ -63,22 +66,22 @@ public class Temari extends NarutoRole {
 
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
-        if(Item.specialItem(event.getPlayer().getItemInHand(), "Éventail")) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2*20, 0, false, false));
+        if (Item.specialItem(event.getPlayer().getItemInHand(), "Éventail")) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2 * 20, 0, false, false));
         }
     }
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.specialItem(event.getItem(), "Éventail")) {
+        if (Item.specialItem(event.getItem(), "Éventail")) {
 
-            if(eventailCooldown > 0) {
+            if (eventailCooldown > 0) {
                 player.sendMessage(Messages.cooldown(eventailCooldown));
                 return;
             }
 
-            for(Player entity : Loc.getNearbyPlayers(player, 20)) {
+            for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                 Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                 entity.setVelocity(new Vector(0, 1.3, 0));
                 fromPlayerToTarget.multiply(50);
@@ -87,13 +90,13 @@ public class Temari extends NarutoRole {
             }
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aÉventail§f."));
 
-            eventailCooldown = 20*60;
+            eventailCooldown = 20 * 60;
 
         }
 
-        if(Item.interactItem(event.getItem(), "Kamatari")) {
+        if (Item.interactItem(event.getItem(), "Kamatari")) {
 
-            if(usedKamatari) {
+            if (usedKamatari) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
@@ -115,7 +118,7 @@ public class Temari extends NarutoRole {
 
     @Override
     public Camp getCamp() {
-        return Camp.SHINOBI;
+        return Camp.SANKYODAI;
     }
 
     @Override

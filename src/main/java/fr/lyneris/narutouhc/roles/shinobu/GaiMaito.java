@@ -21,10 +21,14 @@ import java.util.List;
 
 public class GaiMaito extends NarutoRole {
 
-    public boolean usedEight = false;
-    public boolean usedNight = false;
     public static boolean isUsingGai = false;
     public static boolean paumeSaved = false;
+    public boolean usedEight = false;
+    public boolean usedNight = false;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.GAI_MAITO;
+    }
 
     @Override
     public String getRoleName() {
@@ -108,7 +112,7 @@ public class GaiMaito extends NarutoRole {
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10 * 20, 2, true, true));
 
             Tasks.runLater(() -> {
-                if(!paumeSaved) {
+                if (!paumeSaved) {
                     player.setHealth(0);
                 }
             }, 10 * 20);

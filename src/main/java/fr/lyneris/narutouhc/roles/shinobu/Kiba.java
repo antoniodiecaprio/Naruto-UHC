@@ -4,6 +4,7 @@ import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Loc;
@@ -16,7 +17,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,6 +28,10 @@ public class Kiba extends NarutoRole {
 
     public boolean usedKiba = false;
     public boolean usedAkamaru = false;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.KIBA;
+    }
 
     @Override
     public String getRoleName() {
@@ -47,9 +51,9 @@ public class Kiba extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Akamaru")) {
+        if (Item.interactItem(event.getItem(), "Akamaru")) {
 
-            if(usedAkamaru) {
+            if (usedAkamaru) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
@@ -63,13 +67,13 @@ public class Kiba extends NarutoRole {
             wolf.setSitting(false);
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aAkamaru§f."));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10*20*60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10 * 20 * 60, 0, false, false));
 
             Tasks.runLater(() -> {
                 player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
                 wolf.setHealth(0);
                 player.sendMessage(CC.prefix("§cVous avez perdu votre effet de Force et votre chien."));
-            }, 10*20*60);
+            }, 10 * 20 * 60);
 
         }
     }
@@ -87,26 +91,26 @@ public class Kiba extends NarutoRole {
     @Override
     public void onSubCommand(Player player, String[] args) {
 
-        if(args[0].equalsIgnoreCase("sniff")) {
+        if (args[0].equalsIgnoreCase("sniff")) {
 
-            if(usedKiba) {
-               player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
-               return;
+            if (usedKiba) {
+                player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
+                return;
             }
 
-            if(args.length != 2) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns sniff <player>"));
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[1]);
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
 
-            if(target.getLocation().distance(player.getLocation()) > 20) {
+            if (target.getLocation().distance(player.getLocation()) > 20) {
                 player.sendMessage(CC.prefix("§c" + target.getName() + " n'est pas dans un rayon de 20 blocks autour de vous."));
                 return;
             }
@@ -125,7 +129,7 @@ public class Kiba extends NarutoRole {
                     final Player newPlayer = Bukkit.getPlayer(oldName);
                     final Player newTarget = Bukkit.getPlayer(targetOldName);
 
-                    if(newPlayer != null && newTarget != null) {
+                    if (newPlayer != null && newTarget != null) {
                         Title.sendActionBar(newPlayer, Loc.getDirectionMate(newPlayer, newTarget));
                     }
                 }

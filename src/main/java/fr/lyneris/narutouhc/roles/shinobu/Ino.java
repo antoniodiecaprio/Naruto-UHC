@@ -28,11 +28,15 @@ import java.util.UUID;
 
 public class Ino extends NarutoRole {
 
+    public static UUID transfer = null;
+    public static List<UUID> nearPlayers = new ArrayList<>();
     public List<String> chosen = new ArrayList<>();
     public int chatCooldown = 0;
     public boolean usedTransfer = false;
-    public static UUID transfer = null;
-    public static List<UUID> nearPlayers = new ArrayList<>();
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.INO;
+    }
 
     @Override
     public void resetCooldowns() {
@@ -41,7 +45,7 @@ public class Ino extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(chatCooldown > 0) {
+        if (chatCooldown > 0) {
             chatCooldown--;
         }
     }
@@ -62,15 +66,15 @@ public class Ino extends NarutoRole {
 
         int inventorySize;
 
-        if(players.size() < 9) {
+        if (players.size() < 9) {
             inventorySize = 9;
-        } else if(players.size() < 18) {
+        } else if (players.size() < 18) {
             inventorySize = 18;
-        } else if(players.size() < 27) {
+        } else if (players.size() < 27) {
             inventorySize = 27;
-        } else if(players.size() < 36) {
+        } else if (players.size() < 36) {
             inventorySize = 36;
-        } else if(players.size() < 45) {
+        } else if (players.size() < 45) {
             inventorySize = 45;
         } else {
             inventorySize = 54;
@@ -81,7 +85,7 @@ public class Ino extends NarutoRole {
         int j = 1;
         for (Player player1 : players) {
             String lore;
-            if(chosen.contains(player1.getName())) {
+            if (chosen.contains(player1.getName())) {
                 lore = "§aCe joueur est selectionné";
             } else {
                 lore = "§cCe joueur n'est pas selectionné";
@@ -104,23 +108,23 @@ public class Ino extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Ino")) {
+        if (Item.interactItem(event.getItem(), "Ino")) {
             openInoMenu(player);
         }
     }
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-        if(event.getInventory().getName().equals("Ino")) {
+        if (event.getInventory().getName().equals("Ino")) {
             event.setCancelled(true);
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(event.getSlot() != 0 && event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.SKULL_ITEM) {
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getSlot() != 0 && event.getCurrentItem() != null && event.getCurrentItem().getType() == Material.SKULL_ITEM) {
                 Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
-                if(target == null) {
+                if (target == null) {
                     player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté."));
                     return;
                 }
-                if(chosen.contains(target.getName())) {
+                if (chosen.contains(target.getName())) {
                     chosen.remove(target.getName());
                 } else {
                     chosen.add(target.getName());
@@ -143,7 +147,7 @@ public class Ino extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
-        if(transfer != null && transfer.equals(player.getUniqueId())) {
+        if (transfer != null && transfer.equals(player.getUniqueId())) {
             player.sendMessage(CC.prefix("§fVous avez §c30 secondes §fpour utiliser votre dernière volontée."));
             TextComponent text = new TextComponent("§7▎ §aCliquez-ici pour commencer à la rédiger.");
             text.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ns lastword "));
@@ -152,7 +156,7 @@ public class Ino extends NarutoRole {
                     .filter(uuid -> Bukkit.getPlayer(uuid) != null)
                     .filter(uuid -> Bukkit.getPlayer(uuid).getLocation().distance(player.getLocation()) <= 200)
                     .forEach(nearPlayers::add);
-            Tasks.runLater(() -> transfer = null, 30*20);
+            Tasks.runLater(() -> transfer = null, 30 * 20);
         }
 
     }
@@ -160,20 +164,20 @@ public class Ino extends NarutoRole {
     @Override
     public void onSubCommand(Player player, String[] args) {
 
-        if(args[0].equals("transfer")) {
+        if (args[0].equals("transfer")) {
 
-            if(usedTransfer) {
+            if (usedTransfer) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
-            if(args.length != 2) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns transfer <player>"));
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[1]);
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
@@ -182,35 +186,35 @@ public class Ino extends NarutoRole {
             target.sendMessage(CC.prefix("§aIno §fa utilisé son pouvoir de transfert sur vous. De ce fait lors de votre mort, vous pourrez envoyer un message de dernière volontée. Attention, si vous mourrez dans §c20 minutes§f ou plus, vous ne pourrez pas utiliser cette dernière volontée."));
             player.sendMessage(CC.prefix("§Vous avez utilisé votre pouvoir sur §a" + target.getName()));
             usedTransfer = true;
-            Tasks.runLater(() -> transfer = null, 20*20*60);
+            Tasks.runLater(() -> transfer = null, 20 * 20 * 60);
         }
 
-        if(args[0].equalsIgnoreCase("chat")) {
+        if (args[0].equalsIgnoreCase("chat")) {
 
-            if(args.length < 2) {
+            if (args.length < 2) {
                 player.sendMessage(Messages.syntax("/ns chat <message>"));
                 return;
             }
 
-            if(chatCooldown > 0) {
+            if (chatCooldown > 0) {
                 player.sendMessage(Messages.cooldown(chatCooldown));
                 return;
             }
 
-            if(chosen.size() == 0) {
+            if (chosen.size() == 0) {
                 player.sendMessage(CC.prefix("§cIl n'y a personne dans votre liste."));
                 return;
             }
 
             StringBuilder message = new StringBuilder();
-            for(int i = 1; i < args.length; i++) {
+            for (int i = 1; i < args.length; i++) {
                 message.append(args[i]).append(" ");
             }
 
             chosen.stream().filter(s -> Bukkit.getPlayer(s) != null).map(Bukkit::getPlayer).forEach(target -> target.sendMessage(CC.prefix("§6Ino: §f" + message)));
             player.sendMessage(CC.prefix("§6Ino: §f" + message));
 
-            chatCooldown = 10*60;
+            chatCooldown = 10 * 60;
 
         }
     }

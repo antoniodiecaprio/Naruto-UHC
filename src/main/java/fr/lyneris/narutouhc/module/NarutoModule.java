@@ -6,7 +6,6 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
-import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.module.Module;
 import fr.lyneris.uhc.utils.Utils;
@@ -43,7 +42,7 @@ public class NarutoModule implements Module {
     public void onPlayerDeath(Player player, Player killer) {
         UHC.getUHC().getGameManager().getPlayers().remove(player.getUniqueId());
         Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(is -> is.getType() != Material.AIR).forEach(is ->
-            player.getWorld().dropItemNaturally(player.getLocation(), is)
+                player.getWorld().dropItemNaturally(player.getLocation(), is)
         );
         Arrays.stream(player.getInventory().getArmorContents()).filter(Objects::nonNull).filter(is -> is.getType() != Material.AIR).forEach(is ->
                 player.getWorld().dropItemNaturally(player.getLocation(), is)
@@ -79,16 +78,16 @@ public class NarutoModule implements Module {
         Tasks.runTimer(() -> {
             timer++;
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
                     NarutoUHC.getNaruto().getRoleManager().getRole(player).onMinute(timer, player);
                 }
             }
-        }, 0, 20*60);
+        }, 0, 20 * 60);
 
         Tasks.runTimer(() -> {
             second++;
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
                     NarutoUHC.getNaruto().getRoleManager().getRole(player).onSecond(second, player);
                     NarutoUHC.getNaruto().getRoleManager().getRole(player).runnableTask();
                 }
@@ -132,14 +131,14 @@ public class NarutoModule implements Module {
         return 5;
     }
 
-    public Supplier<ItemStack[]> mainInventoryContent(Player player)  {
+    public Supplier<ItemStack[]> mainInventoryContent(Player player) {
 
-        ItemStack[] slots = new ItemStack[mainInventorySize()*9];
+        ItemStack[] slots = new ItemStack[mainInventorySize() * 9];
 
         HashMap<Camp, Integer> map = new HashMap<>();
 
         for (NarutoRoles value : NarutoRoles.values()) {
-            if(value.getNarutoRole() != null) {
+            if (value.getNarutoRole() != null) {
                 map.put(value.getCamp(), map.getOrDefault(value.getCamp(), 0) + 1);
             }
         }
@@ -173,17 +172,16 @@ public class NarutoModule implements Module {
         Camp camp = null;
 
         for (Camp value : Camp.values()) {
-            if(is.hasItemMeta() && is.getItemMeta().getDisplayName().equalsIgnoreCase(value.getFormat())) {
+            if (is.hasItemMeta() && is.getItemMeta().getDisplayName().equalsIgnoreCase(value.getFormat())) {
                 camp = value;
             }
         }
 
-        if(camp != null) {
+        if (camp != null) {
             new NarutoGui.CampSelector(player, camp);
         }
 
     }
-
 
 
 }

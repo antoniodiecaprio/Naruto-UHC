@@ -1,6 +1,5 @@
 package fr.lyneris.narutouhc.roles.taka;
 
-import com.sun.corba.se.spi.orb.ORBConfigurator;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
@@ -16,6 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sasuke extends NarutoRole {
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.SASUKE;
+    }
+
     @Override
     public String getRoleName() {
         return null;
@@ -36,16 +40,16 @@ public class Sasuke extends NarutoRole {
 
     @Override
     public void onPlayerKill(PlayerDeathEvent event, Player killer) {
-        if(Role.isRole(event.getEntity(), NarutoRoles.ITACHI)) {
+        if (Role.isRole(event.getEntity(), NarutoRoles.ITACHI)) {
 
         }
     }
 
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
-        if(Role.isRole(player, NarutoRoles.OROCHIMARU)) {
+        if (Role.isRole(player, NarutoRoles.OROCHIMARU)) {
             Player sasuke = Role.findPlayer(NarutoRoles.SASUKE);
-            if(sasuke == null) return;
+            if (sasuke == null) return;
             sasuke.sendMessage(CC.prefix("&aOrochimaru &fest mort..."));
             Role.knowsRole(sasuke, NarutoRoles.KARIN);
             Role.knowsRole(sasuke, NarutoRoles.SUIGETSU);

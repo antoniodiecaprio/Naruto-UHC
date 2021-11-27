@@ -18,12 +18,16 @@ import java.util.UUID;
 
 public class Role {
 
+    public static boolean won = false;
+
     public static Player findPlayer(NarutoRoles var1) {
         Player player = null;
         for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
-            if(NarutoUHC.getNaruto().getRoleManager().getRole(uuid) != null && NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getClass().getName().equals(var1.getName()) && Bukkit.getPlayer(uuid) != null) {
-                player = Bukkit.getPlayer(uuid);
-                break;
+            if (NarutoUHC.getNaruto().getRoleManager().getRole(uuid) != null) {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getRole().equals(var1)) {
+                    player = Bukkit.getPlayer(uuid);
+                    break;
+                }
             }
         }
         return player;
@@ -50,10 +54,10 @@ public class Role {
     }
 
     public static boolean isRole(Player var1, NarutoRoles var2) {
-        if(NarutoUHC.getNaruto().getRoleManager().getRole(var1) == null) {
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(var1) == null) {
             return false;
-            } else {
-            return NarutoUHC.getNaruto().getRoleManager().getRole(var1).getClass().getName().equals(var2.getNarutoRole().getName());
+        } else {
+            return NarutoUHC.getNaruto().getRoleManager().getRole(var1).getRole().equals(var2);
         }
     }
 
@@ -63,12 +67,12 @@ public class Role {
 
     public static void knowsRole(Player player, NarutoRoles role) {
         Tasks.runAsyncLater(() -> {
-            if(findPlayer(role) == null) {
+            if (findPlayer(role) == null) {
                 player.sendMessage(CC.prefix("§fLe §a" + role.getName() + " §fn'est pas dans la composition de la partie"));
             } else {
                 player.sendMessage(CC.prefix("§fLe §a" + role.getName() + " §fde la partie est §a" + findPlayer(role).getName()));
             }
-        }, 20*3);
+        }, 20 * 3);
     }
 
     public static List<Player> getPlayersWithRole() {
@@ -91,17 +95,16 @@ public class Role {
         return toReturn;
     }
 
-    public static boolean won = false;
     public static void attemptWin() {
-        if(won) return;
+        if (won) return;
         HashMap<Camp, Integer> camp = new HashMap<>();
         for (Player player : getAliveOnlinePlayers()) {
             NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
-            if(role != null && getCamp(player) != null) {
+            if (role != null && getCamp(player) != null) {
                 camp.put(getCamp(player), camp.getOrDefault(getCamp(player), 0) + 1);
             }
         }
-        if(camp.size() != 1) return;
+        if (camp.size() != 1) return;
         Camp winners = null;
         for (Camp camp1 : camp.keySet()) {
             winners = camp1;
@@ -109,13 +112,13 @@ public class Role {
         }
         won = true;
         String victoryTitle = CC.translate("&fVictoire du camp " + winners.getColor() + winners.getName());
-        Bukkit.getOnlinePlayers().forEach(player -> Title.sendTitle(player, 10, 3*20, 10, "", victoryTitle));
+        Bukkit.getOnlinePlayers().forEach(player -> Title.sendTitle(player, 10, 3 * 20, 10, "", victoryTitle));
         Bukkit.broadcastMessage(CC.CC_BAR);
         Bukkit.broadcastMessage(CC.prefix(victoryTitle));
         Bukkit.broadcastMessage(" ");
         getAliveOnlinePlayers().forEach(player -> {
             NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
-            if(role != null && getCamp(player) != null) {
+            if (role != null && getCamp(player) != null) {
                 Bukkit.broadcastMessage(CC.prefix("&6" + player.getName() + " &f&l» &e" + role.getRoleName()));
             }
         });
@@ -126,7 +129,7 @@ public class Role {
         Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> {
             Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("Fermeture du serveur..."));
             Bukkit.getServer().shutdown();
-        }, 60*20);
+        }, 60 * 20);
     }
 
 }

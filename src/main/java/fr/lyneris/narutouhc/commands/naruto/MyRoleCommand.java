@@ -10,7 +10,7 @@ public class MyRoleCommand {
     public MyRoleCommand(Player player, String[] args) {
 
         NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
-        if(role == null || player.getGameMode().equals(GameMode.SPECTATOR)) {
+        if (role == null || player.getGameMode().equals(GameMode.SPECTATOR)) {
             player.sendMessage(CC.prefix("&cVous n'avez pas de rôle."));
             return;
         }

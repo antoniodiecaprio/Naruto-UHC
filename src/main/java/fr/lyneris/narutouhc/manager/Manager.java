@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.manager;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.uhc.UHC;
@@ -8,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
@@ -16,11 +19,12 @@ public class Manager {
     private final NarutoUHC naruto;
     private final World narutoWorld;
     private final Location kamuiSpawn;
-    private boolean isDay;
     private final HashMap<String, UUID> death;
     private final HashMap<UUID, Integer> strength;
     private final HashMap<UUID, Integer> resistance;
     private final HashMap<UUID, Location> deathLocation;
+    private final List<UUID> stuned = new ArrayList<>();
+    private boolean isDay;
 
     public Manager(NarutoUHC naruto) {
         this.narutoWorld = new WorldCreator("kamui").createWorld();
@@ -82,9 +86,37 @@ public class Manager {
         });
     }
 
+    public void setStuned(UUID uuid, Boolean stuned, Integer duration) {
+        if (stuned) {
+            this.stuned.add(uuid);
+
+            Player player = Bukkit.getPlayer(uuid);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration * 20, 100, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration * 20, 100, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration * 20, 200, false, false));
+
+            Tasks.runLater(() -> this.stuned.remove(uuid), duration * 20);
+        } else {
+            this.stuned.remove(uuid);
+        }
+    }
+
+    public void setStuned(Player player, Boolean stuned, Integer duration) {
+        setStuned(player.getUniqueId(), stuned, duration);
+    }
+
+    public boolean isStuned(UUID uuid) {
+        return this.stuned.contains(uuid);
+    }
+
+    public boolean isStuned(Player player) {
+        return this.stuned.contains(player.getUniqueId());
+    }
+
     public boolean isDay() {
         return isDay;
     }
+
     public void setDay(boolean day) {
         isDay = day;
     }

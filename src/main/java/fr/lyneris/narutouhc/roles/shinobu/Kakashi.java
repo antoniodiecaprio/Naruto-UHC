@@ -1,7 +1,6 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
-import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
@@ -10,12 +9,13 @@ import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
-import org.bukkit.*;
-import org.bukkit.entity.Entity;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -24,7 +24,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class Kakashi extends NarutoRole {
 
@@ -33,9 +36,13 @@ public class Kakashi extends NarutoRole {
     public HashMap<String, List<PotionEffectType>> copies = new HashMap<>();
     public int pakkunCooldown = 0;
     public Wolf wolf = null;
+    public HashMap<UUID, Location> oldLocation = new HashMap<>();
     private int arimasuCooldown = 0;
     private int sonohokaCooldown = 0;
-    public HashMap<UUID, Location> oldLocation = new HashMap<>();
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.KAKASHI;
+    }
 
     @Override
     public void resetCooldowns() {
@@ -46,15 +53,15 @@ public class Kakashi extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(pakkunCooldown > 0) {
+        if (pakkunCooldown > 0) {
             pakkunCooldown--;
         }
 
-        if(arimasuCooldown > 0) {
+        if (arimasuCooldown > 0) {
             arimasuCooldown--;
         }
 
-        if(sonohokaCooldown > 0) {
+        if (sonohokaCooldown > 0) {
             sonohokaCooldown--;
         }
     }
@@ -79,7 +86,7 @@ public class Kakashi extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event.getItem(), "Sharingan")) {
+        if (Item.interactItem(event.getItem(), "Sharingan")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Selection Kakashi");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -106,7 +113,7 @@ public class Kakashi extends NarutoRole {
             player.openInventory(inv);
         }
 
-        if(Item.interactItem(event.getItem(), "Kamui")) {
+        if (Item.interactItem(event.getItem(), "Kamui")) {
 
             Inventory inv = Bukkit.createInventory(null, 9, "Kamui");
 
@@ -119,9 +126,9 @@ public class Kakashi extends NarutoRole {
 
         }
 
-        if(Item.interactItem(event.getItem(), "Pakkun")) {
+        if (Item.interactItem(event.getItem(), "Pakkun")) {
 
-            if(pakkunCooldown > 0) {
+            if (pakkunCooldown > 0) {
                 player.sendMessage(Messages.cooldown(pakkunCooldown));
                 return;
             }
@@ -138,9 +145,9 @@ public class Kakashi extends NarutoRole {
             for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                 nearbyPlayer++;
             }
-            if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+            if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                 i = 18;
-            } else if(nearbyPlayer > 17) {
+            } else if (nearbyPlayer > 17) {
                 i = 27;
             }
             Inventory inv = Bukkit.createInventory(null, i, "Pakkun");
@@ -152,7 +159,7 @@ public class Kakashi extends NarutoRole {
             }
             player.openInventory(inv);
 
-            pakkunCooldown = 30*60;
+            pakkunCooldown = 30 * 60;
         }
 
 
@@ -160,7 +167,7 @@ public class Kakashi extends NarutoRole {
 
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
-        if(player.getUniqueId().equals(kakashiTarget)) {
+        if (player.getUniqueId().equals(kakashiTarget)) {
             kakashiTarget = null;
         }
     }
@@ -168,17 +175,17 @@ public class Kakashi extends NarutoRole {
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
 
-        if(event.getInventory().getName().equals("Selection Kakashi")) {
+        if (event.getInventory().getName().equals("Selection Kakashi")) {
             event.setCancelled(true);
-            if(event.getSlot() == 1) {
+            if (event.getSlot() == 1) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Copie");
@@ -191,9 +198,9 @@ public class Kakashi extends NarutoRole {
                 player.openInventory(inv);
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 Inventory inv;
-                if(copies.size() < 8) {
+                if (copies.size() < 8) {
                     inv = Bukkit.createInventory(null, 9, "Techniques");
                 } else {
                     inv = Bukkit.createInventory(null, 18, "Techniques");
@@ -203,7 +210,7 @@ public class Kakashi extends NarutoRole {
                 inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
                 for (String s : copies.keySet()) {
                     List<String> lore = new ArrayList<>();
-                    if(copies.get(s).size() == 0) lore.add("§cAucun effet");
+                    if (copies.get(s).size() == 0) lore.add("§cAucun effet");
                     copies.get(s).forEach(str -> lore.add("§f§l» " + str.getName().toLowerCase().replace("_", " ")));
                     inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM).setDurability(SkullType.PLAYER.ordinal()).setLore(lore).setName("§6" + s).setSkullOwner(s).toItemStack());
                     j++;
@@ -213,24 +220,24 @@ public class Kakashi extends NarutoRole {
             }
         }
 
-        if(event.getInventory().getName().equals("Techniques")) {
+        if (event.getInventory().getName().equals("Techniques")) {
             event.setCancelled(true);
         }
 
-        if(event.getInventory().getName().equals("Copie")) {
+        if (event.getInventory().getName().equals("Copie")) {
 
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
             event.setCancelled(true);
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
 
-            if(kakashiTarget != null) {
+            if (kakashiTarget != null) {
                 player.sendMessage(CC.prefix("§cVous utilisez déjà ce pouvoir sur quelqu'un"));
                 return;
             }
@@ -240,17 +247,17 @@ public class Kakashi extends NarutoRole {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if(kakashiTarget == null) return;
+                    if (kakashiTarget == null) return;
 
                     Player kakashi = Role.findPlayer(NarutoRoles.KAKASHI);
                     Player newTarget = Bukkit.getPlayer(kakashiTarget);
-                    if(avancement >= 2500) {
+                    if (avancement >= 2500) {
 
-                        if(newTarget != null && kakashi != null) {
+                        if (newTarget != null && kakashi != null) {
                             player.sendMessage(CC.prefix("§aVous avez terminé la progression sur " + newTarget.getName()));
                             List<PotionEffectType> map = new ArrayList<>();
                             for (PotionEffect activePotionEffect : newTarget.getActivePotionEffects()) {
-                                if(activePotionEffect.getDuration() > 30*20*60) {
+                                if (activePotionEffect.getDuration() > 30 * 20 * 60) {
                                     kakashi.addPotionEffect(activePotionEffect);
                                     kakashi.sendMessage(CC.prefix("§fVous venez de recevoir l'effet §a" + activePotionEffect.getType().getName()));
                                     map.add(activePotionEffect.getType());
@@ -260,15 +267,15 @@ public class Kakashi extends NarutoRole {
                             cancel();
                         }
                     } else {
-                        if(newTarget != null && kakashi != null) {
+                        if (newTarget != null && kakashi != null) {
                             int distance = (int) kakashi.getLocation().distance(newTarget.getLocation());
-                            if(distance <= 5) {
+                            if (distance <= 5) {
                                 avancement += 10;
                                 Title.sendActionBar(kakashi, "§7▎ §fAvancement §a" + newTarget.getName() + " §f§l» §a" + avancement + "§8/§a2500");
-                            } else if(distance <= 10) {
+                            } else if (distance <= 10) {
                                 avancement += 5;
                                 Title.sendActionBar(kakashi, "§7▎ §fAvancement §a" + newTarget.getName() + " §f§l» §a" + avancement + "§8/§a2500");
-                            } else if(distance <= 20) {
+                            } else if (distance <= 20) {
                                 avancement += 2;
                                 Title.sendActionBar(kakashi, "§7▎ §fAvancement §a" + newTarget.getName() + " §f§l» §a" + avancement + "§8/§a2500");
                             }
@@ -283,13 +290,13 @@ public class Kakashi extends NarutoRole {
 
         }
 
-        if(event.getInventory().getName().equals("Pakkun")) {
+        if (event.getInventory().getName().equals("Pakkun")) {
 
             event.setCancelled(true);
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
@@ -302,11 +309,11 @@ public class Kakashi extends NarutoRole {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if(wolf != null && Bukkit.getPlayer(target.getName()) != null) {
+                    if (wolf != null && Bukkit.getPlayer(target.getName()) != null) {
                         wolf.setAngry(true);
                         wolf.setTarget(Bukkit.getPlayer(target.getName()));
                     }
-                    if(wolf == null) {
+                    if (wolf == null) {
                         cancel();
                     }
                 }
@@ -314,17 +321,17 @@ public class Kakashi extends NarutoRole {
 
         }
 
-        if(event.getInventory().getName().equals("Kamui")) {
+        if (event.getInventory().getName().equals("Kamui")) {
 
             event.setCancelled(true);
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
 
-            if(event.getSlot() == 1) {
+            if (event.getSlot() == 1) {
                 final Location oldLocation;
                 oldLocation = player.getLocation();
 
-                if(arimasuCooldown > 0) {
+                if (arimasuCooldown > 0) {
                     player.sendMessage(Messages.cooldown(sonohokaCooldown));
                     return;
                 }
@@ -336,21 +343,21 @@ public class Kakashi extends NarutoRole {
                 Tasks.runLater(() -> {
                     player.teleport(oldLocation);
                     player.sendMessage(CC.prefix("§fVous avez été téléporté à votre ancienne position."));
-                }, 10*20*60);
+                }, 10 * 20 * 60);
 
-                arimasuCooldown = 15*60;
+                arimasuCooldown = 15 * 60;
 
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 7 && nearbyPlayer <= 16) {
+                if (nearbyPlayer > 7 && nearbyPlayer <= 16) {
                     i = 18;
-                } else if(nearbyPlayer > 16) {
+                } else if (nearbyPlayer > 16) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Arimasu");
@@ -365,12 +372,12 @@ public class Kakashi extends NarutoRole {
 
         }
 
-        if(event.getInventory().getName().equals("Arimasu")) {
+        if (event.getInventory().getName().equals("Arimasu")) {
 
             final Location oldLocation;
             oldLocation = player.getLocation();
 
-            if(sonohokaCooldown > 0) {
+            if (sonohokaCooldown > 0) {
                 player.sendMessage(Messages.cooldown(arimasuCooldown));
                 return;
             }
@@ -380,7 +387,7 @@ public class Kakashi extends NarutoRole {
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
@@ -396,9 +403,9 @@ public class Kakashi extends NarutoRole {
             Tasks.runLater(() -> {
                 target.teleport(oldLocation);
                 target.sendMessage(CC.prefix("§fVous avez été téléporté à votre ancienne position."));
-            }, 5*20*60);
+            }, 5 * 20 * 60);
 
-            sonohokaCooldown = 30*60;
+            sonohokaCooldown = 30 * 60;
         }
 
     }
@@ -406,12 +413,12 @@ public class Kakashi extends NarutoRole {
     @Override
     public void onSubCommand(Player player, String[] args) {
 
-        if(!args[0].equalsIgnoreCase("yameru")) return;
+        if (!args[0].equalsIgnoreCase("yameru")) return;
 
         for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
-            if(Bukkit.getPlayer(uuid) != null) {
+            if (Bukkit.getPlayer(uuid) != null) {
                 Player target = Bukkit.getPlayer(uuid);
-                if(target.getWorld().getName().equals("kamui") && oldLocation.get(uuid) != null) {
+                if (target.getWorld().getName().equals("kamui") && oldLocation.get(uuid) != null) {
                     target.teleport(oldLocation.get(uuid));
                     target.sendMessage(CC.prefix("§aKakashi §fa décidé de vous téléporter sur le monde normal."));
                     player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fdans le monde normal."));

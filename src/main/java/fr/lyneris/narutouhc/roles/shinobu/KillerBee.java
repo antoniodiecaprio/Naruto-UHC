@@ -1,9 +1,9 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
-import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -26,6 +26,10 @@ public class KillerBee extends NarutoRole {
     public int timer = 0;
     public boolean usedDeath = false;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.KILLER_BEE;
+    }
+
     @Override
     public void resetCooldowns() {
         gyukiCooldown = 0;
@@ -33,7 +37,7 @@ public class KillerBee extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(gyukiCooldown > 0) {
+        if (gyukiCooldown > 0) {
             gyukiCooldown--;
         }
     }
@@ -57,21 +61,21 @@ public class KillerBee extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Gyûki")) {
+        if (Item.interactItem(event.getItem(), "Gyûki")) {
 
-            if(gyukiCooldown > 0) {
+            if (gyukiCooldown > 0) {
                 player.sendMessage(Messages.cooldown(gyukiCooldown));
                 return;
             }
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5*20*60, 3, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5 * 20 * 60, 3, false, false));
 
-            gyukiCooldown = 20*60;
+            gyukiCooldown = 20 * 60;
 
         }
 
-        if(Item.interactItem(event.getItem(), "Revive")) {
+        if (Item.interactItem(event.getItem(), "Revive")) {
             player.getInventory().removeItem(player.getItemInHand());
             timer = 99;
         }
@@ -80,8 +84,8 @@ public class KillerBee extends NarutoRole {
 
     @Override
     public void onSubCommand(Player player, String[] args) {
-        if(args[0].equalsIgnoreCase("death")) {
-            if(usedDeath) {
+        if (args[0].equalsIgnoreCase("death")) {
+            if (usedDeath) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
@@ -97,7 +101,7 @@ public class KillerBee extends NarutoRole {
                 public void run() {
                     timer++;
                     Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(player));
-                    if(timer >= 60) {
+                    if (timer >= 60) {
                         Bukkit.getOnlinePlayers().forEach(player1 -> player1.showPlayer(player));
                         player.sendMessage(CC.prefix("§fVous êtes désormais §avisible§f."));
                         cancel();

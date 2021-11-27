@@ -27,7 +27,8 @@ import java.util.*;
 
 public class Sasori extends NarutoRole {
 
-    public PotionEffectType[] positivePotionEffects = new PotionEffectType[] {
+    private final HashMap<UUID, PotionEffectType> map = new HashMap<>();
+    public PotionEffectType[] positivePotionEffects = new PotionEffectType[]{
             PotionEffectType.SPEED,
             PotionEffectType.FAST_DIGGING,
             PotionEffectType.INCREASE_DAMAGE,
@@ -37,7 +38,10 @@ public class Sasori extends NarutoRole {
             PotionEffectType.FIRE_RESISTANCE,
             PotionEffectType.INVISIBILITY,
     };
-    private final HashMap<UUID, PotionEffectType> map = new HashMap<>();
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.SASORI;
+    }
 
     @Override
     public String getRoleName() {
@@ -59,18 +63,18 @@ public class Sasori extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event.getItem(), "Marionnettisme")) {
+        if (Item.interactItem(event.getItem(), "Marionnettisme")) {
             List<Player> killed = new ArrayList<>();
             manager.getDeath().keySet().stream()
-                    .filter(s ->  manager.getDeath().get(s).equals(player.getUniqueId()))
+                    .filter(s -> manager.getDeath().get(s).equals(player.getUniqueId()))
                     .filter(s -> Bukkit.getPlayer(s) != null)
                     .map(Bukkit::getPlayer).forEach(killed::add);
 
             int i;
 
-            if(killed.size() <= 8) {
+            if (killed.size() <= 8) {
                 i = 9;
-            } else if(killed.size() <= 17) {
+            } else if (killed.size() <= 17) {
                 i = 18;
             } else {
                 i = 27;
@@ -90,7 +94,7 @@ public class Sasori extends NarutoRole {
         }
     }
 
-    private void giveStuff(Player player) {
+    public void giveStuff(Player player) {
         player.getInventory().clear();
         player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 1).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_DAMAGE, 1).toItemStack());
@@ -104,7 +108,7 @@ public class Sasori extends NarutoRole {
         player.getInventory().setLeggings(new ItemBuilder(Material.IRON_LEGGINGS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).toItemStack());
         player.getInventory().setBoots(new ItemBuilder(Material.DIAMOND_BOOTS).addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1).toItemStack());
 
-        if(roleManager.getRole(player) != null) {
+        if (roleManager.getRole(player) != null) {
             roleManager.getRole(player).onDistribute(player);
         }
 
@@ -115,19 +119,19 @@ public class Sasori extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-        if(event.getInventory().getName().equals("Marionnettisme")) {
+        if (event.getInventory().getName().equals("Marionnettisme")) {
             event.setCancelled(true);
-            if(event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
-            if(!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "")));
                 return;
             }
 
-            if(UHC.getUHC().getGameManager().getPlayers().contains(target.getUniqueId())) {
+            if (UHC.getUHC().getGameManager().getPlayers().contains(target.getUniqueId())) {
                 player.sendMessage(CC.prefix("§cCe joueur est en vie."));
                 return;
             }
@@ -136,9 +140,9 @@ public class Sasori extends NarutoRole {
             target.setGameMode(GameMode.SURVIVAL);
             target.teleport(player.getLocation());
             giveStuff(target);
-            //TODO CHANGER LE CAMP
+            roleManager.setCamp(target, Camp.AKATSUKI);
             target.setMaxHealth(12);
-            player.setMaxHealth(player.getMaxHealth()-2);
+            player.setMaxHealth(player.getMaxHealth() - 2);
 
             List<PotionEffectType> list = new ArrayList<>(Arrays.asList(positivePotionEffects));
             Collections.shuffle(list);
@@ -153,21 +157,21 @@ public class Sasori extends NarutoRole {
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
         Player sasori = Role.findPlayer(NarutoRoles.SASORI);
-        if(sasori == null) return;
-        if(!map.containsKey(player.getUniqueId())) return;
+        if (sasori == null) return;
+        if (!map.containsKey(player.getUniqueId())) return;
 
         PotionEffectType randomEffect = map.get(player.getUniqueId());
 
-        if(sasori.getLocation().distance(player.getLocation()) <= 20) {
-            if(randomEffect == PotionEffectType.SPEED) {
-                player.addPotionEffect(new PotionEffect(randomEffect, 3*20, 1, false, false));
+        if (sasori.getLocation().distance(player.getLocation()) <= 20) {
+            if (randomEffect == PotionEffectType.SPEED) {
+                player.addPotionEffect(new PotionEffect(randomEffect, 3 * 20, 1, false, false));
                 return;
             }
-            if(randomEffect == PotionEffectType.JUMP) {
-                player.addPotionEffect(new PotionEffect(randomEffect, 3*20, 3, false, false));
+            if (randomEffect == PotionEffectType.JUMP) {
+                player.addPotionEffect(new PotionEffect(randomEffect, 3 * 20, 3, false, false));
                 return;
             }
-            player.addPotionEffect(new PotionEffect(randomEffect, 3*20, 0, false, false));
+            player.addPotionEffect(new PotionEffect(randomEffect, 3 * 20, 0, false, false));
         }
 
     }

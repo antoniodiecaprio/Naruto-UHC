@@ -14,7 +14,7 @@ public class Item {
     }
 
     public static boolean interactItem(ItemStack var1, String var2) {
-        if(!hasDisplayName(var1)) return false;
+        if (!hasDisplayName(var1)) return false;
         return var1.getItemMeta().getDisplayName().equals("§7▎ §6§l" + var2 + " §8(§7Clic-droit§8)");
     }
 
@@ -23,7 +23,7 @@ public class Item {
     }
 
     public static boolean specialItem(ItemStack var1, String var2) {
-        if(!hasDisplayName(var1)) return false;
+        if (!hasDisplayName(var1)) return false;
         return var1.getItemMeta().getDisplayName().equals("§7▎ §6§l" + var2);
     }
 

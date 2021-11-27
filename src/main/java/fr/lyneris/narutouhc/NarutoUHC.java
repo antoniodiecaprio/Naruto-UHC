@@ -23,6 +23,9 @@ public class NarutoUHC extends JavaPlugin {
     private NPCManager npcManager;
     private PacketManager packetManager;
 
+    public static NarutoUHC getNaruto() {
+        return naruto;
+    }
 
     @Override
     public void onEnable() {
@@ -54,10 +57,6 @@ public class NarutoUHC extends JavaPlugin {
 
     public Manager getManager() {
         return manager;
-    }
-
-    public static NarutoUHC getNaruto() {
-        return naruto;
     }
 
     public Module getModule() {

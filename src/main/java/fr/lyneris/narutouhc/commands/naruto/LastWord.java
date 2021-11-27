@@ -9,14 +9,14 @@ import org.bukkit.entity.Player;
 public class LastWord {
 
     public LastWord(Player player, String[] args) {
-        if(Ino.transfer != null && Ino.transfer.equals(player.getUniqueId()) && Ino.nearPlayers.size() != 0) {
-            if(args.length < 2) {
+        if (Ino.transfer != null && Ino.transfer.equals(player.getUniqueId()) && Ino.nearPlayers.size() != 0) {
+            if (args.length < 2) {
                 player.sendMessage(Messages.syntax("/ns lastword <message>"));
                 return;
             }
 
             StringBuilder builder = new StringBuilder();
-            for(int i = 1; i <= args.length; i++) {
+            for (int i = 1; i <= args.length; i++) {
                 builder.append(args[i]).append(" ");
             }
 

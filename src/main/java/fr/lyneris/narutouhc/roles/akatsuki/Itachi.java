@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -40,6 +39,10 @@ public class Itachi extends NarutoRole {
     public int sharinganUses = 0;
     public boolean usedIzanagi = false;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.ITACHI;
+    }
+
     @Override
     public void resetCooldowns() {
         attaqueCooldown = 0;
@@ -49,15 +52,15 @@ public class Itachi extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(attaqueCooldown > 0) {
+        if (attaqueCooldown > 0) {
             attaqueCooldown--;
         }
 
-        if(swordCooldown > 0) {
+        if (swordCooldown > 0) {
             swordCooldown--;
         }
 
-        if(susanoCooldown > 0) {
+        if (susanoCooldown > 0) {
             susanoCooldown--;
         }
     }
@@ -84,15 +87,15 @@ public class Itachi extends NarutoRole {
 
     @Override
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
-        if(usingSusano) {
-            if(event.getEntity().getFireTicks() <= 0) {
+        if (usingSusano) {
+            if (event.getEntity().getFireTicks() <= 0) {
                 event.getEntity().setFireTicks(100);
             }
         }
 
-        if(Item.specialItem(player.getItemInHand(), "Epee")) {
-            if(usingSusano) {
-                if(swordCooldown > 0) {
+        if (Item.specialItem(player.getItemInHand(), "Epee")) {
+            if (usingSusano) {
+                if (swordCooldown > 0) {
                     event.setCancelled(true);
                     player.sendMessage(Messages.cooldown(swordCooldown));
                     return;
@@ -111,35 +114,35 @@ public class Itachi extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event.getItem(), "Susano")) {
+        if (Item.interactItem(event.getItem(), "Susano")) {
 
-            if(usedIzanagi) {
+            if (usedIzanagi) {
                 player.sendMessage(CC.prefix("§cVous ne pouvez pas utiliser cet item si vous avez utilisé le pouvoir Izanagi."));
                 return;
             }
 
-            if(susanoCooldown > 0) {
+            if (susanoCooldown > 0) {
                 player.sendMessage(Messages.cooldown(susanoCooldown));
                 return;
             }
 
             usingSusano = true;
             player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Epee")).toItemStack());
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             Tasks.runLater(() -> {
                 for (ItemStack content : player.getInventory().getContents()) {
-                    if(content != null && content.getType() == Material.IRON_SWORD && content.hasItemMeta() && content.getItemMeta().getDisplayName().equals(Item.specialItem("Epee"))) {
+                    if (content != null && content.getType() == Material.IRON_SWORD && content.hasItemMeta() && content.getItemMeta().getDisplayName().equals(Item.specialItem("Epee"))) {
                         player.getInventory().removeItem(content);
                     }
                 }
                 usingSusano = false;
-            }, 5*20*60);
+            }, 5 * 20 * 60);
 
-            susanoCooldown = 20*60;
+            susanoCooldown = 20 * 60;
 
         }
 
-        if(Item.interactItem(event.getItem(), "Genjutsu")) {
+        if (Item.interactItem(event.getItem(), "Genjutsu")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Genjutsu");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -165,15 +168,15 @@ public class Itachi extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-        if(event.getInventory().getName().equals("Genjutsu")) {
+        if (event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);
-            if(event.getSlot() == 1) {
-                if(Loc.getNearbyPlayers(player, 20).size() == 0) {
+            if (event.getSlot() == 1) {
+                if (Loc.getNearbyPlayers(player, 20).size() == 0) {
                     player.sendMessage(CC.prefix("§cIl n'y a personne autour de vous."));
                     return;
                 }
 
-                if(tsukuyomiUses >= 2) {
+                if (tsukuyomiUses >= 2) {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                     return;
                 }
@@ -182,22 +185,22 @@ public class Itachi extends NarutoRole {
 
                 Loc.getNearbyPlayers(player, 20).forEach(target -> {
                     cannotMove.add(target.getUniqueId());
-                    //TODO IMMOBILISER target 8s
+                    manager.setStuned(target, true, 8);
                     player.sendMessage(CC.prefix("§fVous avez immobilisé §c" + target.getName()));
                 });
-                Tasks.runLater(() -> cannotMove.clear(), 8*20);
+                Tasks.runLater(() -> cannotMove.clear(), 8 * 20);
                 player.closeInventory();
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Attaque");
@@ -211,19 +214,19 @@ public class Itachi extends NarutoRole {
             }
         }
 
-        if(event.getInventory().getName().equals("Attaque")) {
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
+        if (event.getInventory().getName().equals("Attaque")) {
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
             event.setCancelled(true);
 
-            if(attaqueCooldown > 0) {
+            if (attaqueCooldown > 0) {
                 player.sendMessage(Messages.cooldown(attaqueCooldown));
                 return;
             }
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
@@ -239,7 +242,7 @@ public class Itachi extends NarutoRole {
             player.teleport(targetLocation);
 
             player.sendMessage(CC.prefix("§fVous vous êtes téléporté derrière §a" + target.getName()));
-            attaqueCooldown = 5*60;
+            attaqueCooldown = 5 * 60;
 
         }
 
@@ -247,14 +250,14 @@ public class Itachi extends NarutoRole {
 
     @Override
     public void onAllPlayerDamage(EntityDamageEvent event, Player entity) {
-        if(cannotMove.contains(entity.getUniqueId())) {
+        if (cannotMove.contains(entity.getUniqueId())) {
             event.setCancelled(true);
         }
     }
 
     @Override
     public void onAllPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player damager) {
-        if(cannotMove.contains(damager.getUniqueId())) {
+        if (cannotMove.contains(damager.getUniqueId())) {
             event.setCancelled(true);
         }
     }
@@ -262,9 +265,9 @@ public class Itachi extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
         Player itachi = Role.findPlayer(NarutoRoles.ITACHI);
-        if(itachi == null) return;
+        if (itachi == null) return;
 
-        if(Role.isRole(player, NarutoRoles.SASUKE)) {
+        if (Role.isRole(player, NarutoRoles.SASUKE)) {
             itachi.sendMessage(CC.prefix("§cSasuke §fest mort. Vous obtenez un effet de §7Faiblesse 1 §fet vous perdez §c2 coeurs §fpermanent."));
             itachi.setMaxHealth(itachi.getMaxHealth() - 4);
             itachi.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, Integer.MAX_VALUE, 0, false, false));
@@ -285,9 +288,9 @@ public class Itachi extends NarutoRole {
     @Override
     public void onSubCommand(Player player, String[] args) {
 
-        if(args[0].equalsIgnoreCase("izanagi")) {
+        if (args[0].equalsIgnoreCase("izanagi")) {
 
-            if(usedIzanagi) {
+            if (usedIzanagi) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
@@ -296,38 +299,38 @@ public class Itachi extends NarutoRole {
 
             player.getInventory().addItem(new ItemBuilder(Material.GOLDEN_APPLE, 5).toItemStack());
             player.setHealth(player.getMaxHealth());
-            player.setMaxHealth(player.getMaxHealth()-2);
+            player.setMaxHealth(player.getMaxHealth() - 2);
             usedIzanagi = true;
         }
 
-        if(args[0].equalsIgnoreCase("sharingan")) {
-            if(args.length != 2) {
+        if (args[0].equalsIgnoreCase("sharingan")) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns sharingan <player>"));
                 return;
             }
 
-            if(sharinganUses >= 2) {
+            if (sharinganUses >= 2) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[1]);
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
 
             player.sendMessage(CC.CC_BAR);
-            if(manager.getDeath().keySet().stream().noneMatch(s -> manager.getDeath().get(s).equals(target.getUniqueId()))) {
+            if (manager.getDeath().keySet().stream().noneMatch(s -> manager.getDeath().get(s).equals(target.getUniqueId()))) {
                 player.sendMessage(CC.prefix("§c" + target.getName() + " §fn'a tué §cpersonne§f."));
             }
             manager.getDeath().keySet().forEach(s -> {
-                if(manager.getDeath().get(s).equals(target.getUniqueId())) {
+                if (manager.getDeath().get(s).equals(target.getUniqueId())) {
                     player.sendMessage(CC.prefix("§c" + target.getName() + " §fa tué §a" + s));
                 }
             });
-            if(roleManager.getRole(target) == null) {
+            if (roleManager.getRole(target) == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'a pas de rôle"));
             } else {
                 player.sendMessage(CC.prefix("§a" + target.getName() + " §fest §a" + roleManager.getRole(target).getRoleName()));
@@ -336,7 +339,7 @@ public class Itachi extends NarutoRole {
             int apple = 0;
 
             for (ItemStack content : target.getInventory().getContents()) {
-                if(content != null && content.getType() == Material.GOLDEN_APPLE) {
+                if (content != null && content.getType() == Material.GOLDEN_APPLE) {
                     apple += content.getAmount();
                 }
             }

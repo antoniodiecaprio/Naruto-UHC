@@ -9,15 +9,12 @@ import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.spigotmc.AntiXray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +28,21 @@ public class Kisame extends NarutoRole {
         return blocked.contains(player.getName());
     }
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.KISAME;
+    }
+
     @Override
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
-        if(event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player) {
             heartDamage += event.getFinalDamage();
         }
 
-        if(heartDamage >= 50) {
+        if (heartDamage >= 50) {
             heartDamage = 0;
-            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 5*20, 1, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40*20, 1, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40*20, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 5 * 20, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40 * 20, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40 * 20, 1, false, false));
             player.sendMessage(CC.prefix("§fVous avez infligé §c50 coeurs §fde dégâts, vous obtenez donc §eAbsorption§f, §dRégénération §fet §6Résistance au Feu§f."));
         }
 
@@ -69,11 +70,11 @@ public class Kisame extends NarutoRole {
 
     @Override
     public void onAllPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player damager) {
-        if(Item.specialItem(damager.getItemInHand(), "Samehada")) {
-            if(blocked.contains(event.getEntity().getName())) return;
+        if (Item.specialItem(damager.getItemInHand(), "Samehada")) {
+            if (blocked.contains(event.getEntity().getName())) return;
             blocked.add(event.getEntity().getName());
             event.getEntity().sendMessage(CC.prefix("§cSamehada §fa utilisé son épée sur vous, vous ne pouvez plus utiliser vos pouvoirs pendant §c1 minute§f."));
-            Tasks.runLater(() -> blocked.remove(event.getEntity().getName()), 60*20);
+            Tasks.runLater(() -> blocked.remove(event.getEntity().getName()), 60 * 20);
         }
     }
 

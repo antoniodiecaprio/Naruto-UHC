@@ -1,7 +1,5 @@
 package fr.lyneris.narutouhc.roles.orochimaru;
 
-import fr.lyneris.common.utils.Tasks;
-import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
@@ -10,7 +8,6 @@ import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -21,12 +18,17 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fr.lyneris.narutouhc.roles.orochimaru.Sakon.*;
+import static fr.lyneris.narutouhc.roles.orochimaru.Sakon.senpoCooldown;
+import static fr.lyneris.narutouhc.roles.orochimaru.Sakon.usedBarrier;
 
 public class Ukon extends NarutoRole {
 
     public static int senpoTimer = 0;
     public static int barrierTimer = 0;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.UKON;
+    }
 
     @Override
     public String getRoleName() {
@@ -47,19 +49,19 @@ public class Ukon extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Senpô")) {
+        if (Item.interactItem(event.getItem(), "Senpô")) {
 
-            if(senpoCooldown > 0) {
+            if (senpoCooldown > 0) {
                 player.sendMessage(Messages.cooldown(senpoCooldown));
                 return;
             }
 
-            if(Sakon.senpoTimer > 0) {
+            if (Sakon.senpoTimer > 0) {
                 Sakon.useSenpo();
                 return;
             }
 
-            if(senpoTimer > 0) {
+            if (senpoTimer > 0) {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
 
@@ -68,30 +70,30 @@ public class Ukon extends NarutoRole {
             player.sendMessage(CC.prefix("§fSi §aSakon §futilise cet item dans les 15 prochaines secondes l'item §as'activera§f."));
         }
 
-        if(Item.interactItem(event.getItem(), "Barrière protectrice")) {
+        if (Item.interactItem(event.getItem(), "Barrière protectrice")) {
 
-            if(usedBarrier) {
+            if (usedBarrier) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
             Player ukon = Role.findPlayer(NarutoRoles.UKON);
-            if(ukon == null) {
+            if (ukon == null) {
                 player.sendMessage(CC.prefix("§cUkon n'est pas en vie."));
                 return;
             }
 
-            if(ukon.getLocation().distance(player.getLocation()) > 40) {
+            if (ukon.getLocation().distance(player.getLocation()) > 40) {
                 player.sendMessage(CC.prefix("§cUkon doit être au maximum à 40 blocks de vous."));
                 return;
             }
 
-            if(Sakon.barrierTimer > 0) {
+            if (Sakon.barrierTimer > 0) {
                 Sakon.useBarrier();
                 return;
             }
 
-            if(barrierTimer > 0) {
+            if (barrierTimer > 0) {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
 
@@ -106,8 +108,8 @@ public class Ukon extends NarutoRole {
     public void onPlayerDeath(PlayerDeathEvent event, Player player, Player killer) {
         Player sakon = Role.findPlayer(NarutoRoles.SAKON);
 
-        if(sakon != null) {
-            if(sakon.getLocation().distance(player.getLocation()) <= 15) {
+        if (sakon != null) {
+            if (sakon.getLocation().distance(player.getLocation()) <= 15) {
                 sakon.setHealth(0);
                 sakon.sendMessage(CC.prefix("§cUkon est mort et vous a emporté avec lui..."));
             }
@@ -119,11 +121,11 @@ public class Ukon extends NarutoRole {
         Player ukon = Role.findPlayer(NarutoRoles.UKON);
         Player sakon = Role.findPlayer(NarutoRoles.SAKON);
 
-        if(ukon == null || sakon == null) return;
+        if (ukon == null || sakon == null) return;
 
-        if(ukon.getLocation().distance(sakon.getLocation()) <= 15) {
+        if (ukon.getLocation().distance(sakon.getLocation()) <= 15) {
             sakon.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-            sakon.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20, 0, false, false));
+            sakon.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 0, false, false));
         }
 
     }

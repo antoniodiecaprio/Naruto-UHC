@@ -1,22 +1,24 @@
 package fr.lyneris.narutouhc.packet;
 
-import java.util.*;
-import org.bukkit.entity.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.*;
-import io.netty.handler.codec.*;
-import net.minecraft.server.v1_8_R3.*;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageDecoder;
+import net.minecraft.server.v1_8_R3.Packet;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 
-public class PacketManager
-{
+import java.util.ArrayList;
+import java.util.List;
+
+public class PacketManager {
     private final List<PacketListener> listeners;
-    
+
     public PacketManager() {
         this.listeners = new ArrayList<>();
     }
-    
+
     public void onJoin(final Player player) {
-        final CraftPlayer nmsPlayer = (CraftPlayer)player;
+        final CraftPlayer nmsPlayer = (CraftPlayer) player;
         final Channel channel = nmsPlayer.getHandle().playerConnection.networkManager.channel;
         if (channel.pipeline().get("AtlantisPacketListener") != null) {
             return;
@@ -28,15 +30,15 @@ public class PacketManager
             }
         });
     }
-    
+
     public void onQuit(final Player player) {
-        final CraftPlayer nmsPlayer = (CraftPlayer)player;
+        final CraftPlayer nmsPlayer = (CraftPlayer) player;
         final Channel channel = nmsPlayer.getHandle().playerConnection.networkManager.channel;
         if (channel.pipeline().get("AtlantisPacketListener") != null) {
             channel.pipeline().remove("AtlantisPacketListener");
         }
     }
-    
+
     public void addListener(final PacketListener listener) {
         this.listeners.add(listener);
     }

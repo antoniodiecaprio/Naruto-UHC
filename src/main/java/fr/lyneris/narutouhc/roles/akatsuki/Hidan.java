@@ -16,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hidan extends NarutoRole {
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.HIDAN;
+    }
+
     @Override
     public String getRoleName() {
         return "Hidan";
@@ -38,9 +43,9 @@ public class Hidan extends NarutoRole {
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
         Player kakuzu = Role.findPlayer(NarutoRoles.KAKUZU);
-        if(kakuzu == null) return;
-        if(kakuzu.getLocation().distance(player.getLocation()) <= 10) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 3*20, 0, false, false));
+        if (kakuzu == null) return;
+        if (kakuzu.getLocation().distance(player.getLocation()) <= 10) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 3 * 20, 0, false, false));
         }
     }
 

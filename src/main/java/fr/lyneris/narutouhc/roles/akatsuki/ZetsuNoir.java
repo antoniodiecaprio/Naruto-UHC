@@ -2,6 +2,7 @@ package fr.lyneris.narutouhc.roles.akatsuki;
 
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.UHC;
@@ -18,7 +19,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,6 +27,10 @@ import java.util.List;
 public class ZetsuNoir extends NarutoRole {
 
     HashMap<String, Collection<PotionEffect>> effectsMap = new HashMap<>();
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.ZETSU_NOIR;
+    }
 
     @Override
     public String getRoleName() {
@@ -45,9 +49,9 @@ public class ZetsuNoir extends NarutoRole {
 
     @Override
     public void onSubCommand(Player player, String[] args) {
-        if(args[0].equalsIgnoreCase("zetsu")) {
+        if (args[0].equalsIgnoreCase("zetsu")) {
             StringBuilder builder = new StringBuilder();
-            for(int i = 0; i <= 20; i++) {
+            for (int i = 0; i <= 20; i++) {
                 builder.append(args[i]).append(" ");
             }
 
@@ -58,19 +62,19 @@ public class ZetsuNoir extends NarutoRole {
 
         }
 
-        if(args[0].equalsIgnoreCase("takealleffects")) {
-            if(args.length != 2) {
+        if (args[0].equalsIgnoreCase("takealleffects")) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns takealleffects <player>"));
                 return;
             }
             Player target = Bukkit.getPlayer(args[1]);
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
 
-            if(!effectsMap.containsKey(target.getName())) {
+            if (!effectsMap.containsKey(target.getName())) {
                 player.sendMessage(CC.prefix("§cVous n'avez pas tué ce joueur."));
                 return;
             }
@@ -85,7 +89,8 @@ public class ZetsuNoir extends NarutoRole {
 
     @Override
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
-        if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) player.removePotionEffect(PotionEffectType.INVISIBILITY);
+        if (player.hasPotionEffect(PotionEffectType.INVISIBILITY))
+            player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
 
     private boolean correctBlock(Player player) {
@@ -107,11 +112,11 @@ public class ZetsuNoir extends NarutoRole {
     @Override
     public void onSecond(int timer, Player player) {
         PlayerInventory inv = player.getInventory();
-        if(inv.getHelmet() == null && inv.getChestplate() == null && inv.getLeggings() == null && inv.getBoots() == null && correctBlock(player)) {
+        if (inv.getHelmet() == null && inv.getChestplate() == null && inv.getLeggings() == null && inv.getBoots() == null && correctBlock(player)) {
             player.removePotionEffect(PotionEffectType.SPEED);
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 4*20, 1, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 4*20, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 4 * 20, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 4 * 20, 1, false, false));
         } else {
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
             player.removePotionEffect(PotionEffectType.SPEED);

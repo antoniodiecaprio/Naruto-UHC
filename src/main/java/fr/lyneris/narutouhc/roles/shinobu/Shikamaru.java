@@ -22,13 +22,17 @@ import java.util.*;
 
 public class Shikamaru extends NarutoRole {
 
+    private final Map<UUID, PacketDisplay> inEye = new HashMap<>();
     public int intonUses = 0;
     public boolean usedEtreinte = false;
     public int eyeUses = 0;
-    private final Map<UUID, PacketDisplay> inEye = new HashMap<>();
     public boolean usedPower = false;
     public boolean hasNerf = false;
     public boolean usedSearch = false;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.SHIKAMARU;
+    }
 
     @Override
     public String getRoleName() {
@@ -49,7 +53,7 @@ public class Shikamaru extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event.getItem(), "Inton")) {
+        if (Item.interactItem(event.getItem(), "Inton")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Inton");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -118,22 +122,22 @@ public class Shikamaru extends NarutoRole {
 
         int radius = (manager.isDay() ? 15 : 30);
 
-        if(event.getInventory().getName().equals("Inton")) {
+        if (event.getInventory().getName().equals("Inton")) {
             event.setCancelled(true);
-            if(intonUses >= 3) {
+            if (intonUses >= 3) {
                 player.closeInventory();
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 3 fois."));
                 return;
             }
-            if(event.getSlot() == 1) {
+            if (event.getSlot() == 1) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Manipulation");
@@ -145,15 +149,15 @@ public class Shikamaru extends NarutoRole {
                 }
                 player.openInventory(inv);
             }
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Étreinte Mortelle");
@@ -166,15 +170,15 @@ public class Shikamaru extends NarutoRole {
                 player.openInventory(inv);
             }
 
-            if(event.getSlot() == 3) {
+            if (event.getSlot() == 3) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Oeil");
@@ -187,15 +191,15 @@ public class Shikamaru extends NarutoRole {
                 player.openInventory(inv);
             }
 
-            if(event.getSlot() == 4) {
+            if (event.getSlot() == 4) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player ignored : Loc.getNearbyPlayers(player, radius)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Recherche");
@@ -210,25 +214,25 @@ public class Shikamaru extends NarutoRole {
 
         }
 
-        if(event.getInventory().getName().equals("Recherche")) {
-            if(event.getCurrentItem().getType() == Material.SKULL_ITEM) {
+        if (event.getInventory().getName().equals("Recherche")) {
+            if (event.getCurrentItem().getType() == Material.SKULL_ITEM) {
                 if (!event.getCurrentItem().hasItemMeta()) return;
                 if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
                 player.closeInventory();
 
-                if(usedSearch) {
+                if (usedSearch) {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 }
 
                 Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-                if(!manager.getDeath().containsValue(target.getUniqueId())) {
+                if (!manager.getDeath().containsValue(target.getUniqueId())) {
                     player.sendMessage(CC.prefix("§cCe joueur n'a pas effectué de meurtre."));
                     return;
                 }
 
                 manager.getDeath().keySet().forEach(s -> {
-                    if(manager.getDeath().get(s).equals(target.getUniqueId())) {
+                    if (manager.getDeath().get(s).equals(target.getUniqueId())) {
                         player.sendMessage(CC.prefix("§c" + target.getName() + " §fa tué §a" + s));
                     }
                 });
@@ -238,75 +242,75 @@ public class Shikamaru extends NarutoRole {
             }
         }
 
-        if(event.getInventory().getName().equals("Manipulation")) {
+        if (event.getInventory().getName().equals("Manipulation")) {
             event.setCancelled(true);
-            if(event.getSlot() == 0) {
+            if (event.getSlot() == 0) {
                 player.closeInventory();
-                //TODO IMMOBILISER player 10s
+                manager.setStuned(player, true, 10);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
                 Loc.getNearbyPlayers(player, radius).forEach(target -> {
-                    //TODO IMMOBILISER target 10s
+                    manager.setStuned(target, true, 10);
                     target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
                     player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName()));
                     target.sendMessage(CC.prefix("§aShikamaru §fa utilisé son pouvoir §aManipulation §fsur vous. De ce fait, vous êtes immobilisé pendant §c10 secondes§f."));
                 });
 
-                if(usedPower && !hasNerf) {
+                if (usedPower && !hasNerf) {
                     hasNerf = true;
                     player.sendMessage(CC.prefix("§cVous avez utilisé deux pouvoirs dans une intervalle de 5 minutes. De ce fait, à chaque fois que vous utiliserais un pouvoir (hormis votre Oeil) vous recevrez Lenteur et Faiblesse pendant 1 minute."));
                 }
 
-                if(hasNerf) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60*20, 0, false, false));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
+                if (hasNerf) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60 * 20, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60 * 20, 0, false, false));
                 }
 
                 usedPower = true;
-                Tasks.runLater(() -> usedPower = false, 5*20*60);
+                Tasks.runLater(() -> usedPower = false, 5 * 20 * 60);
 
                 intonUses++;
-            } else if(event.getCurrentItem().getType() == Material.SKULL_ITEM) {
-                if(!event.getCurrentItem().hasItemMeta()) return;
-                if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            } else if (event.getCurrentItem().getType() == Material.SKULL_ITEM) {
+                if (!event.getCurrentItem().hasItemMeta()) return;
+                if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
                 player.closeInventory();
                 intonUses++;
 
                 Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-                //TODO IMMOBILISER target 10s
+                manager.setStuned(target, true, 10);
                 target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
 
                 player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName()));
                 target.sendMessage(CC.prefix("§aShikamaru §fa utilisé son pouvoir §aManipulation §fsur vous. De ce fait, vous êtes immobilisé pendant §c10 secondes§f."));
 
-                //TODO IMMOBILISER player 10s
+                manager.setStuned(player, true, 10);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
 
-                if(usedPower && !hasNerf) {
+                if (usedPower && !hasNerf) {
                     hasNerf = true;
                     player.sendMessage(CC.prefix("§cVous avez utilisé deux pouvoirs dans une intervalle de 5 minutes. De ce fait, à chaque fois que vous utiliserais un pouvoir (hormis votre Oeil) vous recevrez Lenteur et Faiblesse pendant 1 minute."));
                 }
 
-                if(hasNerf) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60*20, 0, false, false));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
+                if (hasNerf) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60 * 20, 0, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60 * 20, 0, false, false));
                 }
 
                 usedPower = true;
-                Tasks.runLater(() -> usedPower = false, 5*20*60);
+                Tasks.runLater(() -> usedPower = false, 5 * 20 * 60);
 
             }
 
         }
 
-        if(event.getInventory().getName().equals("Étreinte Mortelle")) {
+        if (event.getInventory().getName().equals("Étreinte Mortelle")) {
             event.setCancelled(true);
-            if(!(event.getCurrentItem().getType() == Material.SKULL_ITEM)) return;
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            if (!(event.getCurrentItem().getType() == Material.SKULL_ITEM)) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             player.closeInventory();
 
-            if(usedEtreinte) {
+            if (usedEtreinte) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
@@ -315,7 +319,8 @@ public class Shikamaru extends NarutoRole {
 
             target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
 
-            //TODO IMMOBILISER target ET joueur 10s
+            manager.setStuned(target, true, 10);
+            manager.setStuned(player, true, 10);
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir de §aManipulation sur §a" + target.getName()));
             target.sendMessage(CC.prefix("§aShikamaru §fa utilisé son pouvoir §aManipulation §fsur vous. De ce fait, vous êtes immobilisé pendant §c10 secondes§f. Vous recevez également §2Poison 2 §fpendant 10 secondes."));
@@ -325,29 +330,29 @@ public class Shikamaru extends NarutoRole {
 
             usedEtreinte = true;
 
-            if(usedPower && !hasNerf) {
+            if (usedPower && !hasNerf) {
                 hasNerf = true;
                 player.sendMessage(CC.prefix("§cVous avez utilisé deux pouvoirs dans une intervalle de 5 minutes. De ce fait, à chaque fois que vous utiliserais un pouvoir (hormis votre Oeil) vous recevrez Lenteur et Faiblesse pendant 1 minute."));
             }
 
-            if(hasNerf) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60*20, 0, false, false));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60*20, 0, false, false));
+            if (hasNerf) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60 * 20, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60 * 20, 0, false, false));
             }
 
             usedPower = true;
-            Tasks.runLater(() -> usedPower = false, 5*20*60);
+            Tasks.runLater(() -> usedPower = false, 5 * 20 * 60);
 
         }
 
-        if(event.getInventory().getName().equals("Oeil")) {
+        if (event.getInventory().getName().equals("Oeil")) {
             event.setCancelled(true);
-            if(!(event.getCurrentItem().getType() == Material.SKULL_ITEM)) return;
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+            if (!(event.getCurrentItem().getType() == Material.SKULL_ITEM)) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             player.closeInventory();
 
-            if(eyeUses >= 5) {
+            if (eyeUses >= 5) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 5 fois."));
                 return;
             }
@@ -356,7 +361,7 @@ public class Shikamaru extends NarutoRole {
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(inEye.containsKey(target.getUniqueId())) {
+            if (inEye.containsKey(target.getUniqueId())) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir sur ce joueur."));
                 return;
             }
@@ -370,16 +375,16 @@ public class Shikamaru extends NarutoRole {
 
     @Override
     public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
-        if(inEye.containsKey(player.getUniqueId())) {
+        if (inEye.containsKey(player.getUniqueId())) {
             PacketDisplay packetDisplay = inEye.get(player.getUniqueId());
 
             Player shikamaru = Role.findPlayer(NarutoRoles.SHIKAMARU);
-            if(shikamaru != null) {
+            if (shikamaru != null) {
                 if (!packetDisplay.isCustomNameVisible()) {
                     packetDisplay.setCustomNameVisible(true, shikamaru);
                 }
-                if(!packetDisplay.getText().equals(WorldUtils.getBeautyHealth(player)+" ❤")) {
-                    packetDisplay.rename(WorldUtils.getBeautyHealth(player)+" ❤", shikamaru);
+                if (!packetDisplay.getText().equals(WorldUtils.getBeautyHealth(player) + " ❤")) {
+                    packetDisplay.rename(WorldUtils.getBeautyHealth(player) + " ❤", shikamaru);
                 }
                 packetDisplay.teleport(player.getLocation(), shikamaru);
             }
@@ -387,8 +392,8 @@ public class Shikamaru extends NarutoRole {
     }
 
     public void setupOeil(Player shikamaru, Player target) {
-        if(target != null) {
-            PacketDisplay display = new PacketDisplay(target.getLocation(), WorldUtils.getBeautyHealth(target)+" ❤");
+        if (target != null) {
+            PacketDisplay display = new PacketDisplay(target.getLocation(), WorldUtils.getBeautyHealth(target) + " ❤");
 
             display.display(shikamaru);
 

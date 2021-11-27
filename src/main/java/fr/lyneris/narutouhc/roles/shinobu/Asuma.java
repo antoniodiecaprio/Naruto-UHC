@@ -1,7 +1,6 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
-import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
@@ -11,7 +10,6 @@ import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -20,7 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,9 @@ public class Asuma extends NarutoRole {
     public int avancement = 0;
     public Player latest = null;
 
-
+    public NarutoRoles getRole() {
+        return NarutoRoles.ASUMA;
+    }
 
     @Override
     public void resetCooldowns() {
@@ -40,7 +39,7 @@ public class Asuma extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(nueesCooldown > 0) {
+        if (nueesCooldown > 0) {
             nueesCooldown--;
         }
     }
@@ -66,53 +65,53 @@ public class Asuma extends NarutoRole {
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
 
-        if(avancement >= 2500) {
+        if (avancement >= 2500) {
             Player target = latest;
-            if(target != null) {
+            if (target != null) {
                 player.sendMessage(CC.prefix("§fProgression §aterminée§f. Voici l’identité du joueur auquel la progression est terminée : §a§l" + latest.getName()));
                 latest = null;
             }
         } else {
             Player ino = Role.findPlayer(NarutoRoles.INO);
-            if(ino != null) {
+            if (ino != null) {
                 int distance = (int) ino.getLocation().distance(player.getLocation());
-                if(distance <= 5) {
+                if (distance <= 5) {
                     avancement += 10;
                     latest = ino;
-                } else if(distance <= 10) {
+                } else if (distance <= 10) {
                     avancement += 5;
                     latest = ino;
-                } else if(distance <= 20) {
+                } else if (distance <= 20) {
                     avancement += 1;
                     latest = ino;
                 }
             }
 
             Player shikamaru = Role.findPlayer(NarutoRoles.SHIKAMARU);
-            if(shikamaru != null) {
+            if (shikamaru != null) {
                 int distance = (int) shikamaru.getLocation().distance(player.getLocation());
-                if(distance <= 5) {
+                if (distance <= 5) {
                     avancement += 10;
                     latest = shikamaru;
-                } else if(distance <= 10) {
+                } else if (distance <= 10) {
                     avancement += 5;
                     latest = shikamaru;
-                } else if(distance <= 20) {
+                } else if (distance <= 20) {
                     avancement += 1;
                     latest = shikamaru;
                 }
             }
 
             Player choji = Role.findPlayer(NarutoRoles.CHOJI);
-            if(choji != null) {
+            if (choji != null) {
                 int distance = (int) choji.getLocation().distance(player.getLocation());
-                if(distance <= 5) {
+                if (distance <= 5) {
                     avancement += 10;
                     latest = choji;
-                } else if(distance <= 10) {
+                } else if (distance <= 10) {
                     avancement += 5;
                     latest = choji;
-                } else if(distance <= 20) {
+                } else if (distance <= 20) {
                     avancement += 1;
                     latest = choji;
                 }
@@ -123,20 +122,20 @@ public class Asuma extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Nuées Ardentes")) {
+        if (Item.interactItem(event.getItem(), "Nuées Ardentes")) {
 
-            if(nueesCooldown > 0) {
+            if (nueesCooldown > 0) {
                 player.sendMessage(Messages.cooldown(nueesCooldown));
                 return;
             }
 
             final Location front;
             front = player.getLocation();
-            Tasks.runLater(() -> front.getWorld().createExplosion(front, 3.0f), 3*20);
+            Tasks.runLater(() -> front.getWorld().createExplosion(front, 3.0f), 3 * 20);
 
             player.sendMessage(CC.prefix("§fUne explosion va retentir dans §a3 secondes§f."));
 
-            nueesCooldown = 5*60;
+            nueesCooldown = 5 * 60;
 
         }
     }

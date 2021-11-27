@@ -32,18 +32,22 @@ import java.util.UUID;
 
 public class Obito extends NarutoRole {
 
-    private int arimasuCooldown = 0;
-    private int sonohokaCooldown = 0;
     public HashMap<UUID, Location> oldLocation = new HashMap<>();
     public boolean invisible = false;
     public int attaqueCooldown = 0;
     public List<UUID> cannotMove = new ArrayList<>();
     public int tsukuyomiUses = 0;
+    public boolean izanagi = false;
+    private int arimasuCooldown = 0;
+    private int sonohokaCooldown = 0;
     private int ninjutsuCooldown = 0;
     private int swordCooldown = 0;
-    public boolean izanagi = false;
     private boolean usingSusano = false;
     private int susanoCooldown = 0;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.OBITO;
+    }
 
     @Override
     public void resetCooldowns() {
@@ -57,12 +61,12 @@ public class Obito extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(arimasuCooldown > 0) arimasuCooldown--;
-        if(sonohokaCooldown > 0) sonohokaCooldown--;
-        if(attaqueCooldown > 0) attaqueCooldown--;
-        if(ninjutsuCooldown > 0) ninjutsuCooldown--;
-        if(susanoCooldown > 0) susanoCooldown--;
-        if(swordCooldown > 0) swordCooldown--;
+        if (arimasuCooldown > 0) arimasuCooldown--;
+        if (sonohokaCooldown > 0) sonohokaCooldown--;
+        if (attaqueCooldown > 0) attaqueCooldown--;
+        if (ninjutsuCooldown > 0) ninjutsuCooldown--;
+        if (susanoCooldown > 0) susanoCooldown--;
+        if (swordCooldown > 0) swordCooldown--;
     }
 
     @Override
@@ -78,8 +82,8 @@ public class Obito extends NarutoRole {
     @Override
     public void onAllPlayerDamage(EntityDamageEvent event, Player player) {
         int health = (int) player.getHealth();
-        double resistance = ((player.getMaxHealth() - health)*2);
-        event.setDamage(event.getFinalDamage()*(1-(resistance/100)));
+        double resistance = ((player.getMaxHealth() - health) * 2);
+        event.setDamage(event.getFinalDamage() * (1 - (resistance / 100)));
     }
 
     @Override
@@ -88,8 +92,11 @@ public class Obito extends NarutoRole {
         player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
 
         List<String> list = new ArrayList<>();
-        //TODO CHECK CAMP
-        UHC.getUHC().getGameManager().getPlayers().stream().filter(e -> Bukkit.getPlayer(e) != null).map(e -> Bukkit.getPlayer(e).getName()).forEach(list::add);
+        UHC.getUHC().getGameManager().getPlayers().stream()
+                .filter(e -> Bukkit.getPlayer(e) != null)
+                .filter(uuid -> roleManager.getCamp(uuid) == Camp.AKATSUKI)
+                .map(e -> Bukkit.getPlayer(e).getName())
+                .forEach(list::add);
 
         player.sendMessage(CC.prefix("§cListe des Akatsuki:"));
         list.forEach(s -> player.sendMessage(" §8- §c" + s));
@@ -106,9 +113,9 @@ public class Obito extends NarutoRole {
 
     @Override
     public void onAllPlayerJoin(PlayerJoinEvent event, Player player) {
-        if(invisible) {
+        if (invisible) {
             Player obito = Role.findPlayer(NarutoRoles.OBITO);
-            if(obito != null) {
+            if (obito != null) {
                 player.hidePlayer(obito);
             }
         }
@@ -118,17 +125,17 @@ public class Obito extends NarutoRole {
     @Override
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
 
-        if(invisible) event.setCancelled(true);
+        if (invisible) event.setCancelled(true);
 
-        if(usingSusano) {
-            if(event.getEntity().getFireTicks() <= 0) {
+        if (usingSusano) {
+            if (event.getEntity().getFireTicks() <= 0) {
                 event.getEntity().setFireTicks(60);
             }
         }
 
-        if(Item.specialItem(player.getItemInHand(), "Epee")) {
-            if(usingSusano && !izanagi) {
-                if(swordCooldown > 0) {
+        if (Item.specialItem(player.getItemInHand(), "Epee")) {
+            if (usingSusano && !izanagi) {
+                if (swordCooldown > 0) {
                     event.setCancelled(true);
                     player.sendMessage(Messages.cooldown(swordCooldown));
                     return;
@@ -145,24 +152,24 @@ public class Obito extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event, "Susano")) {
-            if(susanoCooldown > 0) {
+        if (Item.interactItem(event, "Susano")) {
+            if (susanoCooldown > 0) {
                 player.sendMessage(Messages.cooldown(susanoCooldown));
                 return;
             }
-            if(izanagi) {
+            if (izanagi) {
                 player.sendMessage(prefix("&cVous avez utilisé votre Izanagi, vous ne pouvez pas utiliser le Susano."));
                 return;
             }
             usingSusano = true;
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).setName(Item.specialItem("Epee")).addEnchant(Enchantment.DAMAGE_ALL, 7).toItemStack());
 
-            susanoCooldown = 20*60;
-            Tasks.runAsyncLater(() -> usingSusano = false, 5*20*60);
+            susanoCooldown = 20 * 60;
+            Tasks.runAsyncLater(() -> usingSusano = false, 5 * 20 * 60);
         }
 
-        if(Item.interactItem(event.getItem(), "Genjutsu")) {
+        if (Item.interactItem(event.getItem(), "Genjutsu")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Genjutsu");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -185,7 +192,7 @@ public class Obito extends NarutoRole {
             player.openInventory(inv);
         }
 
-        if(Item.interactItem(event.getItem(), "Kamui")) {
+        if (Item.interactItem(event.getItem(), "Kamui")) {
 
             Inventory inv = Bukkit.createInventory(null, 9, "Kamui");
 
@@ -198,14 +205,14 @@ public class Obito extends NarutoRole {
 
         }
 
-        if(Item.interactItem(event, "Ninjutsu Spatio-Temporel")) {
+        if (Item.interactItem(event, "Ninjutsu Spatio-Temporel")) {
 
-            if(this.ninjutsuCooldown > 0) {
+            if (this.ninjutsuCooldown > 0) {
                 player.sendMessage(Messages.cooldown(ninjutsuCooldown));
                 return;
             }
 
-            ninjutsuCooldown = 5*60;
+            ninjutsuCooldown = 5 * 60;
             invisible = true;
             player.sendMessage(prefix("&fVous êtes désormais &aInvisible&f."));
             Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(player));
@@ -213,22 +220,22 @@ public class Obito extends NarutoRole {
                 Bukkit.getOnlinePlayers().forEach(player1 -> player1.showPlayer(player));
                 invisible = false;
                 player.sendMessage(prefix("&fVous êtes désormais &cVisible&f."));
-            }, 20*60);
+            }, 20 * 60);
         }
     }
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
 
-        if(event.getInventory().getName().equals("Genjutsu")) {
+        if (event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);
-            if(event.getSlot() == 1) {
-                if(Loc.getNearbyPlayers(player, 20).size() == 0) {
+            if (event.getSlot() == 1) {
+                if (Loc.getNearbyPlayers(player, 20).size() == 0) {
                     player.sendMessage(CC.prefix("§cIl n'y a personne autour de vous."));
                     return;
                 }
 
-                if(tsukuyomiUses >= 2) {
+                if (tsukuyomiUses >= 2) {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                     return;
                 }
@@ -237,22 +244,22 @@ public class Obito extends NarutoRole {
 
                 Loc.getNearbyPlayers(player, 20).forEach(target -> {
                     cannotMove.add(target.getUniqueId());
-                    //TODO IMMOBILISER target 8s
+                    manager.setStuned(target, true, 8);
                     player.sendMessage(CC.prefix("§fVous avez immobilisé §c" + target.getName()));
                 });
-                Tasks.runLater(() -> cannotMove.clear(), 8*20);
+                Tasks.runLater(() -> cannotMove.clear(), 8 * 20);
                 player.closeInventory();
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Attaque");
@@ -266,19 +273,19 @@ public class Obito extends NarutoRole {
             }
         }
 
-        if(event.getInventory().getName().equals("Attaque")) {
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
+        if (event.getInventory().getName().equals("Attaque")) {
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
             event.setCancelled(true);
 
-            if(attaqueCooldown > 0) {
+            if (attaqueCooldown > 0) {
                 player.sendMessage(Messages.cooldown(attaqueCooldown));
                 return;
             }
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
@@ -294,21 +301,21 @@ public class Obito extends NarutoRole {
             player.teleport(targetLocation);
 
             player.sendMessage(CC.prefix("§fVous vous êtes téléporté derrière §a" + target.getName()));
-            attaqueCooldown = 5*60;
+            attaqueCooldown = 5 * 60;
 
         }
 
-        if(event.getInventory().getName().equals("Kamui")) {
+        if (event.getInventory().getName().equals("Kamui")) {
 
             event.setCancelled(true);
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
 
-            if(event.getSlot() == 1) {
+            if (event.getSlot() == 1) {
                 final Location oldLocation;
                 oldLocation = player.getLocation();
 
-                if(arimasuCooldown > 0) {
+                if (arimasuCooldown > 0) {
                     player.sendMessage(Messages.cooldown(sonohokaCooldown));
                     return;
                 }
@@ -320,21 +327,21 @@ public class Obito extends NarutoRole {
                 Tasks.runLater(() -> {
                     player.teleport(oldLocation);
                     player.sendMessage(CC.prefix("§fVous avez été téléporté à votre ancienne position."));
-                }, 10*20*60);
+                }, 10 * 20 * 60);
 
-                arimasuCooldown = 15*60;
+                arimasuCooldown = 15 * 60;
 
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 7 && nearbyPlayer <= 16) {
+                if (nearbyPlayer > 7 && nearbyPlayer <= 16) {
                     i = 18;
-                } else if(nearbyPlayer > 16) {
+                } else if (nearbyPlayer > 16) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Arimasu");
@@ -349,12 +356,12 @@ public class Obito extends NarutoRole {
 
         }
 
-        if(event.getInventory().getName().equals("Arimasu")) {
+        if (event.getInventory().getName().equals("Arimasu")) {
 
             final Location oldLocation;
             oldLocation = player.getLocation();
 
-            if(sonohokaCooldown > 0) {
+            if (sonohokaCooldown > 0) {
                 player.sendMessage(Messages.cooldown(arimasuCooldown));
                 return;
             }
@@ -364,7 +371,7 @@ public class Obito extends NarutoRole {
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
@@ -380,25 +387,25 @@ public class Obito extends NarutoRole {
             Tasks.runLater(() -> {
                 target.teleport(oldLocation);
                 target.sendMessage(CC.prefix("§fVous avez été téléporté à votre ancienne position."));
-            }, 5*20*60);
+            }, 5 * 20 * 60);
 
-            sonohokaCooldown = 30*60;
+            sonohokaCooldown = 30 * 60;
         }
     }
 
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
-        if(event.getFrom().getBlockX() == event.getTo().getBlockX() &&
+        if (event.getFrom().getBlockX() == event.getTo().getBlockX() &&
                 event.getFrom().getBlockY() == event.getTo().getBlockY() &&
                 event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
-        if(!invisible) return;
+        if (!invisible) return;
 
         player.getWorld().spigot().playEffect(player.getLocation(), Effect.COLOURED_DUST, 0, 1, 23, 23, 23, 1, 0, 64);
     }
 
     @Override
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
-        if(invisible) event.setCancelled(true);
+        if (invisible) event.setCancelled(true);
     }
 
 
@@ -409,7 +416,7 @@ public class Obito extends NarutoRole {
 
     @Override
     public void onPlayerKill(PlayerDeathEvent event, Player killer) {
-        if(killer.getHealth() + 3 > killer.getMaxHealth()) {
+        if (killer.getHealth() + 3 > killer.getMaxHealth()) {
             killer.setHealth(killer.getMaxHealth());
         } else {
             killer.setHealth(killer.getMaxHealth() + 3);
@@ -419,11 +426,11 @@ public class Obito extends NarutoRole {
 
     @Override
     public void onPlayerChat(AsyncPlayerChatEvent event, Player player) {
-        if(event.getMessage().startsWith("!")) {
+        if (event.getMessage().startsWith("!")) {
             String message = event.getMessage().substring(1);
             Player madara = Role.findPlayer(NarutoRoles.OBITO);
-            if(madara != null) {
-                for(Player sendMessage : new Player[] {player, madara}) {
+            if (madara != null) {
+                for (Player sendMessage : new Player[]{player, madara}) {
                     sendMessage.sendMessage("&f(&c!&f) &cObito&8: &f" + message);
                 }
             } else {
@@ -434,8 +441,8 @@ public class Obito extends NarutoRole {
 
     @Override
     public void onSubCommand(Player player, String[] args) {
-        if(args[0].equalsIgnoreCase("izanagi")) {
-            if(izanagi) {
+        if (args[0].equalsIgnoreCase("izanagi")) {
+            if (izanagi) {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
@@ -445,11 +452,11 @@ public class Obito extends NarutoRole {
             player.setMaxHealth(player.getMaxHealth() - 2);
         }
 
-        if(args[0].equalsIgnoreCase("yameru")) {
+        if (args[0].equalsIgnoreCase("yameru")) {
             for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
-                if(Bukkit.getPlayer(uuid) != null) {
+                if (Bukkit.getPlayer(uuid) != null) {
                     Player target = Bukkit.getPlayer(uuid);
-                    if(target.getWorld().getName().equals("kamui") && oldLocation.get(uuid) != null) {
+                    if (target.getWorld().getName().equals("kamui") && oldLocation.get(uuid) != null) {
                         target.teleport(oldLocation.get(uuid));
                         target.sendMessage(CC.prefix("§aObito §fa décidé de vous téléporter sur le monde normal."));
                         player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fdans le monde normal."));

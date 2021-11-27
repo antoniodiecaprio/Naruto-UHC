@@ -2,6 +2,7 @@ package fr.lyneris.narutouhc.roles.taka;
 
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -15,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Suigetsu extends NarutoRole {
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.SUIGETSU;
+    }
+
     @Override
     public String getRoleName() {
         return "Suigetsu";
@@ -33,7 +39,7 @@ public class Suigetsu extends NarutoRole {
 
     @Override
     public void onPlayerMove(PlayerMoveEvent event, Player player) {
-        if(event.getTo().getBlock().getType() == Material.WATER || event.getTo().getBlock().getType() == Material.STATIONARY_WATER) {
+        if (event.getTo().getBlock().getType() == Material.WATER || event.getTo().getBlock().getType() == Material.STATIONARY_WATER) {
 
         }
     }
@@ -41,7 +47,7 @@ public class Suigetsu extends NarutoRole {
     @Override
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
         int random = (int) (Math.random() * 10);
-        if(random == 2) {
+        if (random == 2) {
             event.setDamage(0.001);
         }
     }

@@ -21,6 +21,10 @@ public class Neji extends NarutoRole {
     public int byakuganCooldown = 0;
     public int hakkeCooldown = 0;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.NEJI;
+    }
+
     @Override
     public void resetCooldowns() {
         byakuganCooldown = 0;
@@ -29,15 +33,15 @@ public class Neji extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(byakuganCooldown > 0) {
+        if (byakuganCooldown > 0) {
             byakuganCooldown--;
         }
 
-        if(hakkeCooldown > 0) {
+        if (hakkeCooldown > 0) {
             hakkeCooldown--;
         }
     }
-    
+
     @Override
     public String getRoleName() {
         return "Neji";
@@ -58,8 +62,8 @@ public class Neji extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event.getItem(), "Byakugan")) {
-            if(byakuganCooldown > 0) {
+        if (Item.interactItem(event.getItem(), "Byakugan")) {
+            if (byakuganCooldown > 0) {
                 player.sendMessage(Messages.cooldown(byakuganCooldown));
                 return;
             }
@@ -75,13 +79,13 @@ public class Neji extends NarutoRole {
 
             });
 
-            byakuganCooldown = 20*60;
+            byakuganCooldown = 20 * 60;
 
         }
 
-        if(Item.interactItem(event.getItem(), "Hakke")) {
+        if (Item.interactItem(event.getItem(), "Hakke")) {
 
-            if(hakkeCooldown > 0) {
+            if (hakkeCooldown > 0) {
                 player.sendMessage(Messages.cooldown(byakuganCooldown));
                 return;
             }
@@ -90,13 +94,13 @@ public class Neji extends NarutoRole {
 
             Loc.getNearbyPlayers(player, 10).forEach(target -> {
                 target.damage(0.1);
-                target.setHealth(target.getHealth()-6);
-                target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3*20, 0, false, false));
-                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3*20, 0, false, false));
+                target.setHealth(target.getHealth() - 6);
+                target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 0, false, false));
+                target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3 * 20, 0, false, false));
                 target.sendMessage(CC.prefix("§aNeji §fa utilisé son pouvoir sur vous, vous venez de perdre §c3 coeurs §fet reçu §8Blindness §fet §7Slowness §fpour 4 secondes."));
             });
 
-            hakkeCooldown = 20*60;
+            hakkeCooldown = 20 * 60;
 
         }
     }
@@ -104,8 +108,8 @@ public class Neji extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
         Player neji = Role.findPlayer(NarutoRoles.NEJI);
-        if(neji == null) return;
-        if(Role.isRole(player, NarutoRoles.HINATA)) {
+        if (neji == null) return;
+        if (Role.isRole(player, NarutoRoles.HINATA)) {
             neji.sendMessage(CC.prefix("§aHinata §fest §cmort§f. De ce fait, vous obtenez §cForce I §fde façon permanente."));
             neji.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         }
@@ -114,8 +118,8 @@ public class Neji extends NarutoRole {
     @Override
     public void onAllPlayerPowerUse(Player player) {
         Player neji = Role.findPlayer(NarutoRoles.NEJI);
-        if(neji == null) return;
-        if(player.getLocation().distance(neji.getLocation()) <= 20) {
+        if (neji == null) return;
+        if (player.getLocation().distance(neji.getLocation()) <= 20) {
             neji.sendMessage(CC.prefix("§a" + roleManager.getRole(player).getRoleName() + " §fvient d'utiliser son pouvoir autour de vous."));
         }
     }

@@ -24,6 +24,10 @@ public class YondaimeRaikage extends NarutoRole {
     public boolean usingArmor = false;
     public int armorTime = 20 * 60;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.YONDAIME_RAIKAGE;
+    }
+
     @Override
     public String getRoleName() {
         return "Yondaime Raikage";

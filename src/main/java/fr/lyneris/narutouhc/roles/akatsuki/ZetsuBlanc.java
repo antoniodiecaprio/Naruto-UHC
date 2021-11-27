@@ -29,6 +29,10 @@ public class ZetsuBlanc extends NarutoRole {
     private int metamorphoseCooldown = 0;
     private boolean usedReset = false;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.ZETSU_BLANC;
+    }
+
     @Override
     public String getRoleName() {
         return "Zetsu Blanc";
@@ -56,20 +60,20 @@ public class ZetsuBlanc extends NarutoRole {
 
     @Override
     public void onSubCommand(Player player, String[] args) {
-        if(args[0].equalsIgnoreCase("métamorphose")) {
-            if(args.length != 2) {
+        if (args[0].equalsIgnoreCase("métamorphose")) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns métamorphose <player>"));
                 return;
             }
 
-            if(metamorphoseCooldown > 0) {
+            if (metamorphoseCooldown > 0) {
                 player.sendMessage(Messages.cooldown(metamorphoseCooldown));
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[1]);
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
@@ -89,11 +93,11 @@ public class ZetsuBlanc extends NarutoRole {
             player.sendMessage(CC.prefix("§fVous êtes maintenant métamorphosé en §a" + target.getName() + "§f."));
 
 
-            metamorphoseCooldown = 20*60;
+            metamorphoseCooldown = 20 * 60;
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if(metamorphoseCooldown <= 0) {
+                    if (metamorphoseCooldown <= 0) {
                         player.sendMessage(CC.prefix("§fVotre cooldown de la commande §a/ns métamorphose §fvient d'expirer."));
                         cancel();
                     } else {
@@ -104,28 +108,28 @@ public class ZetsuBlanc extends NarutoRole {
 
         }
 
-        if(args[0].equalsIgnoreCase("reset")) {
+        if (args[0].equalsIgnoreCase("reset")) {
 
-            if(args.length != 2) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns reset <player>"));
                 return;
             }
 
-            if(usedReset) {
+            if (usedReset) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[1]);
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
             player.sendMessage(CC.prefix("§fVous avez reset les délais de §a" + target.getName()));
             roleManager.getRole(target).resetCooldowns();
             target.sendMessage(CC.prefix("§fLe §aZetsu Blanc §fa reset vos cooldowns."));
-            player.setMaxHealth(player.getMaxHealth()-4);
+            player.setMaxHealth(player.getMaxHealth() - 4);
 
             usedReset = true;
 
@@ -173,13 +177,13 @@ public class ZetsuBlanc extends NarutoRole {
 
     public class MetamorphoseTask extends BukkitRunnable {
 
-        private int timer = 5*60;
+        private int timer = 5 * 60;
 
         @Override
         public void run() {
             Player zetsuPlayer = Role.findPlayer(NarutoRoles.ZETSU_BLANC);
-            if(timer == 0) {
-                if(zetsuPlayer != null) {
+            if (timer == 0) {
+                if (zetsuPlayer != null) {
                     IdentityChanger.changePlayerName(zetsuPlayer, getOriginalName());
                     IdentityChanger.changeSkin(zetsuPlayer, getOriginalSkin(), false);
                     setCopiedName(null);
@@ -188,7 +192,7 @@ public class ZetsuBlanc extends NarutoRole {
                 }
                 cancel();
             }
-            if(zetsuPlayer != null) {
+            if (zetsuPlayer != null) {
                 Title.sendActionBar(zetsuPlayer, "§7▎ §aMétamorphose §f§l» §7" + Utils.getFormattedTime(this.timer));
             }
             timer--;

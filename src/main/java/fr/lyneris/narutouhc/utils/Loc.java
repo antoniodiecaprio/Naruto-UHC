@@ -86,7 +86,7 @@ public class Loc {
         final Vector localVector2 = paramLocation.subtract(localLocation).toVector().normalize();
         double d1 = Math.toDegrees(Math.atan2(localVector1.getX(), localVector1.getZ()));
         d1 -= Math.toDegrees(Math.atan2(localVector2.getX(), localVector2.getZ()));
-        d1 = (int)(d1 + 22.5) % 360;
+        d1 = (int) (d1 + 22.5) % 360;
         if (d1 < 0.0) {
             d1 += 360.0;
         }
@@ -95,7 +95,7 @@ public class Loc {
 
     public static String getDirectionMate(Player player, Player mate, int distance) {
         if (player.getWorld().equals(mate.getWorld())) {
-            if(player.getLocation().distance(mate.getLocation()) > distance) {
+            if (player.getLocation().distance(mate.getLocation()) > distance) {
                 if (getDirectionTo(player, mate.getLocation().clone()) <= 45.0) {
                     return "§6" + mate.getName() + "§f \u2b06 ? ";
                 } else if (getDirectionTo(player, mate.getLocation().clone()) <= 90.0) {

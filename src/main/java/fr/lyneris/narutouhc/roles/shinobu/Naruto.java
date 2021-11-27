@@ -32,6 +32,10 @@ public class Naruto extends NarutoRole {
     public int paumeUse = 0;
     public boolean isUsingRasengan = false;
 
+    public NarutoRoles getRole() {
+        return NarutoRoles.NARUTO;
+    }
+
     @Override
     public String getRoleName() {
         return "Naruto";
@@ -46,15 +50,15 @@ public class Naruto extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(kuramaCooldown > 0) {
+        if (kuramaCooldown > 0) {
             kuramaCooldown--;
         }
 
-        if(rasenganCooldown > 0) {
+        if (rasenganCooldown > 0) {
             rasenganCooldown--;
         }
 
-        if(senjutsuCooldown > 0) {
+        if (senjutsuCooldown > 0) {
             senjutsuCooldown--;
         }
     }
@@ -101,16 +105,16 @@ public class Naruto extends NarutoRole {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kurama")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Rasengan")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Senjutsu")).toItemStack());
-        player.setMaxHealth(player.getMaxHealth()+4);
+        player.setMaxHealth(player.getMaxHealth() + 4);
     }
 
     @Override
     public void onMinute(int minute, Player player) {
 
-        if(minute == 30 || minute == 40) {
+        if (minute == 30 || minute == 40) {
             for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
                 Player akatsuki = Bukkit.getPlayer(uuid);
-                if(akatsuki != null) {
+                if (akatsuki != null) {
                     int x = player.getLocation().getBlockX();
                     int y = player.getLocation().getBlockY();
                     int z = player.getLocation().getBlockZ();
@@ -127,9 +131,9 @@ public class Naruto extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
-        if(Role.isRole(player, NarutoRoles.JIRAYA)) {
+        if (Role.isRole(player, NarutoRoles.JIRAYA)) {
             Player naruto = Role.findPlayer(NarutoRoles.NARUTO);
-            if(naruto == null) return;
+            if (naruto == null) return;
             naruto.sendMessage(CC.prefix("§cJiraya §fest mort. Vous obtenez donc §63 coeurs §fpermanent."));
             naruto.setMaxHealth(naruto.getMaxHealth() + 6);
         }
@@ -138,44 +142,44 @@ public class Naruto extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Kurama")) {
-            if(kuramaCooldown > 0) {
+        if (Item.interactItem(event.getItem(), "Kurama")) {
+            if (kuramaCooldown > 0) {
                 player.sendMessage(Messages.cooldown(kuramaCooldown));
                 return;
             }
 
             usedKurama = true;
-            kuramaCooldown = 20*60;
+            kuramaCooldown = 20 * 60;
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aKurama§f."));
 
             player.removePotionEffect(PotionEffectType.SPEED);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 1, false, false));
-            Tasks.runLater(() -> usedKurama = false, 5*20*60);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 1, false, false));
+            Tasks.runLater(() -> usedKurama = false, 5 * 20 * 60);
         }
 
-        if(Item.interactItem(event.getItem(), "Senjutsu")) {
-            if(senjutsuCooldown > 0) {
+        if (Item.interactItem(event.getItem(), "Senjutsu")) {
+            if (senjutsuCooldown > 0) {
                 player.sendMessage(Messages.cooldown(senjutsuCooldown));
                 return;
             }
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aSenjutsu§f."));
 
-            senjutsuCooldown = 30*60;
+            senjutsuCooldown = 30 * 60;
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 1, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 0, false, false));
         }
 
-        if(Item.interactItem(player.getItemInHand(), "Rasengan")) {
-            if(rasenganCooldown > 0) {
+        if (Item.interactItem(player.getItemInHand(), "Rasengan")) {
+            if (rasenganCooldown > 0) {
                 player.sendMessage(Messages.cooldown(rasenganCooldown));
                 return;
             }
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aRasengan§f."));
 
-            rasenganCooldown = 5*60;
+            rasenganCooldown = 5 * 60;
             isUsingRasengan = true;
 
         }
@@ -184,8 +188,8 @@ public class Naruto extends NarutoRole {
 
     @Override
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
-        if(!(event.getEntity() instanceof Player)) return;
-        if(!isUsingRasengan) return;
+        if (!(event.getEntity() instanceof Player)) return;
+        if (!isUsingRasengan) return;
 
 
         Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.BLOCK_EXPLOSION, 5);
@@ -199,18 +203,18 @@ public class Naruto extends NarutoRole {
 
     @Override
     public void onSubCommand(Player player, String[] args) {
-        if(args[0].equalsIgnoreCase("smell")) {
-            if(args.length != 2) {
+        if (args[0].equalsIgnoreCase("smell")) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns smell <player>"));
                 return;
             }
             Player target = Bukkit.getPlayer(args[1]);
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
 
-            if(!usedKurama) {
+            if (!usedKurama) {
                 player.sendMessage(CC.prefix("§cVous  n'êtes pas en train d'utiliser l'item Kurama"));
                 return;
             }
@@ -219,64 +223,63 @@ public class Naruto extends NarutoRole {
 
             NarutoRole targetRole = NarutoUHC.getNaruto().getRoleManager().getRole(target);
 
-            if(targetRole == null) {
+            if (targetRole == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'a pas de rôle."));
                 return;
             }
 
-            //TODO CHECK CAMP
-            //if(targetRole.getNarutoRole().getCamp() != Camp.SHINOBI) {
-            //    var1 = true;
-            //}
+            if (narutoUHC.getRoleManager().getCamp(target) != Camp.SHINOBI) {
+                var1 = true;
+            }
 
-            if(targetRole.getRoleName().equals("SAI")) {
+            if (targetRole.getRoleName().equals("SAI")) {
                 var1 = Role.findPlayer(NarutoRoles.SASUKE) != null && Role.findPlayer(NarutoRoles.SASUKE).getLocation().distance(target.getLocation()) <= 30;
-            } else if(targetRole.getRoleName().equals("ITACHI") || targetRole.getRoleName().equals("KARIN") || targetRole.getRoleName().equals("OBITO")) {
+            } else if (targetRole.getRoleName().equals("ITACHI") || targetRole.getRoleName().equals("KARIN") || targetRole.getRoleName().equals("OBITO")) {
                 var1 = false;
             }
 
             usedKurama = false;
 
 
-            if(var1) {
+            if (var1) {
                 player.sendMessage(CC.prefix("§c" + target.getName() + " §fpossède d'intentions meurtrières."));
             } else {
                 player.sendMessage(CC.prefix("§a" + target.getName() + " §fne possède pas d'intentions meurtrières."));
             }
         }
 
-        if(args[0].equalsIgnoreCase("paume")) {
-            if(args.length != 2) {
+        if (args[0].equalsIgnoreCase("paume")) {
+            if (args.length != 2) {
                 player.sendMessage(Messages.syntax("/ns paume <player>"));
                 return;
             }
             Player target = Bukkit.getPlayer(args[1]);
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
 
-            if(Role.isRole(target, NarutoRoles.GAI_MAITO)) {
-                if(GaiMaito.isUsingGai) {
+            if (Role.isRole(target, NarutoRoles.GAI_MAITO)) {
+                if (GaiMaito.isUsingGai) {
                     GaiMaito.paumeSaved = true;
                     target.sendMessage(prefix("&fVous n'allez pas mourrir à la fin de votre &aGaï de la nuit&f."));
                 }
             }
 
-            if(paumeUse >= 2) {
+            if (paumeUse >= 2) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
-            if(target.getName().equals(player.getName())) {
+            if (target.getName().equals(player.getName())) {
                 player.sendMessage(CC.prefix("§cVous ne pouvez pas utiliser le pouvoir sur vous-même."));
                 return;
             }
 
             paumeUse++;
 
-            target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5*20, 9, false, false));
-            target.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 5*20, 1, false, false));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5 * 20, 9, false, false));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 5 * 20, 1, false, false));
 
 
             target.sendMessage(CC.prefix("§aNaruto §fa décidé d'utiliser son pouvoir sur vous. De ce fait vous obtenez §dRégénération 10 §fet §eAbsorption 2 §fpendant 5 secondes."));

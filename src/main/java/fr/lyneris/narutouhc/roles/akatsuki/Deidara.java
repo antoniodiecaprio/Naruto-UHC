@@ -6,10 +6,9 @@ import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.DoubleCircleEffect;
 import fr.lyneris.narutouhc.particle.ProgressBar;
 import fr.lyneris.narutouhc.particle.WorldUtils;
-import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
-import fr.lyneris.uhc.utils.Utils;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -27,14 +26,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Deidara extends NarutoRole {
 
+    List<Arrow> arrows = new ArrayList<>();
     private BowState state;
     private int c1Cooldown = 0;
     private int c2Cooldown = 0;
     private int c3Cooldown = 0;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.DEIDARA;
+    }
 
     @Override
     public void resetCooldowns() {
@@ -45,23 +48,17 @@ public class Deidara extends NarutoRole {
 
     @Override
     public void runnableTask() {
-        if(c1Cooldown > 0) {
+        if (c1Cooldown > 0) {
             c1Cooldown--;
         }
 
-        if(c2Cooldown > 0) {
+        if (c2Cooldown > 0) {
             c2Cooldown--;
         }
 
-        if(c3Cooldown > 0) {
+        if (c3Cooldown > 0) {
             c3Cooldown--;
         }
-    }
-
-    List<Arrow> arrows = new ArrayList<>();
-
-    private enum BowState {
-        C1, C3
     }
 
     @Override
@@ -84,7 +81,7 @@ public class Deidara extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
-        if(Item.interactItem(event.getItem(), "Bakuton")) {
+        if (Item.interactItem(event.getItem(), "Bakuton")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Bakuton");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setName(" ").setDurability(7).toItemStack());
@@ -129,23 +126,23 @@ public class Deidara extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-        if(event.getInventory().getName().equals("Bakuton")) {
+        if (event.getInventory().getName().equals("Bakuton")) {
             event.setCancelled(true);
-            if(event.getSlot() == 1) {
+            if (event.getSlot() == 1) {
                 state = BowState.C1;
                 player.sendMessage(CC.prefix("§fVotre arc est désormais sous l'effet §cC1§f."));
                 player.closeInventory();
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "C2");
@@ -158,49 +155,49 @@ public class Deidara extends NarutoRole {
                 player.openInventory(inv);
             }
 
-            if(event.getSlot() == 3) {
+            if (event.getSlot() == 3) {
                 state = BowState.C3;
                 player.sendMessage(CC.prefix("§fVotre arc est désormais sous l'effet §cC3§f."));
                 player.closeInventory();
             }
 
-            if(event.getSlot() == 4) {
+            if (event.getSlot() == 4) {
                 player.sendMessage(CC.prefix("§fVous venez de déclancher votre §aArt Ultime§f."));
 
-                new DoubleCircleEffect(20*10, EnumParticle.SMOKE_NORMAL).start(player);
+                new DoubleCircleEffect(20 * 10, EnumParticle.SMOKE_NORMAL).start(player);
 
 
                 player.closeInventory();
                 player.setItemInHand(null);
-                for(Player players : Bukkit.getOnlinePlayers()) {
-                    if(players.getWorld() == player.getWorld()) {
-                        if(players.getLocation().distance(player.getLocation()) <= 100) {
+                for (Player players : Bukkit.getOnlinePlayers()) {
+                    if (players.getWorld() == player.getWorld()) {
+                        if (players.getLocation().distance(player.getLocation()) <= 100) {
                             players.playSound(players.getLocation(), Sound.WITHER_SPAWN, 1f, 1f);
                         }
                     }
                 }
 
-                //TODO IMMOBILISER joueur 10s
+                manager.setStuned(player, true, 10);
 
                 new BukkitRunnable() {
 
-                    int timer = 10*20;
+                    int timer = 10 * 20;
 
                     @Override
                     public void run() {
-                        Title.sendActionBar(player, "§7Explosion §f§l» " + ProgressBar.getProgressBar(timer, 10*20, 120, '▎', ChatColor.GREEN, ChatColor.WHITE));
+                        Title.sendActionBar(player, "§7Explosion §f§l» " + ProgressBar.getProgressBar(timer, 10 * 20, 120, '▎', ChatColor.GREEN, ChatColor.WHITE));
 
-                        if(timer == 0) {
-                            if(Bukkit.getPlayer(player.getName()) != null) {
-                                if(UHC.getUHC().getGameManager().getPlayers().contains(player.getUniqueId())) {
+                        if (timer == 0) {
+                            if (Bukkit.getPlayer(player.getName()) != null) {
+                                if (UHC.getUHC().getGameManager().getPlayers().contains(player.getUniqueId())) {
                                     player.damage(100D);
-                                    if(player.getWorld() != Bukkit.getWorld("kamui")) {
+                                    if (player.getWorld() != Bukkit.getWorld("kamui")) {
                                         WorldUtils.createBeautyExplosion(player.getLocation(), 30, false);
                                     }
-                                    for(Player players : Bukkit.getOnlinePlayers()) {
-                                        if(players.getWorld() == player.getWorld()) {
-                                            if(players.getGameMode() != GameMode.SPECTATOR && UHC.getUHC().getGameManager().getPlayers().contains(players.getUniqueId())) {
-                                                if(players.getLocation().distance(player.getLocation()) <= 30) {
+                                    for (Player players : Bukkit.getOnlinePlayers()) {
+                                        if (players.getWorld() == player.getWorld()) {
+                                            if (players.getGameMode() != GameMode.SPECTATOR && UHC.getUHC().getGameManager().getPlayers().contains(players.getUniqueId())) {
+                                                if (players.getLocation().distance(player.getLocation()) <= 30) {
                                                     players.damage(100D);
                                                 }
                                             }
@@ -217,19 +214,19 @@ public class Deidara extends NarutoRole {
 
         }
 
-        if(event.getInventory().getName().equals("C2")) {
+        if (event.getInventory().getName().equals("C2")) {
             event.setCancelled(true);
-            if(event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
-            if(!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
 
-            if(c2Cooldown > 0) {
+            if (c2Cooldown > 0) {
                 player.sendMessage(Messages.cooldown(c2Cooldown));
                 return;
             }
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "")));
                 return;
             }
@@ -248,11 +245,12 @@ public class Deidara extends NarutoRole {
             c2Cooldown = 15;
 
             new BukkitRunnable() {
-                int timer = 15*2;
+                int timer = 15 * 2;
+
                 @Override
                 public void run() {
                     try {
-                        if(wolf.getLocation().distance(target.getLocation()) <= 1) {
+                        if (wolf.getLocation().distance(target.getLocation()) <= 1) {
                             wolf.getWorld().createExplosion(wolf.getLocation(), 3.0f);
                             cancel();
                         }
@@ -261,7 +259,7 @@ public class Deidara extends NarutoRole {
                     }
                     timer--;
 
-                    if(timer <= 0) {
+                    if (timer <= 0) {
                         cancel();
                         wolf.setHealth(0);
                     }
@@ -275,16 +273,16 @@ public class Deidara extends NarutoRole {
 
     @Override
     public void onProjectileHitEvent(ProjectileHitEvent event, Player shooter) {
-        if(!(event.getEntity() instanceof Arrow)) return;
-        if(!arrows.contains((Arrow) event.getEntity())) return;
+        if (!(event.getEntity() instanceof Arrow)) return;
+        if (!arrows.contains((Arrow) event.getEntity())) return;
 
-        if(state == BowState.C1) {
+        if (state == BowState.C1) {
             World world = event.getEntity().getWorld();
             Location explosion = event.getEntity().getLocation();
             world.createExplosion(explosion, 3.0f);
         }
 
-        if(state == BowState.C3) {
+        if (state == BowState.C3) {
             World world = event.getEntity().getWorld();
             Location explosion = event.getEntity().getLocation();
             for (int x = -20; x <= 20; x += 5) {
@@ -299,11 +297,11 @@ public class Deidara extends NarutoRole {
 
     @Override
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event, Player shooter) {
-        if(!(event.getEntity() instanceof Arrow)) return;
-        if(!Item.specialItem(shooter.getItemInHand(), "Deidara")) return;
+        if (!(event.getEntity() instanceof Arrow)) return;
+        if (!Item.specialItem(shooter.getItemInHand(), "Deidara")) return;
 
-        if(state == BowState.C1) {
-            if(c1Cooldown > 0) {
+        if (state == BowState.C1) {
+            if (c1Cooldown > 0) {
                 event.setCancelled(true);
                 shooter.getInventory().addItem(new ItemStack(Material.ARROW));
                 shooter.sendMessage(Messages.cooldown(c1Cooldown));
@@ -314,8 +312,8 @@ public class Deidara extends NarutoRole {
             c1Cooldown = 15;
         }
 
-        if(state == BowState.C3) {
-            if(c3Cooldown > 0) {
+        if (state == BowState.C3) {
+            if (c3Cooldown > 0) {
                 event.setCancelled(true);
                 shooter.getInventory().addItem(new ItemStack(Material.ARROW));
                 shooter.sendMessage(Messages.cooldown(c3Cooldown));
@@ -324,7 +322,7 @@ public class Deidara extends NarutoRole {
 
             arrows.add((Arrow) event.getEntity());
 
-            c3Cooldown = 5*60;
+            c3Cooldown = 5 * 60;
         }
 
     }
@@ -332,5 +330,9 @@ public class Deidara extends NarutoRole {
     @Override
     public Camp getCamp() {
         return Camp.AKATSUKI;
+    }
+
+    private enum BowState {
+        C1, C3
     }
 }

@@ -11,41 +11,46 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class NarutoCommand implements CommandExecutor {
+
+    public static void sendHelpMessage(Player player) {
+
+    }
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
-        if(!(commandSender instanceof Player)) return true;
+        if (!(commandSender instanceof Player)) return true;
 
         Player player = (Player) commandSender;
 
-        if(args.length == 0) {
-            //TODO HELP MESSAGE
+        if (args.length == 0) {
+            sendHelpMessage(player);
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("me")) {
+        if (args[0].equalsIgnoreCase("me")) {
             new MyRoleCommand(player, args);
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("roles") || args[0].equalsIgnoreCase("role")) {
+        if (args[0].equalsIgnoreCase("roles") || args[0].equalsIgnoreCase("role")) {
             new AliveRolesCommand(player, args);
             return true;
         }
 
-        if(args[0].equalsIgnoreCase("resetcd")) {
+        if (args[0].equalsIgnoreCase("resetcd")) {
             NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
-            if(role != null && player.isOp()) {
+            if (role != null && player.isOp()) {
                 role.resetCooldowns();
                 return true;
             }
         }
 
-        if(args[0].equalsIgnoreCase("lastword")) {
+        if (args[0].equalsIgnoreCase("lastword")) {
             new LastWord(player, args);
         }
 
-        if(NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(player) != null) {
             NarutoUHC.getNaruto().getRoleManager().getRole(player).onSubCommand(player, args);
         }
 

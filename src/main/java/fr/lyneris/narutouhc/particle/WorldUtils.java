@@ -1,11 +1,8 @@
 package fr.lyneris.narutouhc.particle;
 
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -16,7 +13,7 @@ import java.util.List;
 
 public class WorldUtils {
 
-    private static DecimalFormat decimalFormater = new DecimalFormat("#.##");
+    private static final DecimalFormat decimalFormater = new DecimalFormat("#.##");
 
     public static DecimalFormat getDecimalFormater() {
         return decimalFormater;
@@ -29,50 +26,50 @@ public class WorldUtils {
     }
 
     public static String getBeautyHealth(final Player player) {
-        return getDecimalFormater().format(player.getHealth() + ((CraftPlayer)player).getHandle().getAbsorptionHearts());
+        return getDecimalFormater().format(player.getHealth() + ((CraftPlayer) player).getHandle().getAbsorptionHearts());
     }
-    
+
     public static void spawnParticle(final Location loc, final EnumParticle particle, final float xOffset, final float yOffset, final float zOffset, final float speed, final int count) {
         for (final Player online : Bukkit.getOnlinePlayers()) {
             spawnParticle(online, loc, particle, xOffset, yOffset, zOffset, speed, count);
         }
     }
-    
+
     public static void spawnColoredParticle(final Location loc, final EnumParticle particle, final float red, final float green, final float blue) {
         for (final Player online : Bukkit.getOnlinePlayers()) {
             spawnColoredParticle(online, loc, particle, red, green, blue);
         }
     }
-    
+
     public static void spawnParticle(final Player player, final Location loc, final EnumParticle particle) {
         spawnParticle(player, loc, particle, 0.0f, 0.0f, 0.0f, 0.0f, 1);
     }
-    
+
     public static void spawnParticle(final Player player, final Location loc, final EnumParticle particle, final float xOffset, final float yOffset, final float zOffset, final float speed, final int count) {
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(particle, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), xOffset, yOffset, zOffset, speed, count, new int[0]);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)packet);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(particle, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), xOffset, yOffset, zOffset, speed, count);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
-    
+
     public static void spawnColoredParticle(final Player player, final Location loc, final EnumParticle particle, final float red, final float green, final float blue) {
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(particle, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), red, green, blue, 1.0f, 0, new int[0]);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(particle, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), red, green, blue, 1.0f, 0);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
-    
+
     public static void spawnParticle(final Location loc, final Effect particle) {
         loc.getWorld().playEffect(loc, particle, 1);
     }
-    
+
     public static void spawnFakeLightning(final Player player, final Location loc) {
         spawnFakeLightning(player, loc, false);
     }
-    
+
     public static void spawnFakeLightning(final Player player, final Location loc, final boolean isEffect) {
-        final EntityPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
+        final EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
         final EntityLightning lightning = new EntityLightning(nmsPlayer.getWorld(), loc.getX(), loc.getY(), loc.getZ(), isEffect, false);
         nmsPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityWeather(lightning));
         player.playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 1.0f);
     }
-    
+
     public static double getDistanceBetweenTwoLocations(final Location one, final Location two) {
         final double minX = Math.min(one.getX(), two.getX());
         final double maxX = Math.max(one.getX(), two.getX());
@@ -96,7 +93,7 @@ public class WorldUtils {
             }
         }
     }
-    
+
     public static List<Location> generateSphere(final Location centerBlock, final int radius, final boolean hollow) {
         if (centerBlock == null) {
             return new ArrayList<Location>();
@@ -110,7 +107,7 @@ public class WorldUtils {
                 for (int z = bz - radius; z <= bz + radius; ++z) {
                     final double distance = (bx - x) * (bx - x) + (bz - z) * (bz - z) + (by - y) * (by - y);
                     if (distance < radius * radius && (!hollow || distance >= (radius - 1) * (radius - 1))) {
-                        final Location l = new Location(centerBlock.getWorld(), (double)x, (double)y, (double)z);
+                        final Location l = new Location(centerBlock.getWorld(), x, y, z);
                         circleBlocks.add(l);
                     }
                 }

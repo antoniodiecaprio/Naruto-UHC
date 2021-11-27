@@ -38,10 +38,14 @@ import java.util.UUID;
 
 public class Madara extends NarutoRole implements Listener {
 
+    public boolean usingSusano, usedMeteorite;
     private UUID detectTarget = null;
     private int detectUses = 0, susanoCooldown = 0, swordCooldown = 0, banshoCooldown = 0, banshoUses = 0, shinraUses = 0, shinraCooldown = 0;
-    public boolean usingSusano, usedMeteorite;
     private boolean meteoresExplode = false;
+
+    public NarutoRoles getRole() {
+        return NarutoRoles.MADARA;
+    }
 
     @Override
     public void resetCooldowns() {
@@ -53,17 +57,17 @@ public class Madara extends NarutoRole implements Listener {
 
     @Override
     public void runnableTask() {
-        if(susanoCooldown > 0) susanoCooldown--;
-        if(swordCooldown > 0) swordCooldown--;
-        if(banshoCooldown > 0) banshoCooldown--;
-        if(shinraCooldown > 0) shinraCooldown--;
+        if (susanoCooldown > 0) susanoCooldown--;
+        if (swordCooldown > 0) swordCooldown--;
+        if (banshoCooldown > 0) banshoCooldown--;
+        if (shinraCooldown > 0) shinraCooldown--;
     }
 
     @Override
     public void onSecond(int timer, Player player) {
         Player madara = Role.findPlayer(NarutoRoles.MADARA);
         Player target = Bukkit.getPlayer(detectTarget);
-        if(madara == null || target == null) return;
+        if (madara == null || target == null) return;
         Title.sendActionBar(madara, Loc.getDirectionMate(madara, target));
     }
 
@@ -91,21 +95,21 @@ public class Madara extends NarutoRole implements Listener {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.interactItem(event, "Susano")) {
-            if(susanoCooldown > 0) {
+        if (Item.interactItem(event, "Susano")) {
+            if (susanoCooldown > 0) {
                 player.sendMessage(Messages.cooldown(susanoCooldown));
                 return;
             }
             usingSusano = true;
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).setName(Item.specialItem("Epee")).addEnchant(Enchantment.DAMAGE_ALL, 7).toItemStack());
 
-            susanoCooldown = 20*60;
-            Tasks.runAsyncLater(() -> usingSusano = false, 5*20*60);
+            susanoCooldown = 20 * 60;
+            Tasks.runAsyncLater(() -> usingSusano = false, 5 * 20 * 60);
         }
 
-        if(Item.interactItem(event, "Madara")) {
-            if(player.hasPotionEffect(PotionEffectType.SPEED) && player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
+        if (Item.interactItem(event, "Madara")) {
+            if (player.hasPotionEffect(PotionEffectType.SPEED) && player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
                 player.removePotionEffect(PotionEffectType.SPEED);
                 player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             } else {
@@ -115,7 +119,7 @@ public class Madara extends NarutoRole implements Listener {
             player.sendMessage(prefix("&fVous avez utilisé votre &aMadara&f."));
         }
 
-        if(Item.interactItem(event, "Chibaku Tensei")) {
+        if (Item.interactItem(event, "Chibaku Tensei")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Chibaku Tensei");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -136,7 +140,7 @@ public class Madara extends NarutoRole implements Listener {
                     "§7pouvoir possède un délai de 5 minutes, il",
                     "§7peut le faire 2 fois dans la partie."
             ).toItemStack());
-            if(!usedMeteorite) {
+            if (!usedMeteorite) {
                 inv.setItem(3, new ItemBuilder(Material.NETHER_STAR).setName("§6Tengai Shinsei").setLore(
                         "§7Lorsqu’il l’utilise, un bruit de wither",
                         "§7se fait retentir dans un rayon de 50 blocs",
@@ -154,16 +158,16 @@ public class Madara extends NarutoRole implements Listener {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
-        if(event.getInventory().getName().equalsIgnoreCase("Chibaku Tensei")) {
+        if (event.getInventory().getName().equalsIgnoreCase("Chibaku Tensei")) {
             event.setCancelled(true);
-            if(event.getSlot() == 1) {
+            if (event.getSlot() == 1) {
 
-                if(banshoUses >= 2) {
+                if (banshoUses >= 2) {
                     player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir 2 fois."));
                     return;
                 }
 
-                if(banshoCooldown > 0) {
+                if (banshoCooldown > 0) {
                     player.sendMessage(Messages.cooldown(banshoCooldown));
                     return;
                 }
@@ -173,9 +177,9 @@ public class Madara extends NarutoRole implements Listener {
                 for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
-                if(nearbyPlayer > 8 && nearbyPlayer <= 17) {
+                if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
                     i = 18;
-                } else if(nearbyPlayer > 17) {
+                } else if (nearbyPlayer > 17) {
                     i = 27;
                 }
                 Inventory inv = Bukkit.createInventory(null, i, "Banshô Ten’in");
@@ -188,19 +192,19 @@ public class Madara extends NarutoRole implements Listener {
                 player.openInventory(inv);
             }
 
-            if(event.getSlot() == 2) {
+            if (event.getSlot() == 2) {
 
-                if(shinraUses >= 2) {
+                if (shinraUses >= 2) {
                     player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir 2 fois."));
                     return;
                 }
 
-                if(shinraCooldown > 0) {
+                if (shinraCooldown > 0) {
                     player.sendMessage(Messages.cooldown(shinraCooldown));
                     return;
                 }
 
-                for(Entity entity : player.getNearbyEntities(20, 20, 20)) {
+                for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
                     Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                     entity.setVelocity(new Vector(0, 0.3, 0));
                     fromPlayerToTarget.multiply(6);
@@ -209,12 +213,12 @@ public class Madara extends NarutoRole implements Listener {
                 }
 
                 shinraUses++;
-                shinraCooldown = 5*60;
+                shinraCooldown = 5 * 60;
 
             }
 
-            if(event.getSlot() == 3) {
-                if(usedMeteorite) {
+            if (event.getSlot() == 3) {
+                if (usedMeteorite) {
                     return;
                 }
 
@@ -222,25 +226,25 @@ public class Madara extends NarutoRole implements Listener {
             }
         }
 
-        if(event.getInventory().getName().equalsIgnoreCase("Banshô Ten’in")) {
+        if (event.getInventory().getName().equalsIgnoreCase("Banshô Ten’in")) {
             event.setCancelled(true);
-            if(!event.getCurrentItem().hasItemMeta()) return;
-            if(event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
+            if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
             event.setCancelled(true);
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
 
-            if(banshoUses >= 2) {
+            if (banshoUses >= 2) {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
-            if(banshoCooldown > 0) {
+            if (banshoCooldown > 0) {
                 player.sendMessage(Messages.cooldown(banshoCooldown));
                 return;
             }
@@ -250,21 +254,21 @@ public class Madara extends NarutoRole implements Listener {
             player.sendMessage(prefix("&fVous avez téléporté &a" + target.getName() + " &fà votre position."));
 
             banshoUses++;
-            banshoCooldown = 5*60;
+            banshoCooldown = 5 * 60;
         }
     }
 
     @Override
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
-        if(usingSusano) {
-            if(event.getEntity().getFireTicks() <= 0) {
+        if (usingSusano) {
+            if (event.getEntity().getFireTicks() <= 0) {
                 event.getEntity().setFireTicks(60);
             }
         }
 
-        if(Item.specialItem(player.getItemInHand(), "Epee")) {
-            if(usingSusano) {
-                if(swordCooldown > 0) {
+        if (Item.specialItem(player.getItemInHand(), "Epee")) {
+            if (usingSusano) {
+                if (swordCooldown > 0) {
                     event.setCancelled(true);
                     player.sendMessage(Messages.cooldown(swordCooldown));
                     return;
@@ -279,14 +283,14 @@ public class Madara extends NarutoRole implements Listener {
 
     @Override
     public void onSubCommand(Player player, String[] args) {
-        if(args[0].equalsIgnoreCase("detect")) {
+        if (args[0].equalsIgnoreCase("detect")) {
 
-            if(detectUses >= 2) {
+            if (detectUses >= 2) {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
-            if(Loc.getNearbyPlayers(player, 200).size() == 0) {
+            if (Loc.getNearbyPlayers(player, 200).size() == 0) {
                 player.sendMessage(prefix("&cIl n'y a personne autour de vous."));
                 return;
             }
@@ -294,7 +298,7 @@ public class Madara extends NarutoRole implements Listener {
             for (Player nearbyPlayer : Loc.getNearbyPlayers(player, 200)) {
                 TextComponent text = new TextComponent(CC.translate("&8- &c" + nearbyPlayer.getName()));
                 text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ns detecttraque " + nearbyPlayer.getName()));
-                text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[] {new TextComponent("&aCliquez-ici pour traquer " + nearbyPlayer.getName())}));
+                text.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("&aCliquez-ici pour traquer " + nearbyPlayer.getName())}));
                 player.spigot().sendMessage(text);
             }
 
@@ -302,25 +306,25 @@ public class Madara extends NarutoRole implements Listener {
 
         }
 
-        if(args[0].equalsIgnoreCase("detecttraque")) {
+        if (args[0].equalsIgnoreCase("detecttraque")) {
             Player target = Bukkit.getPlayer(args[1]);
 
-            if(detectUses > 2) {
+            if (detectUses > 2) {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir 2 fois."));
                 return;
             }
 
-            if(detectTarget != null) {
+            if (detectTarget != null) {
                 player.sendMessage(prefix("&cVous êtes déjà en train d'utiliser ce pouvoir sur quelqu'un."));
                 return;
             }
 
-            if(target == null) {
+            if (target == null) {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
 
-            if(target.getLocation().distance(player.getLocation()) > 200) {
+            if (target.getLocation().distance(player.getLocation()) > 200) {
                 player.sendMessage(prefix("&cVous êtes devez être à moins de 200 blocks de ce joueur pour utiliser ce pouvoir."));
                 return;
             }
@@ -330,19 +334,19 @@ public class Madara extends NarutoRole implements Listener {
             Tasks.runAsyncLater(() -> {
                 detectTarget = null;
                 player.sendMessage(prefix("&cVous ne traquez plus " + target.getName()));
-            }, 5*20*60);
-            if(detectUses == 2) detectUses++;
+            }, 5 * 20 * 60);
+            if (detectUses == 2) detectUses++;
         }
 
     }
 
     @Override
     public void onPlayerChat(AsyncPlayerChatEvent event, Player player) {
-        if(event.getMessage().startsWith("!")) {
+        if (event.getMessage().startsWith("!")) {
             String message = event.getMessage().substring(1);
             Player obito = Role.findPlayer(NarutoRoles.OBITO);
-            if(obito != null) {
-                for(Player sendMessage : new Player[]{player, obito}) {
+            if (obito != null) {
+                for (Player sendMessage : new Player[]{player, obito}) {
                     sendMessage.sendMessage("&f(&c!&f) &cMadara&8: &f" + message);
                 }
             } else {
@@ -355,9 +359,9 @@ public class Madara extends NarutoRole implements Listener {
         player.sendMessage(CC.translate("&fVous avez fait spawn votre &cMétéorite&f."));
         usedMeteorite = true;
         playSoundDistanceVolume(player.getLocation(), "atlantis.tengaishinsei", 10);
-        for(Player players : Bukkit.getOnlinePlayers()){
-            if(players.getWorld() == player.getWorld()){
-                if(players.getLocation().distance(player.getLocation()) <= 50){
+        for (Player players : Bukkit.getOnlinePlayers()) {
+            if (players.getWorld() == player.getWorld()) {
+                if (players.getLocation().distance(player.getLocation()) <= 50) {
                     players.playSound(players.getLocation(), Sound.WITHER_SPAWN, 1f, 1f);
                 }
             }
@@ -369,58 +373,33 @@ public class Madara extends NarutoRole implements Listener {
             public void run() {
                 MeteoresGenerator.spawnMeteore(player.getLocation(), 5, 100);
             }
-        }.runTaskLater(narutoUHC, 20*6);
+        }.runTaskLater(narutoUHC, 20 * 6);
 
         player.closeInventory();
     }
 
     public void playSoundDistanceVolume(Location location, String sound, int volume) {
-        for(Player player : Bukkit.getOnlinePlayers()){
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(location, sound, volume, 1);
         }
-    }
-
-    public static class MeteoresGenerator {
-
-        public static final String METEORE_KEY = "MeteoreFallingBlock";
-
-
-        public static void spawnMeteore(Location loc, int radius, int distanceSound) {
-            for(Player players : Bukkit.getOnlinePlayers()) {
-                if(WorldUtils.getDistanceBetweenTwoLocations(loc, players.getLocation()) <= distanceSound) {
-                    players.playSound(players.getLocation(), Sound.WITHER_SPAWN, 1, 1);
-                }
-            }
-
-            Location center = loc.clone().add(0, 50, 0);
-
-            List<Location> blockLocations = WorldUtils.generateSphere(center, radius, false);
-
-            for (Location blockLocation : blockLocations) {
-                FallingBlock fallingBlock = center.getWorld().spawnFallingBlock(blockLocation, Material.STONE, (byte)0);
-                fallingBlock.setDropItem(false);
-                fallingBlock.setHurtEntities(true);
-                fallingBlock.setCustomName(METEORE_KEY);
-            }
-        }
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockUpdate(EntityChangeBlockEvent event) {
         Block block = event.getBlock();
-        if(event.getEntity() instanceof FallingBlock){
+        if (event.getEntity() instanceof FallingBlock) {
             FallingBlock fallingBlock = (FallingBlock) event.getEntity();
-            if(fallingBlock.getCustomName() != null ){
-                if(fallingBlock.getCustomName().equals(Madara.MeteoresGenerator.METEORE_KEY)){
+            if (fallingBlock.getCustomName() != null) {
+                if (fallingBlock.getCustomName().equals(Madara.MeteoresGenerator.METEORE_KEY)) {
                     block.setType(Material.AIR);
-                    if(!meteoresExplode){
-                        if(fallingBlock.getWorld() != Bukkit.getWorld("kamui")) WorldUtils.createBeautyExplosion(fallingBlock.getLocation(), 30);
-                        for(Player players : Bukkit.getOnlinePlayers()){
-                            if(players.getWorld() == fallingBlock.getWorld()) {
-                                if(players.getGameMode() != GameMode.SPECTATOR && Role.isAlive(players)) {
-                                    if(!(Role.isRole(players, NarutoRoles.MADARA))) {
-                                        if(players.getLocation().distance(fallingBlock.getLocation()) <= 29){
+                    if (!meteoresExplode) {
+                        if (fallingBlock.getWorld() != Bukkit.getWorld("kamui"))
+                            WorldUtils.createBeautyExplosion(fallingBlock.getLocation(), 30);
+                        for (Player players : Bukkit.getOnlinePlayers()) {
+                            if (players.getWorld() == fallingBlock.getWorld()) {
+                                if (players.getGameMode() != GameMode.SPECTATOR && Role.isAlive(players)) {
+                                    if (!(Role.isRole(players, NarutoRoles.MADARA))) {
+                                        if (players.getLocation().distance(fallingBlock.getLocation()) <= 29) {
                                             players.damage(100D);
                                         }
 
@@ -443,5 +422,31 @@ public class Madara extends NarutoRole implements Listener {
     @Override
     public Chakra getChakra() {
         return Chakra.KATON;
+    }
+
+    public static class MeteoresGenerator {
+
+        public static final String METEORE_KEY = "MeteoreFallingBlock";
+
+
+        public static void spawnMeteore(Location loc, int radius, int distanceSound) {
+            for (Player players : Bukkit.getOnlinePlayers()) {
+                if (WorldUtils.getDistanceBetweenTwoLocations(loc, players.getLocation()) <= distanceSound) {
+                    players.playSound(players.getLocation(), Sound.WITHER_SPAWN, 1, 1);
+                }
+            }
+
+            Location center = loc.clone().add(0, 50, 0);
+
+            List<Location> blockLocations = WorldUtils.generateSphere(center, radius, false);
+
+            for (Location blockLocation : blockLocations) {
+                FallingBlock fallingBlock = center.getWorld().spawnFallingBlock(blockLocation, Material.STONE, (byte) 0);
+                fallingBlock.setDropItem(false);
+                fallingBlock.setHurtEntities(true);
+                fallingBlock.setCustomName(METEORE_KEY);
+            }
+        }
+
     }
 }

@@ -1,21 +1,21 @@
 package fr.lyneris.narutouhc.packet.changer;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.uhc.utils.scoreboard.Reflection;
-import org.bukkit.entity.*;
-import com.mojang.authlib.properties.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.*;
-import org.bukkit.scheduler.*;
 import net.minecraft.server.v1_8_R3.*;
-import com.mojang.authlib.*;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class IdentityChanger {
 
     public static void changeSkin(final Player player, final Property skin, final boolean forPlayer) {
 
-        final CraftPlayer craftPlayer = (CraftPlayer)player;
-        final EntityPlayer entity = ((CraftPlayer)player).getHandle();
+        final CraftPlayer craftPlayer = (CraftPlayer) player;
+        final EntityPlayer entity = ((CraftPlayer) player).getHandle();
         final GameProfile profile = craftPlayer.getProfile();
         final int id = craftPlayer.getEntityId();
         final PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(id);
@@ -41,10 +41,10 @@ public class IdentityChanger {
             }
         }.runTaskLater(NarutoUHC.getNaruto(), 10L);
     }
-    
+
     public static void changeSkinForPlayer(final Player player, final Property skin, final Player forPlayer, final Property original) {
-        final CraftPlayer craftPlayer = (CraftPlayer)player;
-        final EntityPlayer entity = ((CraftPlayer)player).getHandle();
+        final CraftPlayer craftPlayer = (CraftPlayer) player;
+        final EntityPlayer entity = ((CraftPlayer) player).getHandle();
         final GameProfile profile = craftPlayer.getProfile();
         final int id = craftPlayer.getEntityId();
         final PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(id);
@@ -70,27 +70,26 @@ public class IdentityChanger {
             }
         }.runTaskLater(NarutoUHC.getNaruto(), 10L);
     }
-    
+
     public static void changePlayerName(final Player player, final String name) {
-        final GameProfile profile = ((CraftPlayer)player).getProfile();
+        final GameProfile profile = ((CraftPlayer) player).getProfile();
         try {
             VariablesUtils.updateVariablePrivateFinal(profile, "name", name);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
-    
+
     private static void sendPacket(final Packet<?> packet) {
         sendPacket(packet, null);
     }
-    
+
     private static void sendPacket(final Packet<?> packet, final Player except) {
         for (final Player players : Bukkit.getOnlinePlayers()) {
             if (except != null && players == except) {
                 continue;
             }
-            ((CraftPlayer)players).getHandle().playerConnection.sendPacket(packet);
+            ((CraftPlayer) players).getHandle().playerConnection.sendPacket(packet);
         }
     }
 }
