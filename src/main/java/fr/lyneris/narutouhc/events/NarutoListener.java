@@ -18,7 +18,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-@SuppressWarnings("unused") public class NarutoListener implements Listener {
+@SuppressWarnings("unused")
+public class NarutoListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {

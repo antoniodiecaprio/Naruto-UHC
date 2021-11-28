@@ -4,8 +4,10 @@ import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.solo.Danzo;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
+import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.module.Module;
 import fr.lyneris.uhc.utils.Utils;
@@ -40,6 +42,21 @@ public class NarutoModule implements Module {
 
     @Override
     public void onPlayerDeath(Player player, Player killer) {
+        if (Role.isRole(player, NarutoRoles.DANZO) && Danzo.lives > 0) {
+            Tasks.runLater(() -> {
+                Danzo.died++;
+                player.spigot().respawn();
+                int x = new Random().nextInt(60) - 30;
+                int z = new Random().nextInt(60) - 30;
+                int y = Bukkit.getWorld("world").getHighestBlockYAt(x, z) + 1;
+                player.teleport(new Location(Bukkit.getWorld("world"), x, y, z));
+                Danzo.lives--;
+                player.setMaxHealth(10);
+                player.setMaxHealth(player.getMaxHealth() - Danzo.died);
+                player.sendMessage(CC.prefix("&fIl vous reste &a" + Danzo.lives + " &fvie(s)."));
+            }, 5);
+            return;
+        }
         UHC.getUHC().getGameManager().getPlayers().remove(player.getUniqueId());
         Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).filter(is -> is.getType() != Material.AIR).forEach(is ->
                 player.getWorld().dropItemNaturally(player.getLocation(), is)

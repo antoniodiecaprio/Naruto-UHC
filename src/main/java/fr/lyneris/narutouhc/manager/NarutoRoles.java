@@ -3,14 +3,11 @@ package fr.lyneris.narutouhc.manager;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.roles.akatsuki.*;
-import fr.lyneris.narutouhc.roles.jubi.Madara;
-import fr.lyneris.narutouhc.roles.jubi.Obito;
+import fr.lyneris.narutouhc.roles.jubi.*;
 import fr.lyneris.narutouhc.roles.orochimaru.*;
 import fr.lyneris.narutouhc.roles.shinobu.*;
-import fr.lyneris.narutouhc.roles.taka.Jugo;
-import fr.lyneris.narutouhc.roles.taka.Karin;
-import fr.lyneris.narutouhc.roles.taka.Sasuke;
-import fr.lyneris.narutouhc.roles.taka.Suigetsu;
+import fr.lyneris.narutouhc.roles.solo.Danzo;
+import fr.lyneris.narutouhc.roles.taka.*;
 
 public enum NarutoRoles {
 
@@ -97,7 +94,7 @@ public enum NarutoRoles {
     /**
      * SOLOS
      */
-    DANZO(null, "", Camp.SOLO);
+    DANZO(Danzo.class, "Danzo", Camp.SOLO);
 
     private final Class<? extends NarutoRole> narutoRole;
     private final String name;

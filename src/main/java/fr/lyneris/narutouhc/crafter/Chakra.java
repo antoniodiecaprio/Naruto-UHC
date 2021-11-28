@@ -7,6 +7,7 @@ public enum Chakra {
     KATON,
     FUTON,
     RAITON,
+    ALL,
     AUCUN
 
 }

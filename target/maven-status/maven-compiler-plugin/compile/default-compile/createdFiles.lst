@@ -12,6 +12,7 @@ fr\lyneris\narutouhc\roles\shinobu\GaiMaito.class
 fr\lyneris\narutouhc\roles\taka\Jugo$JugoSkinsTask$1.class
 fr\lyneris\narutouhc\roles\shinobu\Naruto.class
 fr\lyneris\narutouhc\roles\orochimaru\Jirobo.class
+fr\lyneris\narutouhc\packet\FlameThrower.class
 fr\lyneris\narutouhc\roles\shinobu\Hinata.class
 fr\lyneris\narutouhc\roles\taka\Jugo$SasukeSkin.class
 fr\lyneris\narutouhc\packet\PacketManager.class
@@ -102,6 +103,7 @@ fr\lyneris\narutouhc\roles\akatsuki\Kakuzu.class
 fr\lyneris\narutouhc\roles\shinobu\Shino$1.class
 fr\lyneris\narutouhc\roles\akatsuki\Sasori.class
 fr\lyneris\narutouhc\packet\PacketManager$1.class
+fr\lyneris\narutouhc\roles\shinobu\Hiruzen.class
 fr\lyneris\narutouhc\packet\npc\NPC$1.class
 fr\lyneris\narutouhc\roles\shinobu\TenTen.class
 fr\lyneris\narutouhc\roles\jubi\Madara$1.class
