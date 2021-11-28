@@ -4,6 +4,7 @@ import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.sankyodai.Gaara;
 import fr.lyneris.narutouhc.roles.solo.Danzo;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -42,6 +43,23 @@ public class NarutoModule implements Module {
 
     @Override
     public void onPlayerDeath(Player player, Player killer) {
+
+        if(Role.isRole(player, NarutoRoles.GAARA) && Gaara.narutoHit && Role.getCamp(player) != Camp.SHINOBI) {
+            int x = new Random().nextInt(60);
+            int z = new Random().nextInt(60);
+            int y = Bukkit.getWorld("world").getHighestBlockYAt(x, z) + 1;
+            player.teleport(new Location(Bukkit.getWorld("world"), x, y, z));
+            NarutoUHC.getNaruto().getRoleManager().setCamp(player, Camp.SHINOBI);
+
+            for(Player target : new Player[] { Role.findPlayer(NarutoRoles.TEMARI), Role.findPlayer(NarutoRoles.KANKURO) }) {
+                if(target != null) {
+                    target.sendMessage(CC.prefix("&aGaara &fa changé de camp. Vous rejoignez donc le camp des &aShinobi"));
+                    NarutoUHC.getNaruto().getRoleManager().setCamp(target, Camp.SHINOBI);
+                }
+            }
+            return;
+        }
+
         if (Role.isRole(player, NarutoRoles.DANZO) && Danzo.lives > 0) {
             Tasks.runLater(() -> {
                 Danzo.died++;

@@ -5,8 +5,9 @@ import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.roles.akatsuki.*;
 import fr.lyneris.narutouhc.roles.jubi.*;
 import fr.lyneris.narutouhc.roles.orochimaru.*;
+import fr.lyneris.narutouhc.roles.sankyodai.*;
 import fr.lyneris.narutouhc.roles.shinobu.*;
-import fr.lyneris.narutouhc.roles.solo.Danzo;
+import fr.lyneris.narutouhc.roles.solo.*;
 import fr.lyneris.narutouhc.roles.taka.*;
 
 public enum NarutoRoles {
@@ -89,7 +90,7 @@ public enum NarutoRoles {
      */
     TEMARI(Temari.class, "Temari", Camp.SANKYODAI),
     KANKURO(null, "", Camp.SANKYODAI),
-    GAARA(null, "", Camp.SANKYODAI),
+    GAARA(Gaara.class, "Gaara", Camp.SANKYODAI),
 
     /**
      * SOLOS

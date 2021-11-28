@@ -1,4 +1,4 @@
-package fr.lyneris.narutouhc.roles.shinobu;
+package fr.lyneris.narutouhc.roles.sankyodai;
 
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
