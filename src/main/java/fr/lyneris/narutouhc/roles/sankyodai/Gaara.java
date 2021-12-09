@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.roles.sankyodai;
 
+import fr.lyneris.common.utils.ItemBuilder;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
@@ -49,6 +50,7 @@ public class Gaara extends NarutoRole {
         player.getInventory().addItem(new ItemStack(Material.SAND, 128));
         Role.knowsRole(player, NarutoRoles.TEMARI);
         Role.knowsRole(player, NarutoRoles.KANKURO);
+        player.getInventory().addItem(new ItemBuilder)
     }
 
     @Override

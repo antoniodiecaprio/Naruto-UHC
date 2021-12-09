@@ -9,6 +9,8 @@ import fr.lyneris.narutouhc.roles.sankyodai.*;
 import fr.lyneris.narutouhc.roles.shinobu.*;
 import fr.lyneris.narutouhc.roles.solo.*;
 import fr.lyneris.narutouhc.roles.taka.*;
+import fr.lyneris.narutouhc.roles.zabuza_haku.Haku;
+import fr.lyneris.narutouhc.roles.zabuza_haku.Zabuza;
 
 public enum NarutoRoles {
 
@@ -82,8 +84,8 @@ public enum NarutoRoles {
     /**
      * ZABUZA AND HAKU
      */
-    ZABUZA(null, "", Camp.ZABUZA_HAKU),
-    HAKU(null, "", Camp.ZABUZA_HAKU),
+    ZABUZA(Zabuza.class, "Zabuza", Camp.ZABUZA_HAKU),
+    HAKU(Haku.class, "", Camp.ZABUZA_HAKU),
 
     /**
      * Sankyôdai

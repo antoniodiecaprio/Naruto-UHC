@@ -5,6 +5,7 @@ import fr.lyneris.narutouhc.manager.Manager;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.manager.RoleManager;
 import fr.lyneris.narutouhc.utils.CC;
+import fr.lyneris.narutouhc.utils.Role;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.*;
@@ -30,6 +31,10 @@ public abstract class NarutoRole {
     public abstract void onDistribute(Player player);
 
     public void onNewEpisode(Player player) {
+    }
+
+    public Player getPlayer() {
+        return Role.findPlayer(this.getRole());
     }
 
     public void onDay(Player player) {

@@ -28,7 +28,7 @@ import java.util.*;
 public class Sasori extends NarutoRole {
 
     private final HashMap<UUID, PotionEffectType> map = new HashMap<>();
-    public PotionEffectType[] positivePotionEffects = new PotionEffectType[]{
+    public PotionEffectType[] positivePotionEffects = new PotionEffectType[] {
             PotionEffectType.SPEED,
             PotionEffectType.FAST_DIGGING,
             PotionEffectType.INCREASE_DAMAGE,
