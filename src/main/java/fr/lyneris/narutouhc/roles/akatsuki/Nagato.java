@@ -286,9 +286,10 @@ public class Nagato extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Banshô Ten’in")) {
+            event.setCancelled(true);
+
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
-            event.setCancelled(true);
 
             if (banshoCooldown > 0) {
                 player.sendMessage(Messages.cooldown(banshoCooldown));

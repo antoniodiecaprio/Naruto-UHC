@@ -3,8 +3,13 @@ package fr.lyneris.narutouhc.events;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Damage;
+import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Role;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -16,7 +21,12 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleExitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityMountEvent;
+
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class NarutoListener implements Listener {
@@ -96,6 +106,65 @@ public class NarutoListener implements Listener {
         if (role == null) return;
         NarutoUHC.getNaruto().getRoleManager().getRole(shooter).onArrowHitPlayerEvent(event, player, shooter, arrow);
 
+    }
+
+    public List<UUID> usingShuryudan = new ArrayList<>();
+
+    @EventHandler
+    public void onRealEntityDamageOnEntity(EntityDamageByEntityEvent event) {
+        if(event.getDamager() instanceof Arrow) {
+            if(((Arrow) event.getDamager()).getShooter() != null) {
+                if(usingShuryudan.contains(((Player) ((Arrow) event.getDamager()).getShooter()).getUniqueId())) {
+                    int random = (int) (Math.random() * 4);
+                    if(random == 0) {
+                        ((Player) ((Arrow) event.getDamager()).getShooter()).sendMessage(CC.prefix("&aVous avez infligé Poison à " + event.getEntity().getName()));
+                        event.getEntity().sendMessage(CC.prefix("&cVous n'avez pas eu de chance et avez reçu Poison pendant 5 secondes."));
+                    }
+                }
+            }
+        }
+
+        if(event.getDamager() instanceof Player) {
+            if(usingShuryudan.contains(event.getDamager().getUniqueId())) {
+                int random = (int) (Math.random() * 4);
+                if(random == 0) {
+                    ((Player) ((Arrow) event.getDamager()).getShooter()).sendMessage(CC.prefix("&aVous avez infligé Poison à " + event.getEntity().getName()));
+                    event.getEntity().sendMessage(CC.prefix("&cVous n'avez pas eu de chance et avez reçu Poison pendant 5 secondes."));
+                    ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5*20, 0, false, false));
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onRealInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if(Item.interactItem(event, "Shuryûdan")) {
+            usingShuryudan.add(event.getPlayer().getUniqueId());
+            new BukkitRunnable() {
+                int timer = 60*20;
+                @Override
+                public void run() {
+                    if(timer <= 0) {
+                        cancel();
+                        usingShuryudan.remove(event.getPlayer().getUniqueId());
+                    }
+
+                    int points = 10;
+                    double radius = 3.0d;
+                    Location origin = player.getLocation();
+
+                    for (int i = 0; i < points; i++) {
+                        double angle = 2 * Math.PI * i / points;
+                        Location point = origin.clone().add(radius * Math.sin(angle), 0.0d, radius * Math.cos(angle));
+                        player.getWorld().playEffect(point, Effect.LARGE_SMOKE, 1);
+                        Role.getAliveOnlinePlayers().stream().filter(p -> p.getLocation().distance(point) < 2).forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 10*20, 0, false, false)));
+                    }
+                    timer--;
+                }
+            }.runTaskTimer(NarutoUHC.getNaruto(), 0, 1);
+
+        }
     }
 
     @EventHandler

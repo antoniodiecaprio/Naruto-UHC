@@ -142,6 +142,10 @@ public abstract class NarutoRole {
     public void onArrowHitPlayerEvent(EntityDamageByEntityEvent event, Player player, Player shooter, Arrow arrow) {
     }
 
+    public void onAllPlayerCampChange(Camp camp, Player player) {
+
+    }
+
     public String prefix(String var1) {
         return CC.prefix(var1);
     }

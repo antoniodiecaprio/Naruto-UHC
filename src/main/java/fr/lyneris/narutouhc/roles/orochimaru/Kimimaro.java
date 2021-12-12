@@ -138,6 +138,7 @@ public class Kimimaro extends NarutoRole {
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
         if (event.getInventory().getName().equals("Shikotsumyaku")) {
+            event.setCancelled(true);
             if (event.getSlot() == 1) {
                 if (osUses >= 5) {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 5 fois."));

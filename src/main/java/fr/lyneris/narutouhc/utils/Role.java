@@ -109,13 +109,15 @@ public class Role {
     }
 
     public static void removeItem(Player player, Material material, int remove) {
-        if(player.getInventory().getItem(player.getInventory().first(material)).getAmount() <= remove) {
+        if (player.getInventory().getItem(player.getInventory().first(material)).getAmount() <= remove) {
             player.getInventory().removeItem(player.getInventory().getItem(player.getInventory().first(material)));
             return;
         }
         player.getInventory().getItem(player.getInventory().first(material)).setAmount(player.getInventory().getItem(player.getInventory().first(material)).getAmount() - remove);
+        if (remove > 64) {
+            player.getInventory().getItem(player.getInventory().first(material)).setAmount(player.getInventory().getItem(player.getInventory().first(material)).getAmount() - (remove - 64));
+        }
     }
-
     public static void attemptWin() {
         if (won) return;
         HashMap<Camp, Integer> camp = new HashMap<>();

@@ -3,6 +3,8 @@ package fr.lyneris.narutouhc.manager;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.utils.Role;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -65,6 +67,11 @@ public class RoleManager {
     }
 
     public void setCamp(UUID var1, Camp var2) {
+        if(Bukkit.getPlayer(var1) != null) {
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                if(Role.getRole(onlinePlayer) != null) Role.getRole(onlinePlayer).onAllPlayerCampChange(var2, Bukkit.getPlayer(var1));
+            }
+        }
         this.playerCamp.put(var1, var2);
     }
 

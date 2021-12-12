@@ -225,10 +225,9 @@ public class Kakashi extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Copie")) {
-
+            event.setCancelled(true);
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
-            event.setCancelled(true);
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
@@ -373,7 +372,7 @@ public class Kakashi extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Arimasu")) {
-
+            event.setCancelled(true);
             final Location oldLocation;
             oldLocation = player.getLocation();
 

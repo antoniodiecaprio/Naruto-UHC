@@ -215,6 +215,7 @@ public class Shikamaru extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Recherche")) {
+            event.setCancelled(true);
             if (event.getCurrentItem().getType() == Material.SKULL_ITEM) {
                 if (!event.getCurrentItem().hasItemMeta()) return;
                 if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;

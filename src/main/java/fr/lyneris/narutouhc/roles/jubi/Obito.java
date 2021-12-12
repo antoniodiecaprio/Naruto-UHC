@@ -274,9 +274,9 @@ public class Obito extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Attaque")) {
+            event.setCancelled(true);
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
-            event.setCancelled(true);
 
             if (attaqueCooldown > 0) {
                 player.sendMessage(Messages.cooldown(attaqueCooldown));
@@ -357,6 +357,7 @@ public class Obito extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Arimasu")) {
+            event.setCancelled(true);
 
             final Location oldLocation;
             oldLocation = player.getLocation();

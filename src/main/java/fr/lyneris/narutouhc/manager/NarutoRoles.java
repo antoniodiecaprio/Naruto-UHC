@@ -91,7 +91,7 @@ public enum NarutoRoles {
      * Sankyôdai
      */
     TEMARI(Temari.class, "Temari", Camp.SANKYODAI),
-    KANKURO(null, "", Camp.SANKYODAI),
+    KANKURO(Kankuro.class, "", Camp.SANKYODAI),
     GAARA(Gaara.class, "Gaara", Camp.SANKYODAI),
 
     /**

@@ -242,9 +242,10 @@ public class Konan extends NarutoRole {
         }
 
         if (event.getInventory().getName().equals("Chissoku")) {
+            event.setCancelled(true);
+
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
-            event.setCancelled(true);
 
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
