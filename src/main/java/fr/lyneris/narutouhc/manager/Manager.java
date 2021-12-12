@@ -19,6 +19,8 @@ public class Manager {
     private final NarutoUHC naruto;
     private final World narutoWorld;
     private final Location kamuiSpawn;
+    private final Location jumpLocation;
+    private final Location endJumpLocation;
     private final HashMap<String, UUID> death;
     private final HashMap<UUID, Integer> strength;
     private final HashMap<UUID, Integer> resistance;
@@ -35,6 +37,8 @@ public class Manager {
         this.strength = new HashMap<>();
         this.resistance = new HashMap<>();
         this.deathLocation = new HashMap<>();
+        this.jumpLocation = new Location(narutoWorld, 25109, 13, 25015);
+        this.endJumpLocation = new Location(narutoWorld, 25109, 20, 25015);
     }
 
     public HashMap<UUID, Location> getDeathLocation() {
@@ -47,6 +51,15 @@ public class Manager {
 
     public HashMap<UUID, Integer> getResistance() {
         return resistance;
+    }
+
+
+    public Location getJumpLocation() {
+        return jumpLocation;
+    }
+
+    public Location getEndJumpLocation() {
+        return endJumpLocation;
     }
 
     public HashMap<String, UUID> getDeath() {

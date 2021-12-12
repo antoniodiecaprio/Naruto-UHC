@@ -9,7 +9,9 @@ import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +95,25 @@ public class Role {
         Role.getPlayersWithRole().stream().filter(p -> Role.getCamp(p) == camp).forEach(toReturn::add);
 
         return toReturn;
+    }
+
+    public static int getItemAmount(Player player, Material material) {
+        int toReturn = 0;
+        for (ItemStack content : player.getInventory().getContents()) {
+            if(content.getType() == material) {
+                toReturn += content.getAmount();
+            }
+        }
+
+        return toReturn;
+    }
+
+    public static void removeItem(Player player, Material material, int remove) {
+        if(player.getInventory().getItem(player.getInventory().first(material)).getAmount() <= remove) {
+            player.getInventory().removeItem(player.getInventory().getItem(player.getInventory().first(material)));
+            return;
+        }
+        player.getInventory().getItem(player.getInventory().first(material)).setAmount(player.getInventory().getItem(player.getInventory().first(material)).getAmount() - remove);
     }
 
     public static void attemptWin() {
