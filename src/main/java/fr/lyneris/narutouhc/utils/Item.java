@@ -1,5 +1,7 @@
 package fr.lyneris.narutouhc.utils;
 
+import fr.lyneris.uhc.utils.item.ItemBuilder;
+import org.bukkit.Material;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,6 +18,10 @@ public class Item {
     public static boolean interactItem(ItemStack var1, String var2) {
         if (!hasDisplayName(var1)) return false;
         return var1.getItemMeta().getDisplayName().equals("§7▎ §6§l" + var2 + " §8(§7Clic-droit§8)");
+    }
+
+    public static ItemStack getInteractItem(String name) {
+        return new ItemBuilder(Material.NETHER_STAR).setName(interactItem(name)).toItemStack();
     }
 
     public static boolean interactItem(PlayerInteractEvent var1, String var2) {

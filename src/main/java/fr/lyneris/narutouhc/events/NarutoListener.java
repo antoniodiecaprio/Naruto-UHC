@@ -7,6 +7,7 @@ import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Damage;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
+import jdk.nashorn.internal.runtime.regexp.joni.SearchAlgorithm;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -26,10 +27,15 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class NarutoListener implements Listener {
+
+    public static List<UUID> kuroari = new ArrayList<>();
+    public List<UUID> usingShuryudan = new ArrayList<>();
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
@@ -59,6 +65,15 @@ public class NarutoListener implements Listener {
 
     @EventHandler
     public void onDamageOnEntity(EntityDamageByEntityEvent event) {
+        if (kuroari.contains(event.getDamager().getUniqueId())) {
+            int random = (int) (Math.random() * 4);
+            if(random == 0) {
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 0, false, false));
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5*20, 0, false, false));
+                event.getEntity().sendMessage(CC.prefix("&cVous n'avez pas eu de chance et avez obtenu Slowness et Weakness pendant 5 secondes."));
+                event.getDamager().sendMessage(CC.prefix("&fVous avez donné l'effet &7Slowness &fet &7Weakness &fà " + event.getEntity().getName()));
+            }
+        }
         if (NarutoUHC.getNaruto().getManager().getStrength().containsKey(event.getDamager().getUniqueId())) {
             int var1 = NarutoUHC.getNaruto().getManager().getStrength().get(event.getDamager().getUniqueId());
             if (var1 != 0) {
@@ -108,15 +123,13 @@ public class NarutoListener implements Listener {
 
     }
 
-    public List<UUID> usingShuryudan = new ArrayList<>();
-
     @EventHandler
     public void onRealEntityDamageOnEntity(EntityDamageByEntityEvent event) {
-        if(event.getDamager() instanceof Arrow) {
-            if(((Arrow) event.getDamager()).getShooter() != null) {
-                if(usingShuryudan.contains(((Player) ((Arrow) event.getDamager()).getShooter()).getUniqueId())) {
+        if (event.getDamager() instanceof Arrow) {
+            if (((Arrow) event.getDamager()).getShooter() != null) {
+                if (usingShuryudan.contains(((Player) ((Arrow) event.getDamager()).getShooter()).getUniqueId())) {
                     int random = (int) (Math.random() * 4);
-                    if(random == 0) {
+                    if (random == 0) {
                         ((Player) ((Arrow) event.getDamager()).getShooter()).sendMessage(CC.prefix("&aVous avez infligé Poison à " + event.getEntity().getName()));
                         event.getEntity().sendMessage(CC.prefix("&cVous n'avez pas eu de chance et avez reçu Poison pendant 5 secondes."));
                     }
@@ -124,13 +137,13 @@ public class NarutoListener implements Listener {
             }
         }
 
-        if(event.getDamager() instanceof Player) {
-            if(usingShuryudan.contains(event.getDamager().getUniqueId())) {
+        if (event.getDamager() instanceof Player) {
+            if (usingShuryudan.contains(event.getDamager().getUniqueId())) {
                 int random = (int) (Math.random() * 4);
-                if(random == 0) {
+                if (random == 0) {
                     ((Player) ((Arrow) event.getDamager()).getShooter()).sendMessage(CC.prefix("&aVous avez infligé Poison à " + event.getEntity().getName()));
                     event.getEntity().sendMessage(CC.prefix("&cVous n'avez pas eu de chance et avez reçu Poison pendant 5 secondes."));
-                    ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5*20, 0, false, false));
+                    ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5 * 20, 0, false, false));
                 }
             }
         }
@@ -139,13 +152,14 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void onRealInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if(Item.interactItem(event, "Shuryûdan")) {
+        if (Item.interactItem(event, "Shuryûdan")) {
             usingShuryudan.add(event.getPlayer().getUniqueId());
             new BukkitRunnable() {
-                int timer = 60*20;
+                int timer = 60 * 20;
+
                 @Override
                 public void run() {
-                    if(timer <= 0) {
+                    if (timer <= 0) {
                         cancel();
                         usingShuryudan.remove(event.getPlayer().getUniqueId());
                     }
@@ -158,7 +172,7 @@ public class NarutoListener implements Listener {
                         double angle = 2 * Math.PI * i / points;
                         Location point = origin.clone().add(radius * Math.sin(angle), 0.0d, radius * Math.cos(angle));
                         player.getWorld().playEffect(point, Effect.LARGE_SMOKE, 1);
-                        Role.getAliveOnlinePlayers().stream().filter(p -> p.getLocation().distance(point) < 2).forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 10*20, 0, false, false)));
+                        Role.getAliveOnlinePlayers().stream().filter(p -> p.getLocation().distance(point) < 2).forEach(p -> p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 10 * 20, 0, false, false)));
                     }
                     timer--;
                 }

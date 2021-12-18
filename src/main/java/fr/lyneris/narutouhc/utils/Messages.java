@@ -11,6 +11,10 @@ public class Messages {
         return "§7▎ §cVous êtes encore sur un cooldown de " + var1 + " secondes.";
     }
 
+    public static Cooldown getCooldown(int var1) {
+        return new Cooldown("§7▎ §cVous êtes encore sur un cooldown de " + var1 + " secondes.");
+    }
+
     public static String offline(String var1) {
         return "§7▎ §c" + var1 + " n'est pas connecté.";
     }

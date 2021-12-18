@@ -51,7 +51,7 @@ public class Reach implements Listener {
         });
     }
 
-    private boolean getLookingAt(Player player, Player player1) {
+    public static boolean getLookingAt(Player player, Player player1) {
         Location eye = player.getEyeLocation();
         Vector toEntity = player1.getEyeLocation().toVector().subtract(eye.toVector());
         double dot = toEntity.normalize().dot(eye.getDirection());
