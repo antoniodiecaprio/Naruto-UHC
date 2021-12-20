@@ -97,6 +97,7 @@ public class Manager {
             roleInstance.onDistribute(Bukkit.getPlayer(uuid));
             roles.remove(role);
         });
+        Tasks.runLater(() -> naruto.getChakra().setupChakras(), 10 * 20);
     }
 
     public void setStuned(UUID uuid, Boolean stuned, Integer duration) {

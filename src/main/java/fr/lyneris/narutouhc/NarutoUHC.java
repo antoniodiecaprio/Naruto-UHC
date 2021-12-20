@@ -1,9 +1,13 @@
 package fr.lyneris.narutouhc;
 
+import fr.lyneris.narutouhc.commands.BoostCommand;
 import fr.lyneris.narutouhc.commands.NarutoCommand;
+import fr.lyneris.narutouhc.commands.RevealCommand;
 import fr.lyneris.narutouhc.events.NarutoListener;
 import fr.lyneris.narutouhc.manager.Manager;
 import fr.lyneris.narutouhc.manager.RoleManager;
+import fr.lyneris.narutouhc.module.Chakra;
+import fr.lyneris.narutouhc.module.Hokage;
 import fr.lyneris.narutouhc.module.NarutoGui;
 import fr.lyneris.narutouhc.module.NarutoModule;
 import fr.lyneris.narutouhc.packet.NPCManager;
@@ -22,6 +26,8 @@ public class NarutoUHC extends JavaPlugin {
     private RoleManager roleManager;
     private NPCManager npcManager;
     private PacketManager packetManager;
+    private Hokage hokage;
+    private Chakra chakra;
 
     public static NarutoUHC getNaruto() {
         return naruto;
@@ -43,12 +49,21 @@ public class NarutoUHC extends JavaPlugin {
         this.manager = new Manager(this);
         this.packetManager = new PacketManager();
         this.npcManager = new NPCManager(this.packetManager);
+        this.hokage = new Hokage(this);
+        this.chakra = new Chakra(this);
 
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);
         this.getServer().getPluginManager().registerEvents(new Madara(), this);
         this.getServer().getPluginManager().registerEvents(new NarutoGui(), this);
+        this.getServer().getPluginManager().registerEvents(chakra, this);
         this.getCommand("ns").setExecutor(new NarutoCommand());
+        this.getCommand("reveal").setExecutor(new RevealCommand());
+        this.getCommand("boost").setExecutor(new BoostCommand());
 
+    }
+
+    public Chakra getChakra() {
+        return chakra;
     }
 
     public RoleManager getRoleManager() {
@@ -69,5 +84,9 @@ public class NarutoUHC extends JavaPlugin {
 
     public NPCManager getNpcManager() {
         return npcManager;
+    }
+
+    public Hokage getHokage() {
+        return hokage;
     }
 }

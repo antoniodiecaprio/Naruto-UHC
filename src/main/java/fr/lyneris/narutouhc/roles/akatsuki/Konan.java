@@ -4,12 +4,14 @@ import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.particle.ProgressBar;
 import fr.lyneris.narutouhc.particle.WingsEffect;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
+import net.minecraft.server.v1_8_R3.Block;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
@@ -25,7 +27,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentMap;
 
 public class Konan extends NarutoRole {
 
@@ -35,6 +40,8 @@ public class Konan extends NarutoRole {
     public int chissokuCooldown = 0;
     public int bakuhatsuCooldown = 0;
     public Location oldLocation = null;
+    public boolean usingKamiNoShisha = false;
+    private int kamiNoShishaCooldown = 0;
 
     public NarutoRoles getRole() {
         return NarutoRoles.KONAN;
@@ -47,6 +54,7 @@ public class Konan extends NarutoRole {
         kamiTokuCooldown = 0;
         chissokuCooldown = 0;
         bakuhatsuCooldown = 0;
+        kamiNoShishaCooldown = 0;
     }
 
     @Override
@@ -57,6 +65,10 @@ public class Konan extends NarutoRole {
 
         if (batafuraiCooldown > 0) {
             batafuraiCooldown--;
+        }
+
+        if (kamiNoShishaCooldown > 0) {
+            kamiNoShishaCooldown--;
         }
 
         if (kamiTokuCooldown > 0) {
@@ -86,6 +98,7 @@ public class Konan extends NarutoRole {
     @Override
     public void onDistribute(Player player) {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Shikigami no Mai")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kami no Shisha")).toItemStack());
 
         List<String> list = new ArrayList<>();
         UHC.getUHC().getGameManager().getPlayers().stream()
@@ -101,8 +114,25 @@ public class Konan extends NarutoRole {
         player.sendMessage(" ");
     }
 
+
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
+
+        if (Item.interactItem(event, "Kami no Shisha")) {
+            if (this.usingKamiNoShisha) {
+                player.sendMessage(prefix("&cVous êtes déjà en train d'utiliser ce pouvoir"));
+                return;
+            }
+
+            if (this.kamiNoShishaCooldown > 0) {
+                Messages.getCooldown(kamiNoShishaCooldown).queue(player);
+                return;
+            }
+
+            this.kamiNoShishaCooldown = 20 * 60;
+            this.usingKamiNoShisha = true;
+        }
+
         if (Item.interactItem(event.getItem(), "Shikigami no Mai")) {
             Inventory inv = Bukkit.createInventory(null, 9, "Shikigami no Mai");
 
@@ -322,6 +352,20 @@ public class Konan extends NarutoRole {
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
         if (Item.specialItem(player.getItemInHand(), "Yari")) {
             player.getInventory().removeItem(player.getItemInHand());
+        }
+
+        if (this.usingKamiNoShisha) {
+            Location loc = event.getEntity().getLocation();
+            Location one = new Location(Bukkit.getWorld("world"), loc.getBlockX() + 15, loc.getBlockY(), loc.getBlockZ() + 4);
+            Location two = new Location(Bukkit.getWorld("world"), loc.getBlockX() - 15, loc.getBlockY(), loc.getBlockZ() - 4);
+            Cuboid cuboid = new Cuboid(one, two);
+            HashMap<Location, Material> map = new HashMap<>();
+            cuboid.getBlocks().stream().filter(Objects::nonNull).filter(block -> block.getType() != Material.AIR).forEach(block -> {
+                map.put(block.getLocation(), block.getType());
+                block.setType(Material.AIR);
+            });
+            Tasks.runLater(() -> map.keySet().forEach(location -> location.getBlock().setType(map.get(location))), 10*20*60);
+            this.usingKamiNoShisha = false;
         }
     }
 

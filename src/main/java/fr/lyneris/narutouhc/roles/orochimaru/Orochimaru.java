@@ -12,9 +12,7 @@ import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -35,6 +33,9 @@ public class Orochimaru extends NarutoRole {
     int newHealth = 20;
     int timer = 0;
     private Chakra chakra = Chakra.KATON;
+    boolean killedPlayer = false;
+    private boolean revive = false;
+    public boolean usingManda = false;
 
     public NarutoRoles getRole() {
         return NarutoRoles.OROCHIMARU;
@@ -98,10 +99,44 @@ public class Orochimaru extends NarutoRole {
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName(Item.specialItem("Kusanagi")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Edo Tensei")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Manda")).toItemStack());
     }
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
+
+        if (Item.interactItem(event, "Manda")) {
+            if (!killedPlayer) {
+                player.sendMessage(prefix("&cPour utiliser ce pouvoir, vous devez avoir tué quelqu'un."));
+                return;
+            }
+
+            if(usingManda) {
+                player.sendMessage(prefix("&cVous êtes déjà sous l'effet de Manda."));
+                return;
+            }
+
+            int random = (int) (Math.random() * 5);
+            if (random == 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+                player.sendMessage(prefix("&fVous avez obtenu &7Résistance&f pendant 5 minutes."));
+            } else if (random == 1) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
+                player.sendMessage(prefix("&fVous avez obtenu &bSpeed&f pendant 5 minutes."));
+            } else if (random == 2) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
+                player.sendMessage(prefix("&fVous avez obtenu &cForce&f pendant 5 minutes."));
+            } else if( (random == 3)) {
+                this.revive = true;
+                Tasks.runAsyncLater(() -> this.revive = false, 5*20*60);
+                player.sendMessage(prefix("&fSi vous mourrez dans les &c5 &fprochaines minutes. Vous serrez ressuscité."));
+            } else {
+                player.sendMessage(prefix("&fVous n'avez pas eu de chance et avez &crien reçu&f."));
+            }
+            usingManda = true;
+            Tasks.runLater(() -> usingManda = false, 5*20*60);
+        }
+
         if (Item.interactItem(event.getItem(), "Edo Tensei")) {
             Inventory inv = Bukkit.createInventory(null, 18, "Edo Tensei");
             int j = 1;
@@ -179,7 +214,7 @@ public class Orochimaru extends NarutoRole {
     public void onPlayerKill(PlayerDeathEvent event, Player killer) {
         timer = 10 * 60;
         killer.setMaxHealth(20);
-
+        this.killedPlayer = true;
     }
 
     @Override
@@ -192,6 +227,17 @@ public class Orochimaru extends NarutoRole {
 
     @Override
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
+
+        if(event.getFinalDamage() > player.getHealth() && revive) {
+            event.setCancelled(true);
+            World world = Bukkit.getWorld("world");
+            int x = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
+            int z = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
+            int y = world.getHighestBlockYAt(x, z) + 1;
+            player.teleport(new Location(world, x, y, z));
+            player.sendMessage(prefix("&aVous avez été ressuscité."));
+        }
+
         if (player.getHealth() <= 8) {
             player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1, false, false));

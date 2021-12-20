@@ -31,15 +31,31 @@ public class Hiruzen extends NarutoRole {
     public int avancement = 0;
     public UUID avancementTarget = null;
     public boolean usedShiki = false;
+    private int parcheminCooldown = 0;
+    private int power = 0;
+    private int karyuuCooldown = 0;
+    private int doryuuCooldown = 0;
+    private int deihekiCooldown = 0;
+    private int kazegafukiCooldown = 0;
 
     @Override
     public void resetCooldowns() {
         enmaCooldown = 0;
+        parcheminCooldown = 0;
+        karyuuCooldown = 0;
+        doryuuCooldown = 0;
+        deihekiCooldown = 0;
+        kazegafukiCooldown = 0;
     }
 
     @Override
     public void runnableTask() {
         if (enmaCooldown > 0) enmaCooldown--;
+        if (parcheminCooldown > 0) parcheminCooldown--;
+        if (karyuuCooldown > 0) karyuuCooldown--;
+        if (doryuuCooldown > 0) doryuuCooldown--;
+        if (deihekiCooldown > 0) deihekiCooldown--;
+        if (kazegafukiCooldown > 0) kazegafukiCooldown--;
     }
 
     public NarutoRoles getRole() {
@@ -59,6 +75,7 @@ public class Hiruzen extends NarutoRole {
     @Override
     public void onDistribute(Player player) {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Enma")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Parchemin Interdit")).toItemStack());
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
     }
@@ -95,10 +112,10 @@ public class Hiruzen extends NarutoRole {
 
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
-        if(this.avancementTarget != null && player.getUniqueId().equals(avancementTarget)) {
+        if (this.avancementTarget != null && player.getUniqueId().equals(avancementTarget)) {
             Player hiruzen = Role.findPlayer(NarutoRoles.HIRUZEN);
-            if(hiruzen != null) {
-                if(!Role.isAlive(hiruzen)) return;
+            if (hiruzen != null) {
+                if (!Role.isAlive(hiruzen)) return;
                 hiruzen.sendMessage(prefix("&cVotre cible est mort, et vous emporte avec lui."));
                 hiruzen.setHealth(0);
             }
@@ -107,24 +124,25 @@ public class Hiruzen extends NarutoRole {
 
     @Override
     public void onPlayerDeath(PlayerDeathEvent event, Player player, Player killer) {
-        if(avancementTarget != null) {
-            if(!Role.isAlive(avancementTarget)) return;
+        if (avancementTarget != null) {
+            if (!Role.isAlive(avancementTarget)) return;
             Player avancementTarget = Bukkit.getPlayer(this.avancementTarget);
-            if(avancementTarget == null) return;
+            if (avancementTarget == null) return;
             avancementTarget.sendMessage(prefix("&aHiruzen &fest mort alors qu'il utilisait son &cShiki Fûjin &fsur vous."));
             int random = (int) (Math.random() * 3);
-            if(random == 0) {
+            if (random == 0) {
                 //TODO DISABLE POWERS AVANCEMENTTARGET FOR 20 MINUTES
                 avancementTarget.sendMessage(prefix("&cVous ne pouvez plus utiliser de pouvoirs pendant 20 minutes."));
-            } else if(random == 1) {
+            } else if (random == 1) {
                 avancementTarget.sendMessage(prefix("&cVous obtenez Slowness pour toute la game."));
                 avancementTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0, false, false));
             } else {
                 avancementTarget.sendMessage(prefix("&cVous obtenez blindness 5 secondes toutes les minutes."));
                 Tasks.runTimer(() -> {
                     Player real = Bukkit.getPlayer(this.avancementTarget);
-                    if(real != null) real.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5*20, 0, false, false));
-                }, 0, 60*20);
+                    if (real != null)
+                        real.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 0, false, false));
+                }, 0, 60 * 20);
             }
         }
     }
@@ -144,6 +162,64 @@ public class Hiruzen extends NarutoRole {
             Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false)), 5 * 20 * 60 + 1);
             player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).setName(Item.specialItem("Kongounyai")).addEnchant(Enchantment.DAMAGE_ALL, 4).toItemStack());
             Reach.addReachPlayerTemp(player.getUniqueId(), 5 * 60);
+        }
+
+        if (Item.interactItem(event, "Parchemin Interdit")) {
+            if (this.power != 0) {
+                if (parcheminCooldown > 0) {
+                    Messages.getCooldown(parcheminCooldown).queue(player);
+                    return;
+                }
+
+                if (this.power == 1) {
+                    //TODO LANCE FLAMME
+                    this.karyuuCooldown = 6 * 60;
+                }
+                if (this.power == 2) {
+                    //TODO VAGUE D'EAU
+                    this.doryuuCooldown = 6 * 60;
+                }
+                if (this.power == 3) {
+                    //TODO MUR DE PIERRE
+                    this.deihekiCooldown = 6 * 60;
+                }
+                if (this.power == 4) {
+                    //TODO EJECTER LES JOUEURS
+                    this.kazegafukiCooldown = 6 * 60;
+                }
+            } else {
+                if (parcheminCooldown > 0) {
+                    Messages.getCooldown(parcheminCooldown).queue(player);
+                    return;
+                }
+                Inventory inv = Bukkit.createInventory(null, 9, "Karyuu Endan");
+
+                inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+                inv.setItem(1, new ItemBuilder(Material.NETHER_STAR).setName("§6Karyuu Endan").setLore(
+                        "§7Ce pouvoir permet à Hiruzen de créer un",
+                        "§7surpuissant lance-flamme aura pour effet",
+                        "§7de cramer toutes choses face à lui,",
+                        "§7lorsqu’un joueur est enflammé par ce",
+                        "§7pouvoir il ne pourra s’éteindre et ce",
+                        "§7pendant 10 secondes."
+                ).toItemStack());
+                inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§6Doryuu Heki").setLore(
+                        "§7Ce pouvoir permet à Hiruzen de créer une",
+                        "§7puissante vague d’eau qui permet d’éjecter",
+                        "§7les joueurs et les créatures hostiles face",
+                        "§7à lui."
+                ).toItemStack());
+                inv.setItem(3, new ItemBuilder(Material.NETHER_STAR).setName("§6Deiheki").setLore(
+                        "§7Ce pouvoir permet à Hiruzen de créer un",
+                        "§7gigantesque mur de pierre face à lui."
+                ).toItemStack());
+                inv.setItem(4, new ItemBuilder(Material.NETHER_STAR).setName("§6Deiheki").setLore(
+                        "§7Ce pouvoir permet à Hiruzen d’éjecter tout",
+                        "§7les joueurs proches de lui à environ 15 blocs de lui."
+                ).toItemStack());
+
+                player.openInventory(inv);
+            }
         }
 
         if (Item.interactItem(event, "Shiki Fûjin")) {
@@ -176,6 +252,55 @@ public class Hiruzen extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
+
+        if (event.getInventory().getName().equalsIgnoreCase("Karyuu Endan")) {
+            event.setCancelled(true);
+            if (event.getSlot() == 1) {
+                if (this.karyuuCooldown > 0) {
+                    Messages.getCooldown(karyuuCooldown).queue(player);
+                    return;
+                }
+
+                player.closeInventory();
+                player.sendMessage(prefix("&fVous avez sélectionné le pouvoir &aKaryuu Endan&f."));
+                this.power = 1;
+            }
+
+            if (event.getSlot() == 2) {
+                if (this.doryuuCooldown > 0) {
+                    Messages.getCooldown(doryuuCooldown).queue(player);
+                    return;
+                }
+
+                player.closeInventory();
+                player.sendMessage(prefix("&fVous avez sélectionné le pouvoir &aDoryuu Heki&f."));
+                this.power = 2;
+            }
+
+
+            if (event.getSlot() == 3) {
+                if (this.deihekiCooldown > 0) {
+                    Messages.getCooldown(deihekiCooldown).queue(player);
+                    return;
+                }
+
+                player.closeInventory();
+                player.sendMessage(prefix("&fVous avez sélectionné le pouvoir &aDeiheki&f."));
+                this.power = 3;
+            }
+
+            if (event.getSlot() == 3) {
+                if (this.kazegafukiCooldown > 0) {
+                    Messages.getCooldown(kazegafukiCooldown).queue(player);
+                    return;
+                }
+
+                player.closeInventory();
+                player.sendMessage(prefix("&fVous avez sélectionné le pouvoir &aKazegafuki&f."));
+                this.power = 4;
+            }
+        }
+
         if (event.getInventory().getName().equalsIgnoreCase("Shiki Fûjin")) {
             event.setCancelled(true);
             if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;

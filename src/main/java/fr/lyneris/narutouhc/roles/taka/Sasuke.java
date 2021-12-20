@@ -11,8 +11,11 @@ import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,12 +31,21 @@ import java.util.UUID;
 
 public class Sasuke extends NarutoRole {
 
+    boolean killedPlayer = false;
+    boolean revive = false;
+
     private boolean usingSusano = false;
     private int susanoCooldown = 0;
     private int rinneganCooldown = 0;
     private int bowCooldown = 0;
     private int amaterasuCooldown = 0;
     private boolean usedIzanagi = false;
+    public boolean itachiDied = false;
+    private int swordCooldown = 0;
+    private int susanoTime() {
+        return (itachiDied ? 10 : 5);
+    }
+    boolean usingManda = false;
 
     @Override
     public void resetCooldowns() {
@@ -66,6 +78,32 @@ public class Sasuke extends NarutoRole {
     }
 
     @Override
+    public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
+        if (usingSusano) {
+            if (event.getEntity().getFireTicks() <= 0) {
+                event.getEntity().setFireTicks(100);
+            }
+        }
+
+        if (Item.specialItem(player.getItemInHand(), "Epee")) {
+            if (usingSusano) {
+                if (swordCooldown > 0) {
+                    event.setCancelled(true);
+                    player.sendMessage(Messages.cooldown(swordCooldown));
+                    return;
+                }
+
+                swordCooldown = 20;
+
+            } else {
+                event.setCancelled(true);
+                player.getInventory().removeItem(player.getItemInHand());
+            }
+        }
+
+    }
+
+    @Override
     public void onDistribute(Player player) {
         Role.knowsRole(player, NarutoRoles.OROCHIMARU);
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
@@ -74,13 +112,60 @@ public class Sasuke extends NarutoRole {
         player.getInventory().addItem(Item.getInteractItem("Susano"));
         player.getInventory().addItem(Item.getInteractItem("Rinnegan"));
         player.getInventory().addItem(Item.getInteractItem("Amaterasu"));
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Manda")).toItemStack());
+    }
+
+
+    @Override
+    public void onPlayerDamage(EntityDamageEvent event, Player player) {
+
+        if (event.getFinalDamage() > player.getHealth() && revive) {
+            event.setCancelled(true);
+            World world = Bukkit.getWorld("world");
+            int x = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
+            int z = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
+            int y = world.getHighestBlockYAt(x, z) + 1;
+            player.teleport(new Location(world, x, y, z));
+            player.sendMessage(prefix("&aVous avez été ressuscité."));
+        }
     }
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
+        if (Item.interactItem(event, "Manda")) {
+            if (!killedPlayer) {
+                player.sendMessage(prefix("&cPour utiliser ce pouvoir, vous devez avoir tué quelqu'un."));
+                return;
+            }
+            if(usingManda) {
+                player.sendMessage(prefix("&cVous êtes déjà sous l'effet de Manda."));
+                return;
+            }
+
+            int random = (int) (Math.random() * 5);
+            if (random == 0) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+                player.sendMessage(prefix("&fVous avez obtenu &7Résistance&f pendant 5 minutes."));
+            } else if (random == 1) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
+                player.sendMessage(prefix("&fVous avez obtenu &bSpeed&f pendant 5 minutes."));
+            } else if (random == 2) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
+                player.sendMessage(prefix("&fVous avez obtenu &cForce&f pendant 5 minutes."));
+            } else if( (random == 3)) {
+                this.revive = true;
+                Tasks.runAsyncLater(() -> this.revive = false, 5*20*60);
+                player.sendMessage(prefix("&fSi vous mourrez dans les &c5 &fprochaines minutes. Vous serrez ressuscité."));
+            } else {
+                player.sendMessage(prefix("&fVous n'avez pas eu de chance et avez &crien reçu&f."));
+            }
+            usingManda = true;
+            Tasks.runLater(() -> usingManda = false, 5*20*60);
+        }
+
         if (Item.interactItem(event, "Amaterasu")) {
-            if(this.amaterasuCooldown > 0) {
+            if (this.amaterasuCooldown > 0) {
                 Messages.getCooldown(amaterasuCooldown).queue(player);
                 return;
             }
@@ -93,10 +178,11 @@ public class Sasuke extends NarutoRole {
                     player.setMaxHealth(player.getMaxHealth() - 2);
                     new BukkitRunnable() {
                         int timer = 60;
+
                         @Override
                         public void run() {
                             Player players = Bukkit.getPlayer(uuid);
-                            if(timer <= 0) {
+                            if (timer <= 0) {
                                 players.setFireTicks(0);
                                 cancel();
                             }
@@ -104,7 +190,7 @@ public class Sasuke extends NarutoRole {
                             players.setFireTicks(40);
                         }
                     }.runTaskTimer(narutoUHC, 0, 20);
-                    this.amaterasuCooldown = 15*60;
+                    this.amaterasuCooldown = 15 * 60;
                     break;
                 }
             }
@@ -148,13 +234,21 @@ public class Sasuke extends NarutoRole {
 
             player.sendMessage(prefix("&fVous avez utilisé votre &aSusano&f."));
             player.getInventory().addItem(new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_DAMAGE, 7).setName(Item.specialItem("Arc")).toItemStack());
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, susanoTime() * 20 * 60, 0, false, false));
+            if(itachiDied) {
+                player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Epee")).toItemStack());
+            }
+
             usingSusano = true;
             Tasks.runLater(() -> {
                 usingSusano = false;
                 ItemStack is = Arrays.stream(getPlayer().getInventory().getContents()).filter(itemStack -> Item.specialItem(itemStack, "Arc")).findFirst().orElse(null);
+                if(this.itachiDied) {
+                    ItemStack is2 = Arrays.stream(getPlayer().getInventory().getContents()).filter(itemStack -> Item.specialItem(itemStack, "Epee")).findFirst().orElse(null);
+                    player.getInventory().removeItem(is2);
+                }
                 player.getInventory().removeItem(is);
-            }, 5 * 20 * 60);
+            }, (long) susanoTime() * 20 * 60);
             susanoCooldown = 20 * 60;
         }
     }
@@ -198,8 +292,10 @@ public class Sasuke extends NarutoRole {
     public void onPlayerKill(PlayerDeathEvent event, Player killer) {
         if (Role.isRole(event.getEntity(), NarutoRoles.ITACHI)) {
             killer.setMaxHealth(killer.getMaxHealth() + 6);
-            killer.sendMessage(prefix("Vous avez tué &cItachi&f. De ce fait vous obtenez &c3 coeurs&f permanent ainsi "));
+            this.itachiDied = true;
+            killer.sendMessage(prefix("Vous avez tué &cItachi&f. De ce fait vous obtenez &c3 coeurs&f permanent. Votre &aSusano &fa également fusionné avec celui d'&cItachi&f. De ce fait vous recevez l'épée d'&cItachi&f et votre pouvoir dure 10 minutes à la place de 5 minutes."));
         }
+        this.killedPlayer = true;
     }
 
     @Override
@@ -207,10 +303,19 @@ public class Sasuke extends NarutoRole {
         if (Role.isRole(player, NarutoRoles.OROCHIMARU)) {
             Player sasuke = getPlayer();
             if (sasuke == null) return;
-            sasuke.sendMessage(CC.prefix("&aOrochimaru &fest mort..."));
+            roleManager.setCamp(sasuke, Camp.SOLO);
+            sasuke.sendMessage(CC.prefix("&aOrochimaru &fest mort. Vous devez maintenant gagner tout &cseul&f."));
             Role.knowsRole(sasuke, NarutoRoles.KARIN);
             Role.knowsRole(sasuke, NarutoRoles.SUIGETSU);
             Role.knowsRole(sasuke, NarutoRoles.JUGO);
+        }
+
+        if (Role.isRole(player, NarutoRoles.ITACHI)) {
+            Player sasuke = getPlayer();
+            if (sasuke == null) return;
+            roleManager.setCamp(sasuke, Camp.AKATSUKI);
+            sasuke.sendMessage(CC.prefix("&aItachi &fest mort. Vous devez maintenant gagner tout l'&cAkatsuki&f."));
+            Role.knowsRole(sasuke, NarutoRoles.NAGATO);
         }
     }
 

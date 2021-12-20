@@ -37,4 +37,8 @@ public class Item {
         return var1 != null && var1.hasItemMeta() && var1.getItemMeta().hasDisplayName();
     }
 
+    public static boolean isSword(ItemStack var1) {
+        return var1.getType() == Material.IRON_SWORD || var1.getType() == Material.DIAMOND_SWORD;
+    }
+
 }

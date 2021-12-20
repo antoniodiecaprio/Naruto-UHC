@@ -44,6 +44,15 @@ public class NarutoModule implements Module {
     @Override
     public void onPlayerDeath(Player player, Player killer) {
 
+        if(player.getUniqueId().equals(NarutoUHC.getNaruto().getHokage().getHokage())) {
+            if(Role.isRole(killer, NarutoRoles.DANZO)) {
+                Tasks.runLater(() -> NarutoUHC.getNaruto().getHokage().chooseHokage(killer), 5*20*60);
+            } else {
+                Tasks.runLater(() -> NarutoUHC.getNaruto().getHokage().chooseHokage(), 5*20*60);
+            }
+            Bukkit.broadcastMessage(CC.prefix("&cLe Hokage est mort. Un nouveau Hokage sera défini dans 5 minutes."));
+        }
+
         if(Role.isRole(player, NarutoRoles.GAARA) && Gaara.narutoHit && Role.getCamp(player) != Camp.SHINOBI) {
             int x = new Random().nextInt(60);
             int z = new Random().nextInt(60);
