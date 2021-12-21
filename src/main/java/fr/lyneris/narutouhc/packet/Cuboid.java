@@ -56,17 +56,7 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
         this.z1 = Math.min(z1, z2);
         this.z2 = Math.max(z1, z2);
     }
-    
-    public Cuboid(final Map<String, Object> map) {
-        this.worldName = map.get("worldName");
-        this.x1 = map.get("x1");
-        this.x2 = map.get("x2");
-        this.y1 = map.get("y1");
-        this.y2 = map.get("y2");
-        this.z1 = map.get("z1");
-        this.z2 = map.get("z2");
-    }
-    
+
     public Map<String, Object> serialize() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("worldName", this.worldName);

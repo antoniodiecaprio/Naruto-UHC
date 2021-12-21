@@ -215,6 +215,12 @@ public class NarutoListener implements Listener {
     }
 
     @EventHandler
+    public void onRolePlace(BlockPlaceEvent event) {
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerBlockPlace(event, event.getPlayer());
+    }
+
+    @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         if (event.getEntity().getShooter() == null) return;
         if (!(event.getEntity().getShooter() instanceof Player)) return;

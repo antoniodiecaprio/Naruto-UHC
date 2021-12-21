@@ -7,3 +7,7 @@ depend:
 commands:
   ns:
     description: Naruto command
+  boost:
+    description: Hokage boost command
+  reveal:
+    description: Reveal hokage command

@@ -13,6 +13,7 @@ import fr.lyneris.narutouhc.module.NarutoModule;
 import fr.lyneris.narutouhc.packet.NPCManager;
 import fr.lyneris.narutouhc.packet.PacketManager;
 import fr.lyneris.narutouhc.roles.jubi.Madara;
+import fr.lyneris.narutouhc.roles.shinobu.Hiruzen;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.game.config.WorldGeneration;
 import fr.lyneris.uhc.module.Module;
@@ -55,6 +56,7 @@ public class NarutoUHC extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);
         this.getServer().getPluginManager().registerEvents(new Madara(), this);
         this.getServer().getPluginManager().registerEvents(new NarutoGui(), this);
+        this.getServer().getPluginManager().registerEvents(new Hiruzen(), this);
         this.getServer().getPluginManager().registerEvents(chakra, this);
         this.getCommand("ns").setExecutor(new NarutoCommand());
         this.getCommand("reveal").setExecutor(new RevealCommand());

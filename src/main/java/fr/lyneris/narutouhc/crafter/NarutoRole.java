@@ -8,6 +8,7 @@ import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Role;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
@@ -145,6 +146,10 @@ public abstract class NarutoRole {
     public void onAllPlayerCampChange(Camp camp, Player player) {
 
     }
+
+    public void onPlayerBlockPlace(BlockPlaceEvent event, Player player) {
+    }
+
 
     public String prefix(String var1) {
         return CC.prefix(var1);

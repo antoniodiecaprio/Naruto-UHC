@@ -1,31 +1,38 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
-import com.sun.org.apache.xerces.internal.parsers.IntegratedParserConfiguration;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.packet.Reach;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-public class Hiruzen extends NarutoRole {
+public class Hiruzen extends NarutoRole implements Listener {
 
     public int enmaCooldown = 0;
     public int avancement = 0;
@@ -37,6 +44,7 @@ public class Hiruzen extends NarutoRole {
     private int doryuuCooldown = 0;
     private int deihekiCooldown = 0;
     private int kazegafukiCooldown = 0;
+    public boolean using = false;
 
     @Override
     public void resetCooldowns() {
@@ -78,6 +86,17 @@ public class Hiruzen extends NarutoRole {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Parchemin Interdit")).toItemStack());
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
+    }
+
+    @Override
+    public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
+        if(player.getLocation().distance(getPlayer().getLocation()) <= 30) {
+            if(!using) return;
+            if(!player.getLocation().getBlock().isLiquid()) return;
+            if(!player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER)) return;
+            if(player.getName().equals(getPlayer().getName())) return;
+            player.setVelocity(player.getLocation().getDirection().multiply(3).setY(2));
+        }
     }
 
     @Override
@@ -131,7 +150,7 @@ public class Hiruzen extends NarutoRole {
             avancementTarget.sendMessage(prefix("&aHiruzen &fest mort alors qu'il utilisait son &cShiki Fûjin &fsur vous."));
             int random = (int) (Math.random() * 3);
             if (random == 0) {
-                //TODO DISABLE POWERS AVANCEMENTTARGET FOR 20 MINUTES
+                //TODO DISABLE POWERS avancementTarget FOR 20 MINUTES
                 avancementTarget.sendMessage(prefix("&cVous ne pouvez plus utiliser de pouvoirs pendant 20 minutes."));
             } else if (random == 1) {
                 avancementTarget.sendMessage(prefix("&cVous obtenez Slowness pour toute la game."));
@@ -146,6 +165,17 @@ public class Hiruzen extends NarutoRole {
             }
         }
     }
+
+
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        if (!using) return;
+        int id = event.getBlock().getTypeId();
+        if (id == 8 || id == 9) {
+            event.setCancelled(true);
+        }
+    }
+
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
@@ -172,19 +202,208 @@ public class Hiruzen extends NarutoRole {
                 }
 
                 if (this.power == 1) {
-                    //TODO LANCE FLAMME
+                    List<Entity> burning = new ArrayList<>();
+                    new BukkitRunnable() {
+                        int timer = 40;
+
+                        @Override
+                        public void run() {
+                            if (timer == 0) {
+                                burning.clear();
+                                cancel();
+                                return;
+                            }
+                            char c = Loc.getCharCardinalDirection(player);
+                            Cuboid cuboid;
+                            if (c == 'W') {
+                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 10);
+                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() + 1);
+                                cuboid = new Cuboid(one, two);
+                                cuboid.getBlocks().forEach(block -> {
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        for (double j = 0.2; j < 1.2; j += 0.2) {
+                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
+                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                        }
+                                    }
+                                });
+                            } else if (c == 'E') {
+                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() - 10);
+                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 1);
+                                cuboid = new Cuboid(one, two);
+                                cuboid.getBlocks().forEach(block -> {
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        for (double j = 0.2; j < 1.2; j += 0.2) {
+                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
+                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                        }
+                                    }
+                                });
+                            } else if (c == 'N') {
+                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
+                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
+                                cuboid = new Cuboid(one, two);
+                                cuboid.getBlocks().forEach(block -> {
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        for (double j = 0.2; j < 1.2; j += 0.2) {
+                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
+                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                        }
+                                    }
+                                });
+                            } else {
+                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
+                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
+                                cuboid = new Cuboid(one, two);
+                                cuboid.getBlocks().forEach(block -> {
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                    for (double i = 0.0; i < 1; i += 0.1) {
+                                        for (double j = 0.2; j < 1.2; j += 0.2) {
+                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
+                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                        }
+                                    }
+                                });
+                            }
+                            player.getNearbyEntities(20, 20, 20).forEach(entity -> {
+                                for (Block block : cuboid.getBlocks()) {
+                                    if (block.getLocation().distance(entity.getLocation()) <= 3 && entity.getUniqueId() != player.getUniqueId() ) {
+                                        entity.setFireTicks(20);
+                                        burning.add(entity);
+                                        break;
+                                    }
+                                }
+                            });
+                            timer--;
+                            burning.forEach(entity -> entity.setFireTicks(20));
+                        }
+                    }.runTaskTimer(narutoUHC, 0, 5);
+                    this.power = 0;
+                    this.parcheminCooldown = 60;
                     this.karyuuCooldown = 6 * 60;
                 }
                 if (this.power == 2) {
-                    //TODO VAGUE D'EAU
+                    char c = Loc.getCharCardinalDirection(player);
+                    this.using = true;
+                    Location loc = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
+                    Location loc2 = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
+                    Location one;
+                    Location two;
+                    if (c == 'W' || c == 'E') {
+                        one = loc.add(20, 20, 0);
+                        two = loc2.add(-20, 0, 0);
+                        new BukkitRunnable() {
+                            int timer = 32;
+
+                            @Override
+                            public void run() {
+                                if (timer == 0) {
+                                    Cuboid old = new Cuboid(one, two);
+                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                    using = false;
+                                    cancel();
+                                    return;
+                                }
+                                if (c == 'W') {
+                                    Cuboid old = new Cuboid(one, two);
+                                    Cuboid cuboid = new Cuboid(one.add(0, 0, 1), two.add(0, 0, 1));
+                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                                } else {
+                                    Cuboid old = new Cuboid(one, two);
+                                    Cuboid cuboid = new Cuboid(one.add(0, 0, -1), two.add(0, 0, -1));
+                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                                }
+                                timer--;
+                            }
+                        }.runTaskTimer(narutoUHC, 0, 5);
+                    } else {
+                        one = loc.add(0, 20, 20);
+                        two = loc2.add(0, 0, -20);
+                        new BukkitRunnable() {
+                            int timer = 32;
+
+                            @Override
+                            public void run() {
+                                if (timer == 0) {
+                                    Cuboid old = new Cuboid(one, two);
+                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                    using = false;
+                                    cancel();
+                                    return;
+                                }
+                                if (c == 'S') {
+                                    Cuboid old = new Cuboid(one, two);
+                                    Cuboid cuboid = new Cuboid(one.add(1, 0, 0), two.add(1, 0, 0));
+                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                                } else {
+                                    Cuboid old = new Cuboid(one, two);
+                                    Cuboid cuboid = new Cuboid(one.add(-1, 0, 0), two.add(-1, 0, 0));
+                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                                }
+                                timer--;
+                            }
+                        }.runTaskTimer(narutoUHC, 0, 5);
+                    }
+
+                    this.power = 0;
+                    this.parcheminCooldown = 60;
                     this.doryuuCooldown = 6 * 60;
                 }
+
                 if (this.power == 3) {
-                    //TODO MUR DE PIERRE
+                    char c = Loc.getCharCardinalDirection(player);
+                    Cuboid cuboid;
+                    if (c == 'W') {
+                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 2, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() + 4);
+                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 2, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() + 4);
+                        cuboid = new Cuboid(one, two);
+                    } else if (c == 'E') {
+                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 2, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() - 4);
+                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 2, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() - 4);
+                        cuboid = new Cuboid(one, two);
+                    } else if (c == 'N') {
+                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 4, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() + 2);
+                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 4, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() - 2);
+                        cuboid = new Cuboid(one, two);
+                    } else {
+                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 4, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() + 2);
+                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 4, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() - 2);
+                        cuboid = new Cuboid(one, two);
+                    }
+                    cuboid.getBlocks().forEach(block -> block.setType(Material.COBBLESTONE));
+                    this.power = 0;
+                    this.parcheminCooldown = 60;
                     this.deihekiCooldown = 6 * 60;
                 }
                 if (this.power == 4) {
-                    //TODO EJECTER LES JOUEURS
+                    for (Player entity : Loc.getNearbyPlayers(player, 15)) {
+                        Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
+                        entity.setVelocity(new Vector(0, 1.3, 0));
+                        fromPlayerToTarget.multiply(50);
+                        fromPlayerToTarget.setY(2);
+                        entity.setVelocity(fromPlayerToTarget.normalize());
+                    }
+                    this.power = 0;
+                    this.parcheminCooldown = 60;
                     this.kazegafukiCooldown = 6 * 60;
                 }
             } else {
@@ -213,9 +432,10 @@ public class Hiruzen extends NarutoRole {
                         "§7Ce pouvoir permet à Hiruzen de créer un",
                         "§7gigantesque mur de pierre face à lui."
                 ).toItemStack());
-                inv.setItem(4, new ItemBuilder(Material.NETHER_STAR).setName("§6Deiheki").setLore(
+                inv.setItem(4, new ItemBuilder(Material.NETHER_STAR).setName("§6Kazegafuki").setLore(
                         "§7Ce pouvoir permet à Hiruzen d’éjecter tout",
-                        "§7les joueurs proches de lui à environ 15 blocs de lui."
+                        "§7les joueurs proches de lui à environ 15",
+                        "§7blocs de lui."
                 ).toItemStack());
 
                 player.openInventory(inv);

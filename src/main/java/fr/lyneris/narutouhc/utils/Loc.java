@@ -74,7 +74,7 @@ public class Loc {
         } else if (337.5 <= rotation && rotation < 360.0) {
             return 'N';
         } else {
-            return 'Z';
+            return 'N';
         }
     }
 

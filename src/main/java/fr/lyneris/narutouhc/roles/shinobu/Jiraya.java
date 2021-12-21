@@ -5,11 +5,16 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -17,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +32,7 @@ public class Jiraya extends NarutoRole {
     int senjutsuCooldown = 0;
     int dasshuCooldown = 0;
     int isanCooldown = 0;
+    int kisuoiriCooldown = 0;
 
     public NarutoRoles getRole() {
         return NarutoRoles.JIRAYA;
@@ -36,6 +43,7 @@ public class Jiraya extends NarutoRole {
         senjutsuCooldown = 0;
         dasshuCooldown = 0;
         isanCooldown = 0;
+        kisuoiriCooldown = 0;
     }
 
     @Override
@@ -48,6 +56,9 @@ public class Jiraya extends NarutoRole {
         }
         if (isanCooldown > 0) {
             isanCooldown--;
+        }
+        if (kisuoiriCooldown > 0) {
+            kisuoiriCooldown--;
         }
     }
 
@@ -163,7 +174,103 @@ public class Jiraya extends NarutoRole {
             }
 
             if(event.getSlot() == 3) {
-                //TODO LANCE FLAMME
+                if(this.kisuoiriCooldown > 0) {
+                    Messages.getCooldown(kisuoiriCooldown).queue(player);
+                    return;
+                }
+                List<Entity> burning = new ArrayList<>();
+                new BukkitRunnable() {
+                    int timer = 40;
+
+                    @Override
+                    public void run() {
+                        if (timer == 0) {
+                            burning.clear();
+                            cancel();
+                            return;
+                        }
+                        char c = Loc.getCharCardinalDirection(player);
+                        Cuboid cuboid;
+                        if (c == 'W') {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 10);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() + 1);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        } else if (c == 'E') {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() - 10);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 1);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        } else if (c == 'N') {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        } else {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        }
+                        player.getNearbyEntities(20, 20, 20).forEach(entity -> {
+                            for (Block block : cuboid.getBlocks()) {
+                                if (block.getLocation().distance(entity.getLocation()) <= 3 && entity.getUniqueId() != player.getUniqueId() ) {
+                                    entity.setFireTicks(20);
+                                    burning.add(entity);
+                                    break;
+                                }
+                            }
+                        });
+                        timer--;
+                        burning.forEach(entity -> entity.setFireTicks(20));
+                    }
+                }.runTaskTimer(narutoUHC, 0, 5);
+
+                kisuoiriCooldown = 10*60;
             }
 
         }
