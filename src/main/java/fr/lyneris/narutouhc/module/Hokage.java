@@ -28,22 +28,22 @@ public class Hokage {
         Role.getAliveOnlinePlayers().stream().filter(player -> CAN_BE_HOKAGE.contains(Role.getRole(player).getRole())).map(Player::getUniqueId).forEach(list::add);
         Collections.shuffle(list);
 
-        this.hokage = list.get(0);
+        setHokage(list.get(0));
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (DOESNT_SEE_HOKAGE.contains(Role.getRole(player).getRole())) {
                 player.sendMessage(CC.prefix("&fLe &aHokage &fa été choisi."));
             } else {
-                player.sendMessage(CC.prefix("&fLe &aHokage &fde la partie est &a" + Bukkit.getPlayer(hokage).getName()));
+                player.sendMessage(CC.prefix("&fLe &aHokage &fde la partie est &a" + Bukkit.getPlayer(getHokage()).getName()));
             }
         });
 
-        narutoUHC.getManager().getStrength().put(hokage, narutoUHC.getManager().getStrength().getOrDefault(hokage, 0));
-        narutoUHC.getManager().getResistance().put(hokage, narutoUHC.getManager().getResistance().getOrDefault(hokage, 0));
+        narutoUHC.getManager().getStrength().put(getHokage(), narutoUHC.getManager().getStrength().getOrDefault(getHokage(), 0));
+        narutoUHC.getManager().getResistance().put(getHokage(), narutoUHC.getManager().getResistance().getOrDefault(getHokage(), 0));
     }
 
 
     public void chooseHokage(Player hokage) {
-        this.hokage = hokage.getUniqueId();
+        setHokage(hokage.getUniqueId());
         Bukkit.getOnlinePlayers().forEach(player -> {
             if (DOESNT_SEE_HOKAGE.contains(Role.getRole(player).getRole())) {
                 player.sendMessage(CC.prefix("&fLe &aHokage &fa été choisi."));
