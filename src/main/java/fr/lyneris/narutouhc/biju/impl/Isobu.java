@@ -3,9 +3,8 @@ package fr.lyneris.narutouhc.biju.impl;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.biju.Biju;
-import fr.lyneris.narutouhc.utils.CC;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Loc;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -17,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.security.Guard;
+import java.util.UUID;
 
 public class Isobu extends Biju implements Listener {
 
@@ -57,13 +58,31 @@ public class Isobu extends Biju implements Listener {
             int z = -NarutoUHC.getRandom().nextInt(150, 300);
             spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         }
-        
+
         new IsobuRunnable().runTaskTimer(NarutoUHC.getNaruto(), 0L, 20L);
     }
 
     @Override
     public String getName() {
         return "§aIsobu";
+    }
+
+    @Override
+    public void getItemInteraction(PlayerInteractEvent event, Player player) {
+        if (NarutoUHC.getNaruto().getBijuListener().getIsobuCooldown() > 0) {
+            Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getIsobuCooldown()).queue(player);
+            return;
+        }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
+        final UUID uuid = player.getUniqueId();
+        player.setMaxHealth(player.getMaxHealth() + 10);
+        NarutoUHC.getNaruto().getBijuListener().setIsobuDamage(player.getUniqueId());
+        Tasks.runLater(() -> {
+            NarutoUHC.getNaruto().getBijuListener().setIsobuDamage(null);
+            Bukkit.getPlayer(uuid).setMaxHealth(Bukkit.getPlayer(uuid).getMaxHealth() - 10);
+        }, 5 * 20 * 60);
+        NarutoUHC.getNaruto().getBijuListener().setIsobuCooldown(20 * 60);
     }
 
     @Override
@@ -81,8 +100,8 @@ public class Isobu extends Biju implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!guardian.isDead()) {
-                    if(!Loc.getNearbyPlayers(guardian, 15).isEmpty()) {
+                if (!guardian.isDead()) {
+                    if (!Loc.getNearbyPlayers(guardian, 15).isEmpty()) {
                         Guardian little_guardian = (Guardian) guardian.getWorld().spawnEntity(guardian.getLocation(), EntityType.GUARDIAN);
                         little_guardian.setElder(false);
                         little_guardian.setMaxHealth(10);
@@ -92,14 +111,14 @@ public class Isobu extends Biju implements Listener {
                     }
                 }
             }
-        }.runTaskTimer(NarutoUHC.getNaruto(), 0, 10*20);
+        }.runTaskTimer(NarutoUHC.getNaruto(), 0, 10 * 20);
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if(guardian != null && !guardian.isDead() && event.getEntity().getUniqueId().equals(guardian.getUniqueId())) {
+        if (guardian != null && !guardian.isDead() && event.getEntity().getUniqueId().equals(guardian.getUniqueId())) {
             int random = (int) (Math.random() * 25);
-            if(random == 0) {
+            if (random == 0) {
                 event.setCancelled(true);
             }
         }
@@ -107,22 +126,22 @@ public class Isobu extends Biju implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if(this.guardian != null && event.getEntity().getUniqueId().equals(this.guardian.getUniqueId())) {
+        if (this.guardian != null && event.getEntity().getUniqueId().equals(this.guardian.getUniqueId())) {
             event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), getItem());
             this.guardian = null;
             event.getDrops().clear();
             Tasks.runLater(() -> {
-                if(this.getMaster() == null) {
+                if (this.getMaster() == null) {
                     spawnEntity();
                     Bukkit.broadcastMessage(CC.prefix(getName() + " &fvient de réapparaître."));
                 }
-            }, 5*20*60);
+            }, 5 * 20 * 60);
         }
     }
 
     @EventHandler
     public void onPickup(PlayerPickupItemEvent event) {
-        if(event.getItem().getItemStack().equals(this.getItem())) {
+        if (event.getItem().getItemStack().equals(this.getItem())) {
             this.setMaster(event.getPlayer().getUniqueId());
         }
     }
