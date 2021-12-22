@@ -27,6 +27,11 @@ public class Kokuo extends Biju implements Listener {
     private Location spawn;
 
     @Override
+    public LivingEntity getLivingEntity() {
+        return horse;
+    }
+
+    @Override
     public void setupBiju() {
         int value = (int) (Math.random() * 3);
 

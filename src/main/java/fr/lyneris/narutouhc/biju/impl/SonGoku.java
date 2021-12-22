@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,6 +27,11 @@ public class SonGoku extends Biju implements Listener {
 
     private MagmaCube magma_cube;
     private Location spawn;
+
+    @Override
+    public LivingEntity getLivingEntity() {
+        return magma_cube;
+    }
 
     @Override
     public void setupBiju() {

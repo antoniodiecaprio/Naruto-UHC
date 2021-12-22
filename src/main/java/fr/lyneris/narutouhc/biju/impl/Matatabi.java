@@ -11,10 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.entity.Blaze;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -28,6 +25,11 @@ public class Matatabi extends Biju implements Listener {
 
     private Blaze blaze;
     private Location spawn;
+
+    @Override
+    public LivingEntity getLivingEntity() {
+        return blaze;
+    }
 
     @Override
     public void setupBiju() {

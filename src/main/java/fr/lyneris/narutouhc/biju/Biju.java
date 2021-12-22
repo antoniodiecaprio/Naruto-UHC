@@ -4,7 +4,9 @@ import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Role;
 import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -12,6 +14,8 @@ import java.util.UUID;
 public abstract class Biju {
 
     private UUID master;
+
+    public abstract LivingEntity getLivingEntity();
 
     public abstract void setupBiju();
 
@@ -41,6 +45,8 @@ public abstract class Biju {
     }
 
     public abstract ItemStack getItem();
+
+    public abstract void getItemInteraction(PlayerInteractEvent event, Player player);
 
     public UUID getMaster() {
         return master;

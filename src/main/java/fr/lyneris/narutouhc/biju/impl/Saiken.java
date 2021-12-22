@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.event.EventHandler;
@@ -27,6 +28,11 @@ public class Saiken extends Biju implements Listener {
 
     private Slime slime;
     private Location spawn;
+
+    @Override
+    public LivingEntity getLivingEntity() {
+        return slime;
+    }
 
     @Override
     public void setupBiju() {

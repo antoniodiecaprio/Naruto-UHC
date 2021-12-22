@@ -1,6 +1,7 @@
 package fr.lyneris.narutouhc.roles.jubi;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.biju.Biju;
 import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
@@ -110,6 +111,7 @@ public class Obito extends NarutoRole {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kamui")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Genjutsu")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Biju")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.specialItem("Traqueur")).toItemStack());
 
     }
 
@@ -150,13 +152,44 @@ public class Obito extends NarutoRole {
 
     }
 
-
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
+        if(Item.specialItem(event.getItem(), "Traqueur")) {
+            if(bijus == null) {
+                player.sendMessage(prefix("&cVous n'avez selectionné aucun Biju."));
+                return;
+            }
+
+            if(bijus.getBiju().getMaster() == null) {
+                if(bijus.getBiju().getMaster() == null) {
+                    player.sendMessage(prefix("&fVous traquez désormais " + bijus.getBiju().getName() + " &fqui se situe en :"));
+                    Location loc = bijus.getBiju().getLivingEntity().getLocation();
+                    player.sendMessage(CC.prefix("&a" + loc.getBlockX() + "&f, &a" + loc.getBlockY() + "&f, &a" + loc.getBlockZ()));
+                    player.setCompassTarget(loc);
+                } else {
+                    player.sendMessage(prefix("&fVous traquez désormais " + Bukkit.getPlayer(bijus.getBiju().getMaster()).getName() + " &fqui se situe en :"));
+                    Location loc = Bukkit.getPlayer(bijus.getBiju().getMaster()).getLocation();
+                    player.sendMessage(CC.prefix("&a" + loc.getBlockX() + "&f, &a" + loc.getBlockY() + "&f, &a" + loc.getBlockZ()));
+                    player.setCompassTarget(loc);
+                }
+            }
+        }
+
         if(Item.interactItem(event, "Biju")) {
+            if(!Bijus.start) {
+                player.sendMessage(CC.prefix("&cLes bijus ne sont toujours pas apparu."));
+                return;
+            }
             Inventory inventory = Bukkit.createInventory(null, 9, "Biju");
-            inventory
+            inventory.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+            int i = 1;
+            for (Bijus value : Bijus.values()) {
+                inventory.setItem(i, new ItemBuilder(value.getMaterial()).setName(value.getBiju().getName()).toItemStack());
+                i++;
+            }
+
+            player.openInventory(inventory);
         }
 
         if (Item.interactItem(event, "Susano")) {
@@ -233,6 +266,40 @@ public class Obito extends NarutoRole {
 
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
+
+        if(event.getInventory().getName().equals("Biju")) {
+            event.setCancelled(true);
+            if(event.getSlot() != 0) {
+                Biju biju = null;
+                for (Bijus value : Bijus.values()) {
+                    if(value.getBiju().getName().equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
+                        biju = value.getBiju();
+                        break;
+                    }
+                }
+                assert biju != null;
+                if(biju.getMaster() == null) {
+                    player.sendMessage(prefix("&fVous traquez désormais " + biju.getName() + " &fqui se situe en :"));
+                    Location loc = biju.getLivingEntity().getLocation();
+                    player.sendMessage(CC.prefix("&a" + loc.getBlockX() + "&f, &a" + loc.getBlockY() + "&f, &a" + loc.getBlockZ()));
+                    player.setCompassTarget(loc);
+                } else {
+                    player.sendMessage(prefix("&fVous traquez désormais " + Bukkit.getPlayer(biju.getMaster()).getName() + " &fqui se situe en :"));
+                    Location loc = Bukkit.getPlayer(biju.getMaster()).getLocation();
+                    player.sendMessage(CC.prefix("&a" + loc.getBlockX() + "&f, &a" + loc.getBlockY() + "&f, &a" + loc.getBlockZ()));
+                    player.setCompassTarget(loc);
+                }
+                player.sendMessage(prefix("&fFaites un clic &adroit &favec votre boussoule pour actualiser les coordonnées."));
+                Bijus bijus = null;
+                for (Bijus value : Bijus.values()) {
+                    if(value.getBiju().getName().equals(biju.getName())) {
+                        bijus = value;
+                        break;
+                    }
+                }
+                this.bijus = bijus;
+            }
+        }
 
         if (event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);

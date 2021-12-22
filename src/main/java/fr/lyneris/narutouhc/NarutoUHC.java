@@ -1,5 +1,7 @@
 package fr.lyneris.narutouhc;
 
+import fr.lyneris.narutouhc.biju.Biju;
+import fr.lyneris.narutouhc.biju.BijuListener;
 import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.commands.BoostCommand;
 import fr.lyneris.narutouhc.commands.NarutoCommand;
@@ -33,6 +35,7 @@ public class NarutoUHC extends JavaPlugin {
     private PacketManager packetManager;
     private Hokage hokage;
     private Chakra chakra;
+    private BijuListener bijuListener;
     public static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     public static NarutoUHC getNaruto() {
@@ -58,12 +61,14 @@ public class NarutoUHC extends JavaPlugin {
         this.hokage = new Hokage(this);
         this.chakra = new Chakra(this);
         Bijus.initBijus();
+        this.bijuListener = new BijuListener();
 
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);
         this.getServer().getPluginManager().registerEvents(new Madara(), this);
         this.getServer().getPluginManager().registerEvents(new NarutoGui(), this);
         this.getServer().getPluginManager().registerEvents(new Hiruzen(), this);
         this.getServer().getPluginManager().registerEvents(chakra, this);
+        this.getServer().getPluginManager().registerEvents(bijuListener, this);
         this.getCommand("ns").setExecutor(new NarutoCommand());
         this.getCommand("reveal").setExecutor(new RevealCommand());
         this.getCommand("boost").setExecutor(new BoostCommand());
@@ -100,5 +105,9 @@ public class NarutoUHC extends JavaPlugin {
 
     public static ThreadLocalRandom getRandom() {
         return RANDOM;
+    }
+
+    public BijuListener getBijuListener() {
+        return bijuListener;
     }
 }

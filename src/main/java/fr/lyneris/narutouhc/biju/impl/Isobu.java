@@ -31,6 +31,11 @@ public class Isobu extends Biju implements Listener {
     private Location spawn;
 
     @Override
+    public LivingEntity getLivingEntity() {
+        return guardian;
+    }
+
+    @Override
     public void setupBiju() {
         int value = (int) (Math.random() * 3);
 
