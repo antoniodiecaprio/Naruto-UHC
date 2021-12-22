@@ -2,6 +2,7 @@ package fr.lyneris.narutouhc.module;
 
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.roles.sankyodai.Gaara;
@@ -142,7 +143,7 @@ public class NarutoModule implements Module {
 
     @Override
     public void onStart() {
-
+        Bijus.initBijus();
     }
 
     @Override

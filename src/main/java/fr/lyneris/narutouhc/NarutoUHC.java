@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc;
 
+import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.commands.BoostCommand;
 import fr.lyneris.narutouhc.commands.NarutoCommand;
 import fr.lyneris.narutouhc.commands.RevealCommand;
@@ -19,6 +20,9 @@ import fr.lyneris.uhc.game.config.WorldGeneration;
 import fr.lyneris.uhc.module.Module;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class NarutoUHC extends JavaPlugin {
 
     private static NarutoUHC naruto;
@@ -29,6 +33,7 @@ public class NarutoUHC extends JavaPlugin {
     private PacketManager packetManager;
     private Hokage hokage;
     private Chakra chakra;
+    public static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     public static NarutoUHC getNaruto() {
         return naruto;
@@ -52,6 +57,7 @@ public class NarutoUHC extends JavaPlugin {
         this.npcManager = new NPCManager(this.packetManager);
         this.hokage = new Hokage(this);
         this.chakra = new Chakra(this);
+        Bijus.initBijus();
 
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);
         this.getServer().getPluginManager().registerEvents(new Madara(), this);
@@ -90,5 +96,9 @@ public class NarutoUHC extends JavaPlugin {
 
     public Hokage getHokage() {
         return hokage;
+    }
+
+    public static ThreadLocalRandom getRandom() {
+        return RANDOM;
     }
 }

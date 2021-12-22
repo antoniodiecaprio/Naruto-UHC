@@ -1,6 +1,7 @@
 package fr.lyneris.narutouhc.roles.jubi;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
@@ -44,6 +45,7 @@ public class Obito extends NarutoRole {
     private int swordCooldown = 0;
     private boolean usingSusano = false;
     private int susanoCooldown = 0;
+    private Bijus bijus = null;
 
     public NarutoRoles getRole() {
         return NarutoRoles.OBITO;
@@ -107,9 +109,9 @@ public class Obito extends NarutoRole {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Ninjutsu Spatio-Temporel")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kamui")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Genjutsu")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Biju")).toItemStack());
 
     }
-
 
     @Override
     public void onAllPlayerJoin(PlayerJoinEvent event, Player player) {
@@ -151,6 +153,11 @@ public class Obito extends NarutoRole {
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
+
+        if(Item.interactItem(event, "Biju")) {
+            Inventory inventory = Bukkit.createInventory(null, 9, "Biju");
+            inventory
+        }
 
         if (Item.interactItem(event, "Susano")) {
             if (susanoCooldown > 0) {
@@ -254,7 +261,7 @@ public class Obito extends NarutoRole {
             if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player entity : Loc.getNearbyPlayers(player, 20)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
                 if (nearbyPlayer > 8 && nearbyPlayer <= 17) {
@@ -336,7 +343,7 @@ public class Obito extends NarutoRole {
             if (event.getSlot() == 2) {
                 int i = 9;
                 int nearbyPlayer = 0;
-                for (Player entity : Loc.getNearbyPlayers(player, 20)) {
+                for (Player ignored : Loc.getNearbyPlayers(player, 20)) {
                     nearbyPlayer++;
                 }
                 if (nearbyPlayer > 7 && nearbyPlayer <= 16) {
