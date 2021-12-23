@@ -21,6 +21,7 @@ import org.bukkit.entity.CaveSpider;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Spider;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -76,6 +77,14 @@ public class Kidomaru extends NarutoRole {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kyodaigumo")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Marque Maudite")).toItemStack());
 
+
+    }
+
+    @Override
+    public void onPlayerDamage(EntityDamageEvent event, Player player) {
+        if(event.getEntity() instanceof CaveSpider || event.getEntity() instanceof CaveSpider) {
+            event.setCancelled(true);
+        }
     }
 
     @Override
@@ -123,6 +132,7 @@ public class Kidomaru extends NarutoRole {
                         if (tickSpawnSpider <= 0) {
                             for (int x = -10; x <= 10; x += 5) {
                                 for (int z = -10; z <= 10; z += 5) {
+                                    if(nearestPlayer.getUniqueId() == player.getUniqueId()) return;
                                     CaveSpider caveSpider = world.spawn(new Location(world, spider.getLocation().getBlockX() + x, world.getHighestBlockYAt(spider.getLocation()) + 2, spider.getLocation().getBlockZ() + z), CaveSpider.class);
                                     caveSpider.setCustomName("§eEnfant de Kyodaigumo");
                                     caveSpider.setTarget(nearestPlayer);

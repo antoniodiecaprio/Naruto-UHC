@@ -5,6 +5,7 @@ import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.biju.Biju;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Messages;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -126,6 +128,21 @@ public class Saiken extends Biju implements Listener {
     public ItemStack getItem() {
         return Item.getInteractItem("Isobu");
     }
+
+    @Override
+    public void getItemInteraction(PlayerInteractEvent event, Player player) {
+        if (NarutoUHC.getNaruto().getBijuListener().getSaikenCooldown() > 0) {
+            Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getSaikenCooldown()).queue(player);
+            return;
+        }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 0, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));
+        NarutoUHC.getNaruto().getBijuListener().setSaikenUser(player.getUniqueId());
+        Tasks.runLater(() -> NarutoUHC.getNaruto().getBijuListener().setSaikenUser(null), 5 * 20 * 60);
+        NarutoUHC.getNaruto().getBijuListener().setSaikenCooldown(15 * 60);
+    }
+
 
     public class SaikenRunnable extends BukkitRunnable {
 

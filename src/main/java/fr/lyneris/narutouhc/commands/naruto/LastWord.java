@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class LastWord {
 
     public LastWord(Player player, String[] args) {
-        if (Ino.transfer != null && Ino.transfer.equals(player.getUniqueId()) && Ino.nearPlayers.size() != 0) {
+        if (Ino.transfer != null && Ino.transfer.equals(player.getUniqueId())) {
             if (args.length < 2) {
                 player.sendMessage(Messages.syntax("/ns lastword <message>"));
                 return;

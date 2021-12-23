@@ -10,6 +10,7 @@ import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Loc;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
+import fr.lyneris.uhc.utils.title.Title;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,7 +26,6 @@ import java.util.List;
 public class Tsunade extends NarutoRole {
 
     public int katsuyuCooldown = 0;
-    public boolean usingKatsuyu = false;
     public int damageTaken = 0;
     public boolean usingByakugo = false;
     public int byakugoCooldown = 0;
@@ -49,6 +49,10 @@ public class Tsunade extends NarutoRole {
         if (byakugoCooldown > 0) {
             byakugoCooldown--;
         }
+
+        if(damageTaken < 30) {
+            Title.sendActionBar(getPlayer(), CC.prefix("&fDégâts: &c" + damageTaken + "&8/&730"));
+        }
     }
 
     @Override
@@ -66,15 +70,6 @@ public class Tsunade extends NarutoRole {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Katsuyu")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Byakugô")).toItemStack());
-    }
-
-    @Override
-    public void onPlayerMove(PlayerMoveEvent event, Player player) {
-
-        if (usingKatsuyu) {
-            Loc.getNearbyPlayers(player, 30).forEach(target -> target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 5 * 20, 2, false, false)));
-        }
-
     }
 
     @Override
@@ -126,11 +121,10 @@ public class Tsunade extends NarutoRole {
             player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aKatsuyu§f."));
 
 
-            usingKatsuyu = true;
+            Loc.getNearbyPlayers(player, 30).forEach(target -> target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60 * 20, 2, false, false)));
 
             Tasks.runLater(() -> {
                 player.sendMessage(CC.prefix("§fVotre §cKatsuyu §fvient d'expirer."));
-                usingKatsuyu = false;
             }, 20 * 60);
 
             katsuyuCooldown = 20 * 60;

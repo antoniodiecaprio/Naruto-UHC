@@ -1,37 +1,47 @@
 package fr.lyneris.narutouhc.biju;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.utils.CC;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.UUID;
 
 
-public class BijuListener implements Listener {
-
-    private int matatabiCooldown = 0;
-
+@SuppressWarnings("unused") public class BijuListener implements Listener {
+    
     private int isobuCooldown = 0;
     private UUID isobuDamage = null;
 
     private int sonGokuCooldown = 0;
     private UUID sonGokuUser = null;
 
-    private int KokuoCooldown = 0;
+    private int kokuoCooldown = 0;
+    private UUID kokuoUser = null;
+
     private int saikenCooldown = 0;
+    private UUID saikenUser = null;
+
+    private int matatabiCooldown = 0;
+    private UUID matatabiFire = null;
 
     private int chomeiCooldown = 0;
-    private UUID chomeiFire = null;
 
     public void runnableTask() {
         if (matatabiCooldown > 0) matatabiCooldown--;
         if (isobuCooldown > 0) isobuCooldown--;
         if (sonGokuCooldown > 0) sonGokuCooldown--;
-        if (KokuoCooldown > 0) KokuoCooldown--;
+        if (kokuoCooldown > 0) kokuoCooldown--;
         if (saikenCooldown > 0) saikenCooldown--;
         if (chomeiCooldown > 0) chomeiCooldown--;
     }
@@ -65,9 +75,56 @@ public class BijuListener implements Listener {
 
     @EventHandler
     public void onDamageOnEntity(EntityDamageByEntityEvent event) {
-        assert getChomeiFire() != null;
-        if (event.getDamager().getUniqueId().equals(getChomeiFire())) {
-            if (chomeiCooldown > 15 * 60) event.getEntity().setFireTicks(60);
+
+        if(!(event.getEntity() instanceof Player)) return;
+        if(!(event.getDamager() instanceof Player)) return;
+
+        assert getMatatabiFire() != null;
+        if (event.getDamager().getUniqueId().equals(getMatatabiFire())) {
+            if (matatabiCooldown > 15 * 60) {
+                event.getEntity().setFireTicks(60);
+                event.getEntity().sendMessage(CC.prefix("&cVous avez été touché par Chomei"));
+                event.getDamager().sendMessage(CC.prefix("&fVous avez enflammé &c" + event.getEntity().getName()));
+            }
+        }
+
+        assert getSonGokuUser() != null;
+        if (event.getDamager().getUniqueId().equals(getSonGokuUser())) {
+            if (sonGokuCooldown > 15 * 60) {
+                int random = (int) (Math.random() * 2);
+                if(random == 0) {
+                    event.getEntity().sendMessage(CC.prefix("&cVous avez été touché par Son Gokû"));
+                    event.getDamager().sendMessage(CC.prefix("&fVous avez enflammé &c" + event.getEntity().getName()));
+                    event.getEntity().setFireTicks(60);
+                }
+            }
+        }
+
+        assert getKokuoUser() != null;
+        if (event.getDamager().getUniqueId().equals(getKokuoUser())) {
+            int random = (int) (Math.random() * 7);
+            if(random == 0) {
+                ((Player) event.getDamager()).removePotionEffect(PotionEffectType.SPEED);
+                ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20, 2, false, false));
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5*20, 0, false, false));
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 0, false, false));
+                event.getEntity().sendMessage(CC.prefix("&cVous avez été touché par Kokuo"));
+                event.getDamager().sendMessage(CC.prefix("&fVous avez obtenu &bSpeed 3 &fpendant 5 secondes."));
+                Tasks.runLater(() -> ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 1, false, false)), 5*21);
+            }
+        }
+
+        assert getSaikenUser() != null;
+        if (event.getDamager().getUniqueId().equals(getSaikenUser())) {
+            int random = (int) (Math.random() * 7);
+            if(random == 0) {
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5*20, 0, false, false));
+                event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 1.5F);
+                event.getEntity().sendMessage(CC.prefix("&cVous avez été touché par Saiken"));
+                event.getDamager().sendMessage(CC.prefix("&fVous avez régénéré &c0.5 &fcoeurs."));
+                ((Player) event.getDamager()).setHealth(((Player) event.getDamager()).getHealth() + 1);
+                Tasks.runLater(() -> ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 1, false, false)), 5*21);
+            }
         }
     }
 
@@ -84,8 +141,15 @@ public class BijuListener implements Listener {
         }
     }
 
-    public void setMatatabiCooldown(int matatabiCooldown) {
-        this.matatabiCooldown = matatabiCooldown;
+    @EventHandler
+    public void onEmpty(PlayerBucketEmptyEvent event) {
+        if(this.sonGokuUser == null) return;
+        if(Bukkit.getPlayer(this.sonGokuUser) == null) return;
+        Player player = Bukkit.getPlayer(this.sonGokuUser);
+        if(player.getLocation().distance(event.getPlayer().getLocation()) <= 15 && event.getItemStack().getType() == Material.LAVA_BUCKET) {
+            event.setCancelled(true);
+            player.sendMessage(CC.prefix("&cVous ne pouvez pas poser des seaux de lave à côté de l'utilisateur de Son Gokû."));
+        }
     }
 
     public void setIsobuCooldown(int isobuCooldown) {
@@ -97,27 +161,23 @@ public class BijuListener implements Listener {
     }
 
     public void setKokuoCooldown(int kokuoCooldown) {
-        KokuoCooldown = kokuoCooldown;
+        this.kokuoCooldown = kokuoCooldown;
     }
 
     public void setSaikenCooldown(int saikenCooldown) {
         this.saikenCooldown = saikenCooldown;
     }
 
-    public void setChomeiCooldown(int chomeiCooldown) {
-        this.chomeiCooldown = chomeiCooldown;
+    public void setMatatabiCooldown(int matatabiCooldown) {
+        this.matatabiCooldown = matatabiCooldown;
     }
 
-    public UUID getChomeiFire() {
-        return chomeiFire;
+    public UUID getMatatabiFire() {
+        return matatabiFire;
     }
 
-    public void setChomeiFire(UUID chomeiFire) {
-        this.chomeiFire = chomeiFire;
-    }
-
-    public int getMatatabiCooldown() {
-        return matatabiCooldown;
+    public void setMatatabiFire(UUID matatabiFire) {
+        this.matatabiFire = matatabiFire;
     }
 
     public int getIsobuCooldown() {
@@ -129,15 +189,15 @@ public class BijuListener implements Listener {
     }
 
     public int getKokuoCooldown() {
-        return KokuoCooldown;
+        return kokuoCooldown;
     }
 
     public int getSaikenCooldown() {
         return saikenCooldown;
     }
 
-    public int getChomeiCooldown() {
-        return chomeiCooldown;
+    public int getMatatabiCooldown() {
+        return matatabiCooldown;
     }
 
     public UUID getIsobuDamage() {
@@ -154,6 +214,30 @@ public class BijuListener implements Listener {
 
     public void setIsobuDamage(UUID isobuDamage) {
         this.isobuDamage = isobuDamage;
+    }
+
+    public UUID getKokuoUser() {
+        return kokuoUser;
+    }
+
+    public UUID getSaikenUser() {
+        return saikenUser;
+    }
+
+    public void setSaikenUser(UUID saikenUser) {
+        this.saikenUser = saikenUser;
+    }
+
+    public void setKokuoUser(UUID kokuoUser) {
+        this.kokuoUser = kokuoUser;
+    }
+
+    public int getChomeiCooldown() {
+        return chomeiCooldown;
+    }
+
+    public void setChomeiCooldown(int chomeiCooldown) {
+        this.chomeiCooldown = chomeiCooldown;
     }
 
 }

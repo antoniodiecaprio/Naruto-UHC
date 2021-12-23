@@ -47,6 +47,7 @@ public class Loc {
         Bukkit.getOnlinePlayers().stream()
                 .filter(target -> UHC.getUHC().getGameManager().getPlayers().contains(target.getUniqueId()))
                 .filter(target -> target.getGameMode() != GameMode.SPECTATOR)
+                .filter(target -> target.getUniqueId() != entity.getUniqueId())
                 .filter(target -> target.getLocation().distance(entity.getLocation()) <= distance)
                 .forEach(toReturn::add);
         return toReturn;

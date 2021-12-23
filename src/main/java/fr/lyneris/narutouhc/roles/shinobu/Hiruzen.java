@@ -305,8 +305,8 @@ public class Hiruzen extends NarutoRole implements Listener {
                     Location one;
                     Location two;
                     if (c == 'W' || c == 'E') {
-                        one = loc.add(20, 20, 0);
-                        two = loc2.add(-20, 0, 0);
+                        one = loc.add(7, 7, 0);
+                        two = loc2.add(-7, 0, 0);
                         new BukkitRunnable() {
                             int timer = 32;
 
@@ -334,8 +334,8 @@ public class Hiruzen extends NarutoRole implements Listener {
                             }
                         }.runTaskTimer(narutoUHC, 0, 5);
                     } else {
-                        one = loc.add(0, 20, 20);
-                        two = loc2.add(0, 0, -20);
+                        one = loc.add(0, 7, 7);
+                        two = loc2.add(0, 0, -7);
                         new BukkitRunnable() {
                             int timer = 32;
 
@@ -509,7 +509,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 this.power = 3;
             }
 
-            if (event.getSlot() == 3) {
+            if (event.getSlot() == 4) {
                 if (this.kazegafukiCooldown > 0) {
                     Messages.getCooldown(kazegafukiCooldown).queue(player);
                     return;

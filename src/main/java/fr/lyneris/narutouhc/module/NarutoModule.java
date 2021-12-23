@@ -137,6 +137,8 @@ public class NarutoModule implements Module {
                     NarutoUHC.getNaruto().getRoleManager().getRole(player).runnableTask();
                 }
             }
+            NarutoUHC.getNaruto().getBijuListener().runnableTask();
+            NarutoUHC.getNaruto().getJubi().runnableTask();
         }, 0, 20);
 
     }

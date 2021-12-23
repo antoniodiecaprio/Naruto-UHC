@@ -143,10 +143,10 @@ public class Sakura extends NarutoRole {
     @Override
     public void onSubCommand(Player player, String[] args) {
 
-        if (!args[0].equalsIgnoreCase("shosen")) return;
+        if (!args[0].equalsIgnoreCase("shosenjutsu")) return;
 
-        if (args.length != 3) {
-            player.sendMessage(Messages.syntax("/ns shosen jutsu <player>"));
+        if (args.length != 2) {
+            player.sendMessage(Messages.syntax("/ns shosenjutsu <player>"));
             return;
         }
 
@@ -155,11 +155,10 @@ public class Sakura extends NarutoRole {
             return;
         }
 
-        if (!args[1].equalsIgnoreCase("jutsu")) return;
 
-        Player target = Bukkit.getPlayer(args[2]);
+        Player target = Bukkit.getPlayer(args[1]);
         if (target == null) {
-            player.sendMessage(Messages.offline(args[2]));
+            player.sendMessage(Messages.offline(args[1]));
             return;
         }
 
@@ -197,7 +196,10 @@ public class Sakura extends NarutoRole {
         if (jutsu == null || sakura == null) return;
         if (!usingJutsu) return;
 
-        jutsu.removePotionEffect(PotionEffectType.REGENERATION);
+        PotionEffect effect = jutsu.getActivePotionEffects().stream().filter(potionEffect -> potionEffect.getType() == PotionEffectType.REGENERATION).findFirst().orElse(null);
+        if(effect != null && effect.getAmplifier() < 4) {
+            jutsu.removePotionEffect(PotionEffectType.REGENERATION);
+        }
         jutsu.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
         sakura.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
         usingJutsu = false;

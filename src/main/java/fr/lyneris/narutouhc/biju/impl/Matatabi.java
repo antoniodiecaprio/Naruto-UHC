@@ -1,11 +1,12 @@
 package fr.lyneris.narutouhc.biju.impl;
 
-import fr.lyneris.common.utils.ItemBuilder;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.biju.Biju;
 import fr.lyneris.narutouhc.utils.CC;
+import fr.lyneris.narutouhc.utils.Damage;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Messages;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,7 +15,9 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -29,6 +32,21 @@ public class Matatabi extends Biju implements Listener {
     @Override
     public LivingEntity getLivingEntity() {
         return blaze;
+    }
+
+    @Override
+    public void getItemInteraction(PlayerInteractEvent event, Player player) {
+        if(NarutoUHC.getNaruto().getBijuListener().getMatatabiCooldown() > 0) {
+            Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getMatatabiCooldown()).queue(player);
+            return;
+        }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5*20*60, 0, false, false));
+        Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 5*60);
+        NarutoUHC.getNaruto().getBijuListener().setMatatabiFire(player.getUniqueId());
+        Tasks.runLater(() -> NarutoUHC.getNaruto().getBijuListener().setMatatabiFire(null), 5*20*60);
+        NarutoUHC.getNaruto().getBijuListener().setMatatabiCooldown(20*60);
     }
 
     @Override

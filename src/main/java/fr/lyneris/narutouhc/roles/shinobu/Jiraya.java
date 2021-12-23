@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -122,7 +123,7 @@ public class Jiraya extends NarutoRole {
                     "§7il saute d’environ 30 blocs, celui-ci",
                     "§7possède un délai de 5 minutes."
             ).toItemStack());
-            inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§6Isan").setLore(
+            inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§6Isan §8(§cMaintenance§8)").setLore(
                     "§7Ce pouvoir permet à Jiraya de téléporter",
                     "§75 joueurs proches de lui, dans un rayon de",
                     "§730 blocs, dans le suc gastrique de Gamabunta",
@@ -133,6 +134,15 @@ public class Jiraya extends NarutoRole {
                     "§7Jiraya), ce pouvoir dure 3 minutes et",
                     "§7possède un délai de 20 minutes."
             ).toItemStack());
+            inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§6Kisuoiru").setLore(
+                    "§7Ce pouvoir permet à Jiraya de créer un",
+                    "§7surpuissant lance-flamme qui aura pour",
+                    "§7effet de cramer toutes choses face à lui,",
+                    "§7lorsqu’un joueur est enflammé par ce",
+                    "§7pouvoir il ne pourra s’éteindre et ce pendant 10 secondes, cependant s’il reste pendant ces 10 secondes dans l’eau, il ne prendra pas de dégâts des flammes , ce pouvoir possède un délai de 10 minutes."
+
+            ).toItemStack());
+            player.openInventory(inv);
         }
 
     }
@@ -149,29 +159,30 @@ public class Jiraya extends NarutoRole {
 
                 player.sendMessage(prefix("Vous avez utilisé votre &aDasshu&f."));
                 player.setVelocity(player.getLocation().getDirection().multiply(10));
+                Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 20); 
                 dasshuCooldown = 5*60;
             }
 
-            if (event.getSlot() == 2) {
-                if(isanCooldown > 0) {
-                    player.sendMessage(Messages.cooldown(isanCooldown));
-                    return;
-                }
-
-                List<Player> players = new ArrayList<>();
-                int i = 0;
-                for (Player player1 : Loc.getNearbyPlayers(player, 30)) {
-                    if (i < 5) {
-                        players.add(player1);
-                        i++;
-                    }
-                }
-                player.sendMessage(prefix("Vous avez utilisé votre &a&f."));
-                //TODO TELEPORTER DANS LA MAP QUI EST PAS ARRIVEE
-
-                isanCooldown = 20*60;
-
-            }
+//            if (event.getSlot() == 2) {
+//                if(isanCooldown > 0) {
+//                    player.sendMessage(Messages.cooldown(isanCooldown));
+//                    return;
+//                }
+//
+//                List<Player> players = new ArrayList<>();
+//                int i = 0;
+//                for (Player player1 : Loc.getNearbyPlayers(player, 30)) {
+//                    if (i < 5) {
+//                        players.add(player1);
+//                        i++;
+//                    }
+//                }
+//                player.sendMessage(prefix("Vous avez utilisé votre &aIsan&f."));
+//                //TODO TELEPORTER DANS LA MAP QUI EST PAS ARRIVEE
+//
+//                isanCooldown = 20*60;
+//
+//            }
 
             if(event.getSlot() == 3) {
                 if(this.kisuoiriCooldown > 0) {

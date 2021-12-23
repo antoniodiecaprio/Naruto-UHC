@@ -90,7 +90,7 @@ public class Hokage {
     }
 
     static {
-        CAN_BE_HOKAGE = Arrays.asList(NarutoRoles.NARUTO, NarutoRoles.SAI, NarutoRoles.MINATO, NarutoRoles.KAKASHI, NarutoRoles.JIRAYA, NarutoRoles.TSUNADE, NarutoRoles.HINATA, NarutoRoles.NEJI, NarutoRoles.GAI_MAITO, NarutoRoles.SHIKAMARU, NarutoRoles.SASUKE);
+        CAN_BE_HOKAGE = Arrays.asList(NarutoRoles.NARUTO, NarutoRoles.SAI, NarutoRoles.HIRUZEN, NarutoRoles.MINATO, NarutoRoles.KAKASHI, NarutoRoles.JIRAYA, NarutoRoles.TSUNADE, NarutoRoles.HINATA, NarutoRoles.NEJI, NarutoRoles.GAI_MAITO, NarutoRoles.SHIKAMARU, NarutoRoles.SASUKE);
         DOESNT_SEE_HOKAGE = Arrays.asList(NarutoRoles.TEMARI, NarutoRoles.YONDAIME_RAIKAGE, NarutoRoles.KILLER_BEE, NarutoRoles.ZETSU_BLANC, NarutoRoles.ZETSU_NOIR, NarutoRoles.SAKURA, NarutoRoles.UKON, NarutoRoles.KIDOMARU, NarutoRoles.TAYUYA, NarutoRoles.JIROBO, NarutoRoles.JUGO, NarutoRoles.GAARA);
     }
 }

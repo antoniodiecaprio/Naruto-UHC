@@ -104,6 +104,7 @@ public class Kimimaro extends NarutoRole {
 
             if (marqueCooldown > 0) {
                 player.sendMessage(Messages.cooldown(marqueCooldown));
+                return;
             }
 
             player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
@@ -191,7 +192,7 @@ public class Kimimaro extends NarutoRole {
 
             damage.set("AttributeName", new NBTTagString("generic.attackDamage"));
             damage.set("Name", new NBTTagString("generic.attackDamage"));
-            damage.set("Amount", new NBTTagDouble(13.25)); //13.25
+            damage.set("Amount", new NBTTagDouble(12)); //13.25
             damage.set("Operation", new NBTTagInt(0));
             damage.set("UUIDLeast", new NBTTagInt(894654));
             damage.set("UUIDMost", new NBTTagInt(2872));

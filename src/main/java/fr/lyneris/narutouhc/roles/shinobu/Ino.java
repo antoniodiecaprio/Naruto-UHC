@@ -152,10 +152,6 @@ public class Ino extends NarutoRole {
             TextComponent text = new TextComponent("§7▎ §aCliquez-ici pour commencer à la rédiger.");
             text.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ns lastword "));
             player.spigot().sendMessage(text);
-            UHC.getUHC().getGameManager().getPlayers().stream()
-                    .filter(uuid -> Bukkit.getPlayer(uuid) != null)
-                    .filter(uuid -> Bukkit.getPlayer(uuid).getLocation().distance(player.getLocation()) <= 200)
-                    .forEach(nearPlayers::add);
             Tasks.runLater(() -> transfer = null, 30 * 20);
         }
 
@@ -184,7 +180,7 @@ public class Ino extends NarutoRole {
 
             transfer = target.getUniqueId();
             target.sendMessage(CC.prefix("§aIno §fa utilisé son pouvoir de transfert sur vous. De ce fait lors de votre mort, vous pourrez envoyer un message de dernière volontée. Attention, si vous mourrez dans §c20 minutes§f ou plus, vous ne pourrez pas utiliser cette dernière volontée."));
-            player.sendMessage(CC.prefix("§Vous avez utilisé votre pouvoir sur §a" + target.getName()));
+            player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir sur §a" + target.getName()));
             usedTransfer = true;
             Tasks.runLater(() -> transfer = null, 20 * 20 * 60);
         }

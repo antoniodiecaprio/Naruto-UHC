@@ -1,12 +1,12 @@
 package fr.lyneris.narutouhc.biju.impl;
 
-import com.sun.xml.internal.bind.v2.model.core.BuiltinLeafInfo;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.biju.Biju;
 import fr.lyneris.narutouhc.packet.KokuoInvoker;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -29,6 +30,20 @@ public class Kokuo extends Biju implements Listener {
     @Override
     public LivingEntity getLivingEntity() {
         return horse;
+    }
+
+    @Override
+    public void getItemInteraction(PlayerInteractEvent event, Player player) {
+        if (NarutoUHC.getNaruto().getBijuListener().getKokuoCooldown() > 0) {
+            Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getKokuoCooldown()).queue(player);
+            return;
+        }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 1, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));
+        NarutoUHC.getNaruto().getBijuListener().setKokuoUser(player.getUniqueId());
+        Tasks.runLater(() -> NarutoUHC.getNaruto().getBijuListener().setKokuoUser(null), 5 * 20 * 60);
+        NarutoUHC.getNaruto().getBijuListener().setKokuoCooldown(20 * 60);
     }
 
     @Override

@@ -75,6 +75,23 @@ public class Chomei extends Biju implements Listener {
         ((CraftLivingEntity) nmsEntity.getBukkitEntity()).setRemoveWhenFarAway(false);
     }
 
+    @Override
+    public void getItemInteraction(PlayerInteractEvent event, Player player) {
+        if(NarutoUHC.getNaruto().getBijuListener().getChomeiCooldown() > 0) {
+            Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getChomeiCooldown()).queue(player);
+            return;
+        }
+
+        player.setAllowFlight(true);
+        player.setFlying(true);
+        Tasks.runLater(() -> {
+            player.setAllowFlight(false);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 3*20*60, 1, false, false));
+        }, 10*20);
+        Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 10*60);
+        NarutoUHC.getNaruto().getBijuListener().setChomeiCooldown(20*60);
+    }
+
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
         if (this.ghast != null && event.getEntity().getUniqueId().equals(this.ghast.getUniqueId())) {
@@ -114,21 +131,6 @@ public class Chomei extends Biju implements Listener {
     @Override
     public ItemStack getItem() {
         return Item.getInteractItem("Chômei");
-    }
-
-    @Override
-    public void getItemInteraction(PlayerInteractEvent event, Player player) {
-        if(NarutoUHC.getNaruto().getBijuListener().getChomeiCooldown() > 0) {
-            Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getChomeiCooldown()).queue(player);
-            return;
-        }
-
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5*20*60, 0, false, false));
-        Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 5*60);
-        NarutoUHC.getNaruto().getBijuListener().setChomeiFire(player.getUniqueId());
-        Tasks.runLater(() -> NarutoUHC.getNaruto().getBijuListener().setChomeiFire(null), 5*20*60);
-        NarutoUHC.getNaruto().getBijuListener().setChomeiCooldown(20*60);
     }
 
     @Override

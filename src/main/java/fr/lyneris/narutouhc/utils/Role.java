@@ -10,6 +10,7 @@ import fr.lyneris.uhc.utils.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,11 +56,11 @@ public class Role {
         return toReturn;
     }
 
-    public static boolean isRole(Player var1, NarutoRoles var2) {
-        if (NarutoUHC.getNaruto().getRoleManager().getRole(var1) == null) {
+    public static boolean isRole(Entity var1, NarutoRoles var2) {
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(var1.getUniqueId()) == null) {
             return false;
         } else {
-            return NarutoUHC.getNaruto().getRoleManager().getRole(var1).getRole().equals(var2);
+            return NarutoUHC.getNaruto().getRoleManager().getRole(var1.getUniqueId()).getRole().equals(var2);
         }
     }
 

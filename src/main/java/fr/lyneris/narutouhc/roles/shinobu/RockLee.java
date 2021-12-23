@@ -68,7 +68,7 @@ public class RockLee extends NarutoRole {
                 return;
             }
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2 * 20 * 60, 0, false, false));
-            player.setMaxHealth(player.getMaxHealth() - 1);
+            player.setMaxHealth(player.getMaxHealth() - 2);
             player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aTrois Portes§f."));
         }
 
@@ -79,7 +79,7 @@ public class RockLee extends NarutoRole {
             }
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));
-            player.setMaxHealth(player.getMaxHealth() - 1);
+            player.setMaxHealth(player.getMaxHealth() - 2);
             new DoubleCircleEffect(20 * 2 * 60, EnumParticle.VILLAGER_HAPPY).start(player);
             player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aSix Portes§f."));
         }
@@ -95,6 +95,7 @@ public class RockLee extends NarutoRole {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2 * 20 * 60, 0, false, false));
             player.setMaxHealth(player.getMaxHealth() + 10);
             player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aHuit Portes§f."));
+            new DoubleCircleEffect(20 * 2 * 60, EnumParticle.FLAME).start(player);
 
             player.setItemInHand(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Gaï de la Nuit")).toItemStack());
 
@@ -118,6 +119,7 @@ public class RockLee extends NarutoRole {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10 * 20, 2, true, true));
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10 * 20, 2, true, true));
+            new DoubleCircleEffect(20 * 10, EnumParticle.REDSTONE).start(player);
 
             Tasks.runLater(() -> player.setHealth(0), 10 * 20);
         }
