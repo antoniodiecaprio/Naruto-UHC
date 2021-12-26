@@ -2,6 +2,7 @@ fr\lyneris\narutouhc\roles\akatsuki\Deidara$1.class
 fr\lyneris\narutouhc\roles\orochimaru\Tayuya.class
 fr\lyneris\narutouhc\crafter\Chakra.class
 fr\lyneris\narutouhc\roles\taka\Jugo$2.class
+fr\lyneris\narutouhc\biju\impl\Isobu$1.class
 fr\lyneris\narutouhc\roles\orochimaru\Sakon.class
 fr\lyneris\narutouhc\utils\Loc.class
 fr\lyneris\narutouhc\roles\shinobu\Choji.class
@@ -9,7 +10,9 @@ fr\lyneris\narutouhc\roles\jubi\Madara$MeteoresGenerator.class
 fr\lyneris\narutouhc\roles\shinobu\Asuma.class
 fr\lyneris\narutouhc\roles\sankyodai\Temari.class
 fr\lyneris\narutouhc\packet\Reach.class
+fr\lyneris\narutouhc\biju\impl\Chomei.class
 fr\lyneris\narutouhc\manager\NarutoRoles.class
+fr\lyneris\narutouhc\jubi\Jubi.class
 fr\lyneris\narutouhc\roles\shinobu\GaiMaito.class
 fr\lyneris\narutouhc\roles\taka\Jugo$JugoSkinsTask$1.class
 fr\lyneris\narutouhc\roles\shinobu\Naruto.class
@@ -17,6 +20,7 @@ fr\lyneris\narutouhc\commands\BoostCommand.class
 fr\lyneris\narutouhc\roles\orochimaru\Jirobo.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$1.class
 fr\lyneris\narutouhc\events\NarutoListener$1.class
+fr\lyneris\narutouhc\biju\impl\Kokuo$KokuoRunnable.class
 fr\lyneris\narutouhc\roles\shinobu\Hinata.class
 fr\lyneris\narutouhc\module\Chakra$ChakraTask.class
 fr\lyneris\narutouhc\roles\taka\Jugo$SasukeSkin.class
@@ -30,6 +34,8 @@ fr\lyneris\narutouhc\module\NarutoGui$CampSelector.class
 fr\lyneris\narutouhc\roles\akatsuki\ZetsuNoir.class
 fr\lyneris\narutouhc\packet\Cuboid$1.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$Manipulation.class
+fr\lyneris\narutouhc\biju\impl\Isobu.class
+fr\lyneris\narutouhc\biju\impl\Saiken$SaikenRunnable.class
 fr\lyneris\narutouhc\packet\changer\IdentityChanger$1.class
 fr\lyneris\narutouhc\module\Hokage.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara.class
@@ -41,9 +47,12 @@ fr\lyneris\narutouhc\packet\RayTrace.class
 fr\lyneris\narutouhc\roles\akatsuki\Nagato.class
 fr\lyneris\narutouhc\roles\shinobu\Shikamaru.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$3.class
+fr\lyneris\narutouhc\biju\impl\Isobu$IsobuRunnable.class
+fr\lyneris\narutouhc\biju\impl\Matatabi$MetatabiRunnable.class
 fr\lyneris\narutouhc\packet\BoundingBox.class
 fr\lyneris\narutouhc\packet\Cuboid.class
 fr\lyneris\narutouhc\roles\taka\Jugo.class
+fr\lyneris\narutouhc\roles\shinobu\Naruto$1.class
 fr\lyneris\narutouhc\roles\orochimaru\Kabuto.class
 fr\lyneris\narutouhc\packet\NPCManager$1.class
 fr\lyneris\narutouhc\roles\shinobu\Kiba.class
@@ -60,6 +69,7 @@ fr\lyneris\narutouhc\roles\orochimaru\Kidomaru.class
 fr\lyneris\narutouhc\roles\jubi\Madara.class
 fr\lyneris\narutouhc\roles\taka\Jugo$3.class
 fr\lyneris\narutouhc\packet\TapisSableEffect.class
+fr\lyneris\narutouhc\biju\impl\SonGoku.class
 fr\lyneris\narutouhc\packet\changer\VariablesUtils.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$2.class
 fr\lyneris\narutouhc\roles\orochimaru\Kimimaro$EpeeOsItem.class
@@ -70,6 +80,7 @@ fr\lyneris\narutouhc\packet\npc\NPCInteractEvent.class
 fr\lyneris\narutouhc\roles\orochimaru\Kimimaro$ForetOsTask.class
 fr\lyneris\narutouhc\utils\Role.class
 fr\lyneris\narutouhc\packet\PacketListener.class
+fr\lyneris\narutouhc\biju\impl\Chomei$IsobuRunnable.class
 fr\lyneris\narutouhc\packet\QuartzTreeDelegator.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffect.class
 fr\lyneris\narutouhc\particle\MathL.class
@@ -82,6 +93,7 @@ fr\lyneris\narutouhc\roles\jubi\Obito.class
 fr\lyneris\narutouhc\roles\akatsuki\Deidara$BowState.class
 fr\lyneris\narutouhc\roles\akatsuki\Hidan.class
 fr\lyneris\narutouhc\particle\ParticleEffect.class
+fr\lyneris\narutouhc\biju\Biju.class
 fr\lyneris\narutouhc\roles\shinobu\Kakashi$2.class
 fr\lyneris\narutouhc\roles\shinobu\Kiba$1.class
 fr\lyneris\narutouhc\utils\Messages.class
@@ -89,6 +101,7 @@ fr\lyneris\narutouhc\NarutoUHC.class
 fr\lyneris\narutouhc\module\NarutoGui.class
 fr\lyneris\narutouhc\roles\akatsuki\Deidara.class
 fr\lyneris\narutouhc\roles\akatsuki\Kisame.class
+fr\lyneris\narutouhc\biju\impl\Kokuo.class
 fr\lyneris\narutouhc\roles\shinobu\Tsunade.class
 fr\lyneris\narutouhc\roles\zabuza_haku\Zabuza.class
 fr\lyneris\narutouhc\manager\Manager.class
@@ -99,11 +112,13 @@ fr\lyneris\narutouhc\utils\CC.class
 fr\lyneris\narutouhc\roles\solo\Danzo.class
 fr\lyneris\narutouhc\roles\akatsuki\Itachi.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffectRedstone.class
+fr\lyneris\narutouhc\packet\PathFinderAttackPlayer.class
 fr\lyneris\narutouhc\module\Chakra.class
 fr\lyneris\narutouhc\particle\ProgressBar.class
 fr\lyneris\narutouhc\roles\zabuza_haku\Haku.class
 fr\lyneris\narutouhc\particle\WingsEffect.class
 fr\lyneris\narutouhc\utils\Damage.class
+fr\lyneris\narutouhc\roles\shinobu\Hiruzen$3.class
 fr\lyneris\narutouhc\roles\orochimaru\Kidomaru$1.class
 fr\lyneris\narutouhc\commands\NarutoCommand.class
 fr\lyneris\narutouhc\utils\Armor.class
@@ -112,8 +127,10 @@ fr\lyneris\narutouhc\roles\shinobu\Kakashi.class
 fr\lyneris\narutouhc\roles\shinobu\RockLee.class
 fr\lyneris\narutouhc\roles\taka\Jugo$1.class
 fr\lyneris\narutouhc\roles\taka\Suigetsu.class
+fr\lyneris\narutouhc\biju\impl\Matatabi.class
 fr\lyneris\narutouhc\particle\VectorUtils.class
 fr\lyneris\narutouhc\roles\shinobu\Shino.class
+fr\lyneris\narutouhc\biju\Bijus.class
 fr\lyneris\narutouhc\roles\shinobu\Hiruzen$1.class
 fr\lyneris\narutouhc\events\NarutoListener.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffectRedstone$1.class
@@ -124,16 +141,22 @@ fr\lyneris\narutouhc\roles\shinobu\Sai$1.class
 fr\lyneris\narutouhc\roles\shinobu\Ino.class
 fr\lyneris\narutouhc\utils\Item.class
 fr\lyneris\narutouhc\roles\orochimaru\Kimimaro.class
+fr\lyneris\narutouhc\packet\KokuoInvoker.class
 fr\lyneris\narutouhc\roles\orochimaru\Ukon.class
+fr\lyneris\narutouhc\biju\impl\Matatabi$1.class
 fr\lyneris\narutouhc\roles\akatsuki\Kakuzu.class
 fr\lyneris\narutouhc\roles\shinobu\Shino$1.class
 fr\lyneris\narutouhc\roles\akatsuki\Sasori.class
 fr\lyneris\narutouhc\packet\PacketManager$1.class
 fr\lyneris\narutouhc\roles\shinobu\Hiruzen.class
+fr\lyneris\narutouhc\biju\impl\SonGoku$SonGokuRunnable.class
 fr\lyneris\narutouhc\packet\npc\NPC$1.class
+fr\lyneris\narutouhc\roles\shinobu\Jiraya$1.class
 fr\lyneris\narutouhc\roles\shinobu\TenTen.class
 fr\lyneris\narutouhc\packet\Cuboid$CuboidIterator.class
 fr\lyneris\narutouhc\roles\jubi\Madara$1.class
+fr\lyneris\narutouhc\biju\BijuListener.class
+fr\lyneris\narutouhc\biju\impl\Saiken.class
 fr\lyneris\narutouhc\commands\naruto\MyRoleCommand.class
 fr\lyneris\narutouhc\roles\akatsuki\ZetsuBlanc$1.class
 fr\lyneris\narutouhc\roles\shinobu\KillerBee.class

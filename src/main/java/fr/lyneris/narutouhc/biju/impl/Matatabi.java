@@ -18,7 +18,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -36,17 +35,17 @@ public class Matatabi extends Biju implements Listener {
 
     @Override
     public void getItemInteraction(PlayerInteractEvent event, Player player) {
-        if(NarutoUHC.getNaruto().getBijuListener().getMatatabiCooldown() > 0) {
+        if (NarutoUHC.getNaruto().getBijuListener().getMatatabiCooldown() > 0) {
             Messages.getCooldown(NarutoUHC.getNaruto().getBijuListener().getMatatabiCooldown()).queue(player);
             return;
         }
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5*20*60, 0, false, false));
-        Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 5*60);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5 * 20 * 60, 0, false, false));
+        Damage.addTempNoDamage(player, EntityDamageEvent.DamageCause.FALL, 5 * 60);
         NarutoUHC.getNaruto().getBijuListener().setMatatabiFire(player.getUniqueId());
-        Tasks.runLater(() -> NarutoUHC.getNaruto().getBijuListener().setMatatabiFire(null), 5*20*60);
-        NarutoUHC.getNaruto().getBijuListener().setMatatabiCooldown(20*60);
+        Tasks.runLater(() -> NarutoUHC.getNaruto().getBijuListener().setMatatabiFire(null), 5 * 20 * 60);
+        NarutoUHC.getNaruto().getBijuListener().setMatatabiCooldown(20 * 60);
     }
 
     @Override
@@ -121,25 +120,19 @@ public class Matatabi extends Biju implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if(this.blaze != null && event.getEntity().getUniqueId().equals(this.blaze.getUniqueId())) {
+        if (this.blaze != null && event.getEntity().getUniqueId().equals(this.blaze.getUniqueId())) {
             event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), getItem());
             this.blaze = null;
             event.getDrops().clear();
             Tasks.runLater(() -> {
-                if(this.getMaster() == null) {
+                if (this.getMaster() == null) {
                     spawnEntity();
                     Bukkit.broadcastMessage(CC.prefix(getName() + " &fvient de réapparaître."));
                 }
-            }, 5*20*60);
+            }, 5 * 20 * 60);
         }
     }
 
-    @EventHandler
-    public void onPickup(PlayerPickupItemEvent event) {
-        if(event.getItem().getItemStack().equals(this.getItem())) {
-            this.setMaster(event.getPlayer().getUniqueId());
-        }
-    }
 
     @Override
     public ItemStack getItem() {

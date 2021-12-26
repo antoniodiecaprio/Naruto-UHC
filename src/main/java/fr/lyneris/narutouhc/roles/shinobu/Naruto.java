@@ -110,26 +110,26 @@ public class Naruto extends NarutoRole {
                 dasshuCooldown = 5*60;
             }
 
-            if (event.getSlot() == 2) {
-                if(isanCooldown > 0) {
-                    player.sendMessage(Messages.cooldown(isanCooldown));
-                    return;
-                }
-
-                List<Player> players = new ArrayList<>();
-                int i = 0;
-                for (Player player1 : Loc.getNearbyPlayers(player, 30)) {
-                    if (i < 5) {
-                        players.add(player1);
-                        i++;
-                    }
-                }
-                player.sendMessage(prefix("Vous avez utilisé votre &a&f."));
-                //TODO TELEPORTER DANS LA MAP QUI EST PAS ARRIVEE
-
-                isanCooldown = 20*60;
-
-            }
+//            if (event.getSlot() == 2) {
+//                if(isanCooldown > 0) {
+//                    player.sendMessage(Messages.cooldown(isanCooldown));
+//                    return;
+//                }
+//
+//                List<Player> players = new ArrayList<>();
+//                int i = 0;
+//                for (Player player1 : Loc.getNearbyPlayers(player, 30)) {
+//                    if (i < 5) {
+//                        players.add(player1);
+//                        i++;
+//                    }
+//                }
+//                player.sendMessage(prefix("Vous avez utilisé votre &a&f."));
+//                //TODO TELEPORTER DANS LA MAP QUI EST PAS ARRIVEE
+//
+//                isanCooldown = 20*60;
+//
+//            }
 
             if(event.getSlot() == 3) {
                 if(this.kisuoiriCooldown > 0) {

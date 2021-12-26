@@ -13,8 +13,6 @@ import java.util.UUID;
 
 public abstract class Biju {
 
-    private UUID master;
-
     public abstract LivingEntity getLivingEntity();
 
     public abstract void setupBiju();
@@ -23,7 +21,7 @@ public abstract class Biju {
 
     public void spawnEntity() {
         Role.getAliveOnlinePlayers().forEach(player -> {
-            if(Role.isRole(player, NarutoRoles.INO) || Role.isRole(player, NarutoRoles.OBITO)) {
+            if (Role.isRole(player, NarutoRoles.INO) || Role.isRole(player, NarutoRoles.OBITO)) {
                 player.sendMessage(CC.prefix("&fVoici les coordonnées de " + getName() + " :"));
                 player.sendMessage(CC.prefix("&a" + getSpawn().getBlockX() + "&f, &a" + getSpawn().getBlockY() + "&f, &a" + getSpawn().getBlockZ()));
             }
@@ -49,18 +47,21 @@ public abstract class Biju {
     public abstract void getItemInteraction(PlayerInteractEvent event, Player player);
 
     public UUID getMaster() {
-        return master;
-    }
-
-    public void setMaster(UUID master) {
-        this.master = master;
+        UUID toReturn = null;
+        for (Player aliveOnlinePlayer : Role.getAliveOnlinePlayers()) {
+            if (hasBiju(aliveOnlinePlayer) && getBiju(aliveOnlinePlayer) == this) {
+                toReturn = aliveOnlinePlayer.getUniqueId();
+                break;
+            }
+        }
+        return toReturn;
     }
 
     public static boolean hasBiju(Player player) {
         return getBiju(player) != null;
     }
 
-    public static Bijus getBiju(Player player) {
+    public static Bijus getBijus(Player player) {
         Bijus toReturn = null;
 
         for (Bijus biju : Bijus.values()) {
@@ -74,6 +75,23 @@ public abstract class Biju {
 
         return toReturn;
     }
+
+
+    public static Biju getBiju(Player player) {
+        Biju toReturn = null;
+
+        for (Bijus biju : Bijus.values()) {
+            for (ItemStack content : player.getInventory().getContents()) {
+                if (content.equals(biju.getBiju().getItem())) {
+                    toReturn = biju.getBiju();
+                    break;
+                }
+            }
+        }
+
+        return toReturn;
+    }
+
 
     public abstract Location getSpawn();
 

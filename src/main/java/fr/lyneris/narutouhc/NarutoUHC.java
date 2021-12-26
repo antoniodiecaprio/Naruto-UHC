@@ -1,6 +1,5 @@
 package fr.lyneris.narutouhc;
 
-import fr.lyneris.narutouhc.biju.Biju;
 import fr.lyneris.narutouhc.biju.BijuListener;
 import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.commands.BoostCommand;
@@ -10,7 +9,7 @@ import fr.lyneris.narutouhc.events.NarutoListener;
 import fr.lyneris.narutouhc.jubi.Jubi;
 import fr.lyneris.narutouhc.manager.Manager;
 import fr.lyneris.narutouhc.manager.RoleManager;
-import fr.lyneris.narutouhc.module.Chakra;
+import fr.lyneris.narutouhc.module.ChakraManager;
 import fr.lyneris.narutouhc.module.Hokage;
 import fr.lyneris.narutouhc.module.NarutoGui;
 import fr.lyneris.narutouhc.module.NarutoModule;
@@ -25,7 +24,6 @@ import fr.lyneris.uhc.module.Module;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class NarutoUHC extends JavaPlugin {
@@ -37,7 +35,7 @@ public class NarutoUHC extends JavaPlugin {
     private NPCManager npcManager;
     private PacketManager packetManager;
     private Hokage hokage;
-    private Chakra chakra;
+    private ChakraManager chakra;
     private BijuListener bijuListener;
     private Jubi jubi;
     public static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
@@ -63,7 +61,7 @@ public class NarutoUHC extends JavaPlugin {
         this.packetManager = new PacketManager();
         this.npcManager = new NPCManager(this.packetManager);
         this.hokage = new Hokage(this);
-        this.chakra = new Chakra(this);
+        this.chakra = new ChakraManager(this);
         this.jubi = new Jubi(this);
         Bijus.initBijus();
         this.bijuListener = new BijuListener();
@@ -95,7 +93,7 @@ public class NarutoUHC extends JavaPlugin {
         this.getServer().addRecipe(jubi);
     }
 
-    public Chakra getChakra() {
+    public ChakraManager getChakra() {
         return chakra;
     }
 

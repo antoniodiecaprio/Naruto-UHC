@@ -107,12 +107,6 @@ public class Chomei extends Biju implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPickup(PlayerPickupItemEvent event) {
-        if (event.getItem().getItemStack().equals(this.getItem())) {
-            this.setMaster(event.getPlayer().getUniqueId());
-        }
-    }
 
     @EventHandler
     public void hitFireball(ProjectileHitEvent event) {

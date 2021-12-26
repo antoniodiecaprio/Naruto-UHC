@@ -1,10 +1,10 @@
 package fr.lyneris.narutouhc.module;
 
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.apache.commons.io.monitor.FileAlterationListener;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -19,12 +19,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Chakra implements Listener {
+public class ChakraManager implements Listener {
 
     private final NarutoUHC narutoUHC;
     private final ArrayList<UUID> under50;
 
-    public Chakra(NarutoUHC narutoUHC) {
+    public ChakraManager(NarutoUHC narutoUHC) {
         this.narutoUHC = narutoUHC;
         this.under50 = new ArrayList<>();
     }
@@ -38,14 +38,14 @@ public class Chakra implements Listener {
         if (!(event.getEntity() instanceof Player)) return;
         if (!(event.getDamager() instanceof Player)) return;
         if(Role.getRole((Player) event.getDamager()) == null) return;
-        if (Role.getRole((Player) event.getDamager()).getChakra().equals(fr.lyneris.narutouhc.crafter.Chakra.KATON)) {
+        if (Role.getRole((Player) event.getDamager()).getChakra().equals(Chakra.KATON)) {
             if (!Item.isSword(((Player) event.getEntity()).getItemInHand())) return;
             int random = (int) (Math.random() * 50);
             if (random != 10) return;
             event.getEntity().setFireTicks(100);
         }
 
-        if (Role.getRole((Player) event.getDamager()).getChakra().equals(fr.lyneris.narutouhc.crafter.Chakra.RAITON)) {
+        if (Role.getRole((Player) event.getDamager()).getChakra().equals(Chakra.RAITON)) {
             if (!Item.isSword(((Player) event.getEntity()).getItemInHand())) return;
             int random = (int) (Math.random() * 100);
             if (random != 10) return;
@@ -57,7 +57,7 @@ public class Chakra implements Listener {
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         if(Role.getRole((Player) event.getEntity()) == null) return;
-        if (!Role.getRole((Player) event.getEntity()).getChakra().equals(fr.lyneris.narutouhc.crafter.Chakra.FUTON))
+        if (!Role.getRole((Player) event.getEntity()).getChakra().equals(Chakra.FUTON))
             return;
         if (!event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) return;
         event.setDamage(event.getFinalDamage() * 0.8);
