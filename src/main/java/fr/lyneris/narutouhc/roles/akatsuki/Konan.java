@@ -48,6 +48,11 @@ public class Konan extends NarutoRole {
     }
 
     @Override
+    public void onNight(Player player, int timer) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, timer*20, 0, false, false));
+    }
+
+    @Override
     public void resetCooldowns() {
         yariCooldown = 0;
         batafuraiCooldown = 0;
@@ -346,6 +351,10 @@ public class Konan extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous ne pouvez pas vous déplacer à plus de 60 blocks de votre position initiale."));
             }
         }
+        if(player.getLocation().getBlock().isLiquid()) {
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10*20, 0, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 10*20, 0, false, false));
+        }
     }
 
     @Override
@@ -356,8 +365,8 @@ public class Konan extends NarutoRole {
 
         if (this.usingKamiNoShisha) {
             Location loc = event.getEntity().getLocation();
-            Location one = new Location(Bukkit.getWorld("world"), loc.getBlockX() + 15, loc.getBlockY(), loc.getBlockZ() + 4);
-            Location two = new Location(Bukkit.getWorld("world"), loc.getBlockX() - 15, loc.getBlockY(), loc.getBlockZ() - 4);
+            Location one = new Location(Bukkit.getWorld("uhc_world"), loc.getBlockX() + 15, loc.getBlockY(), loc.getBlockZ() + 4);
+            Location two = new Location(Bukkit.getWorld("uhc_world"), loc.getBlockX() - 15, loc.getBlockY(), loc.getBlockZ() - 4);
             Cuboid cuboid = new Cuboid(one, two);
             HashMap<Location, Material> map = new HashMap<>();
             cuboid.getBlocks().stream().filter(Objects::nonNull).filter(block -> block.getType() != Material.AIR).forEach(block -> {

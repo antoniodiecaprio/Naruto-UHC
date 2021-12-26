@@ -7,9 +7,11 @@ import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
+import fr.lyneris.uhc.utils.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -28,7 +30,9 @@ public class Sakura extends NarutoRole {
     public boolean usingKatsuyu = false;
     public boolean sasukeKilled = false;
     public boolean metSasuke = false;
-    private Player jutsuPlayer = null;
+    public boolean usingByakugo = false;
+    public int byakugoCooldown = 0;
+    public int damageTaken = 0;
 
     public NarutoRoles getRole() {
         return NarutoRoles.SAKURA;
@@ -47,6 +51,14 @@ public class Sakura extends NarutoRole {
         }
         if (katsuyuCooldown > 0) {
             katsuyuCooldown--;
+        }
+
+        if (byakugoCooldown > 0) {
+            byakugoCooldown--;
+        }
+
+        if(damageTaken < 30) {
+            Title.sendActionBar(getPlayer(), CC.prefix("&fDégâts: &c" + damageTaken + "&8/&730"));
         }
     }
 
@@ -73,6 +85,20 @@ public class Sakura extends NarutoRole {
     @Override
     public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
 
+        if(Role.getCamp(player) != null && Role.getCamp(player) == Camp.AKATSUKI) {
+            int i = 0;
+            for (Player player1 : Role.getAliveOnlinePlayers()) {
+                if (Role.getCamp(player1) == Camp.AKATSUKI) {
+                    i++;
+                    break;
+                }
+            }
+            if(i == 0) {
+                getPlayer().sendMessage(prefix("&fToute l'&cAkatsuki &fest morte. Vous recevez donc l'item &aByakugô"));
+                getPlayer().getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Byakugô")).toItemStack());
+            }
+        }
+
         if (event.getEntity().getKiller() != null && Role.isRole(event.getEntity().getKiller(), NarutoRoles.SASUKE)) {
             sasukeKilled = true;
             return;
@@ -84,13 +110,52 @@ public class Sakura extends NarutoRole {
             sakura.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Katsuyu")).toItemStack());
         }
         if (Role.isRole(player, NarutoRoles.SASUKE)) {
-            sakura.setMaxHealth(sakura.getMaxHealth() - 8);
+            sakura.setMaxHealth(sakura.getMaxHealth() - 4);
             sakura.sendMessage(prefix("&cSasuke &fest mort. Vous perdez &c4 coeurs &fpermanent."));
         }
     }
 
+
+
+    @Override
+    public void onPlayerDamage(EntityDamageEvent event, Player player) {
+
+        if (usingByakugo) {
+            damageTaken += event.getFinalDamage();
+        }
+
+        if (damageTaken >= 30) {
+            player.removePotionEffect(PotionEffectType.REGENERATION);
+            player.setMaxHealth(player.getMaxHealth() - 4);
+            Tasks.runLater(() -> player.setMaxHealth(player.getMaxHealth() + 4), 15 * 20 * 60);
+            player.sendMessage(CC.prefix("§fVous avez pris plus de 15 coeurs de dégâts. De ce fait, vous perdez votre effet de §dRégénération §fainsi que §b2 coeurs §fpendant 15 minutes."));
+            usingByakugo = false;
+            damageTaken = 0;
+        }
+
+    }
+
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
+
+        if (Item.interactItem(event.getItem(), "Byakugô")) {
+
+            if (byakugoCooldown > 0) {
+                player.sendMessage(Messages.cooldown(byakugoCooldown));
+                return;
+            }
+
+            usingByakugo = true;
+            damageTaken = 0;
+
+            player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aByakugô§f."));
+
+            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 4, false, false));
+
+            byakugoCooldown = 30 * 60;
+
+        }
+
         if (Item.interactItem(event.getItem(), "Katsuyu")) {
 
             if (katsuyuCooldown > 0) {
@@ -100,9 +165,7 @@ public class Sakura extends NarutoRole {
 
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20 * 60, 0, false, false));
-            Tasks.runLater(() -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
-            }, 5 * 20 * 60);
+            Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false)), 5 * 20 * 60);
 
             player.sendMessage(CC.prefix("§fVous avez utilisé l'item §aKatsuyu§f."));
 
@@ -126,8 +189,7 @@ public class Sakura extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 7 * 60 * 20, 0, false, false));
-        Tasks.runTimer(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 7 * 60 * 20, 0, false, false)), 0, 11 * 20 * 60);
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
     }
 
     @Override
@@ -173,37 +235,12 @@ public class Sakura extends NarutoRole {
         }
 
         usingJutsu = true;
-        jutsuPlayer = target;
 
-        player.sendMessage(CC.prefix("§fVous avez utilisé votre §aJutsu §fsur §a" + target.getName() + "§f. Si un de vous deux bouge, §a" + target.getName() + " §fperdra son effet de §dRégénération§f."));
-        target.sendMessage(CC.prefix("§aSakura §fa utilisé son §aJutsu §fsur vous. Si un de vous deux bouge vous perdrez votre effet de §dRégénération§f."));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 2, false, false));
+        player.sendMessage(CC.prefix("§fVous avez utilisé votre §aJutsu §fsur §a" + target.getName()));
+        target.sendMessage(CC.prefix("§aSakura §fa utilisé son §aJutsu §fsur vous."));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*20, 2, false, false));
 
         jutsuCooldown = 10 * 60;
-
-    }
-
-    @Override
-    public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
-
-        if (event.getFrom().getBlock() == event.getTo().getBlock()) return;
-
-        Player sakura = Role.findPlayer(NarutoRoles.SAKURA);
-        Player jutsu = jutsuPlayer;
-
-        if (!event.getPlayer().equals(sakura) && !event.getPlayer().equals(jutsu)) return;
-
-        if (jutsu == null || sakura == null) return;
-        if (!usingJutsu) return;
-
-        PotionEffect effect = jutsu.getActivePotionEffects().stream().filter(potionEffect -> potionEffect.getType() == PotionEffectType.REGENERATION).findFirst().orElse(null);
-        if(effect != null && effect.getAmplifier() < 4) {
-            jutsu.removePotionEffect(PotionEffectType.REGENERATION);
-        }
-        jutsu.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
-        sakura.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
-        usingJutsu = false;
-        jutsuPlayer = null;
 
     }
 

@@ -3,6 +3,7 @@ package fr.lyneris.narutouhc.events;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
+import fr.lyneris.narutouhc.roles.orochimaru.Sakon;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Damage;
 import fr.lyneris.narutouhc.utils.Item;
@@ -12,9 +13,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -33,6 +36,15 @@ import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class NarutoListener implements Listener {
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDirtBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        Location locBlock = block.getLocation();
+        if (Sakon.unbreakableBlocks.contains(locBlock)) {
+            event.setCancelled(true);
+        }
+    }
 
     public static List<UUID> kuroari = new ArrayList<>();
     public List<UUID> usingShuryudan = new ArrayList<>();
@@ -67,9 +79,9 @@ public class NarutoListener implements Listener {
     public void onDamageOnEntity(EntityDamageByEntityEvent event) {
         if (kuroari.contains(event.getDamager().getUniqueId())) {
             int random = (int) (Math.random() * 4);
-            if(random == 0) {
-                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5*20, 0, false, false));
-                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5*20, 0, false, false));
+            if (random == 0) {
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5 * 20, 0, false, false));
+                ((Player) event.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5 * 20, 0, false, false));
                 event.getEntity().sendMessage(CC.prefix("&cVous n'avez pas eu de chance et avez obtenu Slowness et Weakness pendant 5 secondes."));
                 event.getDamager().sendMessage(CC.prefix("&fVous avez donné l'effet &7Slowness &fet &7Weakness &fà " + event.getEntity().getName()));
             }

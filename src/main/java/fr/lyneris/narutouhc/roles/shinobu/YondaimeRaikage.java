@@ -8,6 +8,7 @@ import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -15,6 +16,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +48,24 @@ public class YondaimeRaikage extends NarutoRole {
     public void onDistribute(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false));
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Armure de foudre")).toItemStack());
+        Role.knowsRole(player, NarutoRoles.KILLER_BEE);
+    }
+
+    @Override
+    public void onMinute(int minute, Player player) {
+        if(minute == 70) {
+            ScoreboardManager manager = Bukkit.getScoreboardManager();
+            Scoreboard board = manager.getNewScoreboard();
+
+            Objective objective = board.registerNewObjective("showhealth", "health");
+            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            objective.setDisplayName(" §c❤");
+
+            for(Player online : Bukkit.getOnlinePlayers()){
+                online.setScoreboard(board);
+                online.setHealth(online.getHealth());
+            }
+        }
     }
 
     @Override

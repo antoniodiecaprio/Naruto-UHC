@@ -10,6 +10,7 @@ import fr.lyneris.narutouhc.utils.Loc;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -59,9 +60,8 @@ public class Temari extends NarutoRole {
     @Override
     public void onDistribute(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
-        player.setMaxHealth(16);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kamatari")).toItemStack());
-        player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName(Item.specialItem("Éventail")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName(Item.specialItem("Éventail")).toItemStack());
     }
 
     @Override
@@ -82,11 +82,11 @@ public class Temari extends NarutoRole {
             }
 
             for (Player entity : Loc.getNearbyPlayers(player, 20)) {
-                Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
-                entity.setVelocity(new Vector(0, 1.3, 0));
-                fromPlayerToTarget.multiply(50);
-                fromPlayerToTarget.setY(2);
-                entity.setVelocity(fromPlayerToTarget.normalize());
+                Location initialLocation = player.getLocation().clone();
+                Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(initialLocation.toVector());
+                fromPlayerToTarget.multiply(4); //6
+                fromPlayerToTarget.setY(1); // 2
+                entity.setVelocity(fromPlayerToTarget);
             }
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aÉventail§f."));
 

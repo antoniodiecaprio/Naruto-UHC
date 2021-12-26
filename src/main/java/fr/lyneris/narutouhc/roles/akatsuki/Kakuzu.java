@@ -5,14 +5,12 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
-import fr.lyneris.narutouhc.utils.CC;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Loc;
-import fr.lyneris.narutouhc.utils.Messages;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -57,6 +55,14 @@ public class Kakuzu extends NarutoRole {
     @Override
     public void onDistribute(Player player) {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Corps rapiécé")).toItemStack());
+    }
+
+    @Override
+    public void onAllPlayerDeath(PlayerDeathEvent event, Player player) {
+        if(Role.isRole(player, NarutoRoles.HIDAN)) {
+            getPlayer().sendMessage(prefix("&cHidan &fest mort. Vous obtenez &cForce 1 &fpermanent."));
+            getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
+        }
     }
 
     @Override

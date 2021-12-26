@@ -8,8 +8,10 @@ import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
@@ -25,6 +27,7 @@ public class Ukon extends NarutoRole {
 
     public static int senpoTimer = 0;
     public static int barrierTimer = 0;
+    public static boolean died = false;
 
     public NarutoRoles getRole() {
         return NarutoRoles.UKON;
@@ -45,6 +48,24 @@ public class Ukon extends NarutoRole {
         Role.knowsRole(player, NarutoRoles.UKON);
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Senpô")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Barrière protectrice")).toItemStack());
+    }
+
+    @Override
+    public void onPlayerDamage(EntityDamageEvent event, Player player) {
+        Player sakon = Role.findPlayer(NarutoRoles.SAKON);
+        if(sakon.getLocation().distance(player.getLocation()) > 15) {
+            if(!(event.getFinalDamage() >= player.getHealth())) return;
+            if(Sakon.died) {
+                sakon.setGameMode(GameMode.SURVIVAL);
+                sakon.setHealth(0);
+                player.setHealth(0);
+                event.setCancelled(true);
+                return;
+            }
+            event.setCancelled(true);
+            player.setGameMode(GameMode.SPECTATOR);
+            died = true;
+        }
     }
 
     @Override
@@ -112,6 +133,8 @@ public class Ukon extends NarutoRole {
             if (sakon.getLocation().distance(player.getLocation()) <= 15) {
                 sakon.setHealth(0);
                 sakon.sendMessage(CC.prefix("§cUkon est mort et vous a emporté avec lui..."));
+            } else {
+                died = true;
             }
         }
     }

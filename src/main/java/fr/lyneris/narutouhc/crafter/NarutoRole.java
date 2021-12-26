@@ -41,7 +41,7 @@ public abstract class NarutoRole {
     public void onDay(Player player) {
     }
 
-    public void onNight(Player player) {
+    public void onNight(Player player, int timer) {
     }
 
     public void resetCooldowns() {

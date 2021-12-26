@@ -127,11 +127,11 @@ public class Itachi extends NarutoRole {
             }
 
             usingSusano = true;
-            player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Epee")).toItemStack());
+            player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Epee")).toItemStack());
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             Tasks.runLater(() -> {
                 for (ItemStack content : player.getInventory().getContents()) {
-                    if (content != null && content.getType() == Material.IRON_SWORD && content.hasItemMeta() && content.getItemMeta().getDisplayName().equals(Item.specialItem("Epee"))) {
+                    if (content != null && content.getType() == Material.DIAMOND_SWORD && content.hasItemMeta() && content.getItemMeta().getDisplayName().equals(Item.specialItem("Epee"))) {
                         player.getInventory().removeItem(content);
                     }
                 }

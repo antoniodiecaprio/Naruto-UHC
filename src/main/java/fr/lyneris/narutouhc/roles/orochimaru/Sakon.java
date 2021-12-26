@@ -1,23 +1,35 @@
 package fr.lyneris.narutouhc.roles.orochimaru;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.packet.Cuboid;
+import fr.lyneris.narutouhc.packet.Pair;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Sakon extends NarutoRole {
 
@@ -25,6 +37,10 @@ public class Sakon extends NarutoRole {
     public static int barrierTimer = 0;
     public static boolean usedBarrier = false;
     public static int senpoCooldown = 0;
+    public static boolean died = false;
+    public static List<Location> unbreakableBlocks = new ArrayList<>();
+
+
 
     public static void useBarrier() {
         Player sakon = Role.findPlayer(NarutoRoles.SAKON);
@@ -37,7 +53,15 @@ public class Sakon extends NarutoRole {
 
         usedBarrier = true;
 
-        //TODO BUILD LE TRUC DE MERDE
+
+        Location firstCorner = sakon.getLocation();
+        firstCorner.setY(0);
+
+
+        Location secondCorner = ukon.getLocation();
+        secondCorner.setY(256);
+
+        buildPrisonGlass(firstCorner, secondCorner);
     }
 
     public static void useSenpo() {
@@ -61,6 +85,83 @@ public class Sakon extends NarutoRole {
 
         senpoCooldown = 10 * 60;
 
+    }
+
+    private static void buildPrisonGlass(Location firstCorner, Location secondCorner) {
+        Map<Location, Pair<Material, Byte>> originalBlocks = new HashMap<>();
+        List<Block> wallsBlocks = getWalls(firstCorner, secondCorner);
+
+        unbreakableBlocks.addAll(wallsBlocks.stream().map(Block::getLocation).collect(Collectors.toList()));
+
+        wallsBlocks.forEach(block -> {
+            originalBlocks.put(block.getLocation(), new Pair<>(block.getType(), block.getData()));
+            block.setTypeIdAndData(Material.STAINED_GLASS.getId(), (byte) 10, false);
+        });
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                for (Map.Entry<Location, Pair<Material, Byte>> e : originalBlocks.entrySet()) {
+                    e.getKey().getBlock().setTypeIdAndData(e.getValue().getFirst().getId(), e.getValue().getSecond(), false);
+                }
+                unbreakableBlocks.clear();
+            }
+        }.runTaskLater(NarutoUHC.getNaruto(), 20 * 60 * 5);
+
+    }
+
+
+    public static List<Block> getWalls(Location firstCorner, Location secondCorner){
+        List<Block> wallsBlocks = new ArrayList<>();
+
+        Location min = getMinimumLocation(firstCorner.getWorld(), firstCorner, secondCorner);
+        Location max = getMaximumLocation(firstCorner.getWorld(), firstCorner, secondCorner);
+
+        //X PLANE
+        wallsBlocks.addAll(new Cuboid(
+                new Location(firstCorner.getWorld(), min.getX(), firstCorner.getY(), firstCorner.getZ()),
+                new Location(secondCorner.getWorld(), min.getX(), secondCorner.getY(), secondCorner.getZ())).getBlocks());
+        wallsBlocks.addAll(new Cuboid(
+                new Location(firstCorner.getWorld(), max.getX(), firstCorner.getY(), firstCorner.getZ()),
+                new Location(secondCorner.getWorld(), max.getX(), secondCorner.getY(), secondCorner.getZ())).getBlocks());
+
+        //Z PLANE
+        wallsBlocks.addAll(new Cuboid(
+                new Location(firstCorner.getWorld(), firstCorner.getX(), firstCorner.getY(), min.getZ()),
+                new Location(secondCorner.getWorld(), secondCorner.getX(), secondCorner.getY(), min.getZ())).getBlocks());
+        wallsBlocks.addAll(new Cuboid(
+                new Location(firstCorner.getWorld(), firstCorner.getX(), firstCorner.getY(), max.getZ()),
+                new Location(secondCorner.getWorld(), secondCorner.getX(), secondCorner.getY(), max.getZ())).getBlocks());
+
+        //TOP
+        wallsBlocks.addAll(new Cuboid(
+                new Location(firstCorner.getWorld(), firstCorner.getX(), max.getY(), firstCorner.getZ()),
+                new Location(secondCorner.getWorld(), secondCorner.getX(), max.getY(), secondCorner.getZ())).getBlocks());
+
+        //GROUND
+        wallsBlocks.addAll(new Cuboid(
+                new Location(firstCorner.getWorld(), firstCorner.getX(), min.getY(), firstCorner.getZ()),
+                new Location(secondCorner.getWorld(), secondCorner.getX(), min.getY(), secondCorner.getZ())).getBlocks());
+        return wallsBlocks;
+    }
+
+    public static Location getMinimumLocation(World world, Location loc1, Location loc2) {
+        return new Location(
+                world,
+                Math.min(loc1.getX(), loc2.getX()),
+                Math.min(loc1.getY(), loc2.getY()),
+                Math.min(loc1.getZ(), loc2.getZ())
+        );
+    }
+
+    public static Location getMaximumLocation(World world, Location loc1, Location loc2) {
+        return new Location(
+                world,
+                Math.max(loc1.getX(), loc2.getX()),
+                Math.max(loc1.getY(), loc2.getY()),
+                Math.max(loc1.getZ(), loc2.getZ())
+        );
     }
 
     public NarutoRoles getRole() {
@@ -151,6 +252,24 @@ public class Sakon extends NarutoRole {
     }
 
     @Override
+    public void onPlayerDamage(EntityDamageEvent event, Player player) {
+        Player ukon = Role.findPlayer(NarutoRoles.UKON);
+        if(ukon.getLocation().distance(player.getLocation()) > 15) {
+            if(!(event.getFinalDamage() >= player.getHealth())) return;
+            if(Ukon.died) {
+                ukon.setGameMode(GameMode.SURVIVAL);
+                ukon.setHealth(0);
+                player.setHealth(0);
+                event.setCancelled(true);
+                return;
+            }
+            event.setCancelled(true);
+            player.setGameMode(GameMode.SPECTATOR);
+            died = true;
+        }
+    }
+
+    @Override
     public void onPlayerDeath(PlayerDeathEvent event, Player player, Player killer) {
         Player ukon = Role.findPlayer(NarutoRoles.UKON);
 
@@ -158,6 +277,8 @@ public class Sakon extends NarutoRole {
             if (ukon.getLocation().distance(player.getLocation()) <= 15) {
                 ukon.setHealth(0);
                 ukon.sendMessage(CC.prefix("§cSakon est mort et vous a emporté avec lui..."));
+            } else {
+                died = true;
             }
         }
     }

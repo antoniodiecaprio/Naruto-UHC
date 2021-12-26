@@ -25,6 +25,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -116,7 +117,7 @@ public class Orochimaru extends NarutoRole {
                 return;
             }
 
-            int random = (int) (Math.random() * 5);
+            int random = (int) (Math.random() * 6);
             if (random == 0) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
                 player.sendMessage(prefix("&fVous avez obtenu &7Résistance&f pendant 5 minutes."));
@@ -130,6 +131,25 @@ public class Orochimaru extends NarutoRole {
                 this.revive = true;
                 Tasks.runAsyncLater(() -> this.revive = false, 5*20*60);
                 player.sendMessage(prefix("&fSi vous mourrez dans les &c5 &fprochaines minutes. Vous serrez ressuscité."));
+            } else if( (random == 4)) {
+                player.sendMessage(prefix("&fVous perdez &c1 coeur &ftoutes les 30 secondes pendant 5 minutes."));
+                new BukkitRunnable() {
+                    int timer = 10;
+                    @Override
+                    public void run() {
+                        if(timer == 0) {
+                            cancel();
+                            return;
+                        }
+                        timer--;
+                        if(player.getHealth() < 1) {
+                            player.setHealth(0);
+                            return;
+                        }
+                        player.setHealth(player.getHealth() - 1);
+
+                    }
+                }.runTaskTimer(narutoUHC, 0, 30*20);
             } else {
                 player.sendMessage(prefix("&fVous n'avez pas eu de chance et avez &crien reçu&f."));
             }
@@ -230,7 +250,7 @@ public class Orochimaru extends NarutoRole {
 
         if(event.getFinalDamage() > player.getHealth() && revive) {
             event.setCancelled(true);
-            World world = Bukkit.getWorld("world");
+            World world = Bukkit.getWorld("uhc_world");
             int x = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
             int z = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
             int y = world.getHighestBlockYAt(x, z) + 1;

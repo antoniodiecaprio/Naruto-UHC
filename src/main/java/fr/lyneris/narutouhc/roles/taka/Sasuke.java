@@ -121,7 +121,7 @@ public class Sasuke extends NarutoRole {
 
         if (event.getFinalDamage() > player.getHealth() && revive) {
             event.setCancelled(true);
-            World world = Bukkit.getWorld("world");
+            World world = Bukkit.getWorld("uhc_world");
             int x = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
             int z = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));
             int y = world.getHighestBlockYAt(x, z) + 1;

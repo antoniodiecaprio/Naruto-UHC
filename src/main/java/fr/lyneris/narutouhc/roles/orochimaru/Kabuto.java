@@ -34,7 +34,6 @@ public class Kabuto extends NarutoRole {
     public int givePower2 = -1;
     public int jutsuCooldown = 0;
     public boolean usingJutsu = false;
-    private Player jutsuPlayer = null;
 
     public NarutoRoles getRole() {
         return NarutoRoles.KABUTO;
@@ -181,11 +180,10 @@ public class Kabuto extends NarutoRole {
         }
 
         usingJutsu = true;
-        jutsuPlayer = target;
 
-        player.sendMessage(CC.prefix("§fVous avez utilisé votre §aJutsu §fsur §a" + target.getName() + "§f. Si un de vous deux bouge, §a" + target.getName() + " §fperdra son effet de §dRégénération§f."));
-        target.sendMessage(CC.prefix("§aNaruto §fa utilisé son §aJutsu §fsur vous. Si un de vous deux bouge vous perdrez votre effet de §dRégénération§f."));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 2, false, false));
+        player.sendMessage(CC.prefix("§fVous avez utilisé votre §aJutsu §fsur §a" + target.getName()));
+        target.sendMessage(CC.prefix("§aNaruto §fa utilisé son §aJutsu §fsur vous."));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*20, 2, false, false));
 
         jutsuCooldown = 10 * 60;
 
@@ -225,30 +223,6 @@ public class Kabuto extends NarutoRole {
 
         player.setHealth(Math.min(player.getHealth() + 2, player.getMaxHealth()));
     }
-
-    @Override
-    public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
-
-        if (event.getFrom().getBlockX() == event.getTo().getBlockX() &&
-                event.getFrom().getBlockY() == event.getTo().getBlockY() &&
-                event.getFrom().getBlockZ() == event.getTo().getBlockZ()) return;
-
-        Player sakura = Role.findPlayer(NarutoRoles.SAKURA);
-        Player jutsu = jutsuPlayer;
-
-        if (!event.getPlayer().equals(sakura) && !event.getPlayer().equals(jutsu)) return;
-
-        if (jutsu == null || sakura == null) return;
-        if (!usingJutsu) return;
-
-        jutsu.removePotionEffect(PotionEffectType.REGENERATION);
-        jutsu.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
-        sakura.sendMessage(CC.prefix("§a" + event.getPlayer().getName() + " §fa bougé."));
-        usingJutsu = false;
-        jutsuPlayer = null;
-
-    }
-
     @Override
     public Camp getCamp() {
         return Camp.OROCHIMARU;

@@ -7,10 +7,7 @@ import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -272,11 +269,11 @@ public class Nagato extends NarutoRole {
                 player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aShinra Tensei§f."));
 
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
-                    Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
-                    entity.setVelocity(new Vector(0, 0.3, 0));
-                    fromPlayerToTarget.multiply(6);
-                    fromPlayerToTarget.setY(2);
-                    entity.setVelocity(fromPlayerToTarget.normalize());
+                    Location initialLocation = player.getLocation().clone();
+                    Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(initialLocation.toVector());
+                    fromPlayerToTarget.multiply(4); //6
+                    fromPlayerToTarget.setY(1); // 2
+                    entity.setVelocity(fromPlayerToTarget);
                 }
 
                 shinraCooldown = 5 * 60;

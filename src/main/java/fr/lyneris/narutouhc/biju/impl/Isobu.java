@@ -40,23 +40,23 @@ public class Isobu extends Biju implements Listener {
     public void setupBiju() {
         int value = (int) (Math.random() * 3);
 
-        World world = Bukkit.getWorld("world");
+        World world = Bukkit.getWorld("uhc_world");
         if (value == 0) {
             int x = NarutoUHC.getRandom().nextInt(150, 300);
             int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         } else if (value == 1) {
             int x = -NarutoUHC.getRandom().nextInt(150, 300);
             int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         } else if (value == 2) {
             int x = NarutoUHC.getRandom().nextInt(150, 300);
             int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         } else {
             int x = -NarutoUHC.getRandom().nextInt(150, 300);
             int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         }
 
         new IsobuRunnable().runTaskTimer(NarutoUHC.getNaruto(), 0L, 20L);
@@ -87,7 +87,7 @@ public class Isobu extends Biju implements Listener {
 
     @Override
     public void spawnEntity() {
-        this.guardian = (Guardian) Bukkit.getWorld("world").spawnEntity(this.spawn, EntityType.GUARDIAN);
+        this.guardian = (Guardian) Bukkit.getWorld("uhc_world").spawnEntity(this.spawn, EntityType.GUARDIAN);
         guardian.setCustomName(this.getName());
         guardian.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         guardian.setMaxHealth(2D * 100D);

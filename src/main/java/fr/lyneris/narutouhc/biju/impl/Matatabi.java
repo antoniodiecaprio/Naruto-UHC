@@ -52,23 +52,23 @@ public class Matatabi extends Biju implements Listener {
     public void setupBiju() {
         int value = (int) (Math.random() * 3);
 
-        World world = Bukkit.getWorld("world");
+        World world = Bukkit.getWorld("uhc_world");
         if (value == 0) {
             int x = NarutoUHC.getRandom().nextInt(150, 300);
             int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         } else if (value == 1) {
             int x = -NarutoUHC.getRandom().nextInt(150, 300);
             int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         } else if (value == 2) {
             int x = NarutoUHC.getRandom().nextInt(150, 300);
             int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         } else {
             int x = -NarutoUHC.getRandom().nextInt(150, 300);
             int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("world"), x, world.getHighestBlockYAt(x, z) + 2, z);
+            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
         }
         new MetatabiRunnable().runTaskTimer(NarutoUHC.getNaruto(), 0L, 20L);
     }
@@ -80,7 +80,7 @@ public class Matatabi extends Biju implements Listener {
 
     @Override
     public void spawnEntity() {
-        this.blaze = (Blaze) Bukkit.getWorld("world").spawnEntity(this.spawn, EntityType.BLAZE);
+        this.blaze = (Blaze) Bukkit.getWorld("uhc_world").spawnEntity(this.spawn, EntityType.BLAZE);
         blaze.setCustomName(this.getName());
         blaze.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         blaze.setMaxHealth(2D * 100D);

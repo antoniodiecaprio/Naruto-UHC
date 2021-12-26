@@ -57,8 +57,8 @@ public class NarutoModule implements Module {
         if(Role.isRole(player, NarutoRoles.GAARA) && Gaara.narutoHit && Role.getCamp(player) != Camp.SHINOBI) {
             int x = new Random().nextInt(60);
             int z = new Random().nextInt(60);
-            int y = Bukkit.getWorld("world").getHighestBlockYAt(x, z) + 1;
-            player.teleport(new Location(Bukkit.getWorld("world"), x, y, z));
+            int y = Bukkit.getWorld("uhc_world").getHighestBlockYAt(x, z) + 1;
+            player.teleport(new Location(Bukkit.getWorld("uhc_world"), x, y, z));
             NarutoUHC.getNaruto().getRoleManager().setCamp(player, Camp.SHINOBI);
 
             for(Player target : new Player[] { Role.findPlayer(NarutoRoles.TEMARI), Role.findPlayer(NarutoRoles.KANKURO) }) {
@@ -76,8 +76,8 @@ public class NarutoModule implements Module {
                 player.spigot().respawn();
                 int x = new Random().nextInt(60) - 30;
                 int z = new Random().nextInt(60) - 30;
-                int y = Bukkit.getWorld("world").getHighestBlockYAt(x, z) + 1;
-                player.teleport(new Location(Bukkit.getWorld("world"), x, y, z));
+                int y = Bukkit.getWorld("uhc_world").getHighestBlockYAt(x, z) + 1;
+                player.teleport(new Location(Bukkit.getWorld("uhc_world"), x, y, z));
                 Danzo.lives--;
                 player.setMaxHealth(10);
                 player.setMaxHealth(player.getMaxHealth() - Danzo.died);

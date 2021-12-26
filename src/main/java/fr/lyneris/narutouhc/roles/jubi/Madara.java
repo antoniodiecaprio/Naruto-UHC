@@ -102,7 +102,7 @@ public class Madara extends NarutoRole implements Listener {
             }
             usingSusano = true;
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
-            player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).setName(Item.specialItem("Epee")).addEnchant(Enchantment.DAMAGE_ALL, 7).toItemStack());
+            player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).setName(Item.specialItem("Epee")).addEnchant(Enchantment.DAMAGE_ALL, 7).toItemStack());
 
             susanoCooldown = 20 * 60;
             Tasks.runAsyncLater(() -> usingSusano = false, 5 * 20 * 60);
@@ -205,11 +205,11 @@ public class Madara extends NarutoRole implements Listener {
                 }
 
                 for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
-                    Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
-                    entity.setVelocity(new Vector(0, 0.3, 0));
-                    fromPlayerToTarget.multiply(6);
-                    fromPlayerToTarget.setY(2);
-                    entity.setVelocity(fromPlayerToTarget.normalize());
+                    Location initialLocation = player.getLocation().clone();
+                    Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(initialLocation.toVector());
+                    fromPlayerToTarget.multiply(4); //6
+                    fromPlayerToTarget.setY(1); // 2
+                    entity.setVelocity(fromPlayerToTarget);
                 }
 
                 shinraUses++;

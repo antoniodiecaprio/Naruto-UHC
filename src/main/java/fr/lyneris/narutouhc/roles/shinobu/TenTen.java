@@ -14,6 +14,8 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class TenTen extends NarutoRole {
 
     @Override
     public void onDistribute(Player player) {
-        player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName("§7▎ §6Epée").toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 5).setName("§7▎ §6Epée").toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_DAMAGE, 3).addEnchant(Enchantment.ARROW_KNOCKBACK, 1).setName("§7▎ §6Arc").toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Parchemin")).toItemStack());
         player.getInventory().addItem(new ItemStack(Material.ARROW, 32));
@@ -84,6 +86,7 @@ public class TenTen extends NarutoRole {
             }
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aParchemin§f."));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
 
 
             parcheminCooldown = 5 * 60;
