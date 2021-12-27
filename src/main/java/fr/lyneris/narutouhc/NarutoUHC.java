@@ -50,11 +50,6 @@ public class NarutoUHC extends JavaPlugin {
         this.module = new NarutoModule();
         UHC.getUHC().setModule(module);
 
-        UHC.getUHC().getGameManager().getGameConfiguration().setRolesTime(5);
-        UHC.getUHC().getGameManager().getGameConfiguration().setPvpTime(5);
-
-        WorldGeneration.setFinished(true);
-
         naruto = this;
         this.roleManager = new RoleManager(this);
         this.manager = new Manager(this);
@@ -63,7 +58,6 @@ public class NarutoUHC extends JavaPlugin {
         this.hokage = new Hokage(this);
         this.chakra = new ChakraManager(this);
         this.jubi = new Jubi(this);
-        Bijus.initBijus();
         this.bijuListener = new BijuListener();
 
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);

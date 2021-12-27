@@ -87,8 +87,8 @@ public class Sai extends NarutoRole {
                     "§7sa position, seulement lui peut le chevaucher.",
                     "§7Ce pouvoir possède un délai de 10 minutes.",
                     "",
-                    "§f§l» §eCooldown: §f" + montureCooldown + " secondes",
-                    "§f§l» §eCliquez-ici pour utiliser"
+                    "§8» §7Cooldown: §f" + montureCooldown + " secondes",
+                    "§8» §7Cliquez-ici pour utiliser"
             ).toItemStack());
             inv.setItem(2, new ItemBuilder(Material.COBBLESTONE).setName("§6Tigres").setLore(
                     "§7Lorsqu'il l'utilise, il est immobilisé pendant",
@@ -97,8 +97,8 @@ public class Sai extends NarutoRole {
                     "§7proche, ils ont pour effet §bVitesse 2§f. Ce",
                     "§7pouvoir a un délai de 5 minutes.",
                     "",
-                    "§f§l» §eCooldown: §f" + tigresCooldown + " secondes",
-                    "§f§l» §eCliquez-ici pour utiliser"
+                    "§8» §7Cooldown: §f" + tigresCooldown + " secondes",
+                    "§8» §7Cliquez-ici pour utiliser"
             ).toItemStack());
             inv.setItem(3, new ItemBuilder(Material.PAPER).setName("§6Fûinjutsu").setLore(
                     "§7Lorsqu'il l'utilise. il lui est affiché tous",
@@ -118,7 +118,7 @@ public class Sai extends NarutoRole {
                     "§7 durant toute la partie. Son pouvoir est utilisable",
                     "§7une seule fois dans la partie.",
                     "",
-                    "§f§l» §eCliquez-ici pour utiliser"
+                    "§8» §7Cliquez-ici pour utiliser"
             ).toItemStack());
             player.openInventory(inv);
         }

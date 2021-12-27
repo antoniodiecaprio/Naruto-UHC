@@ -95,7 +95,7 @@ public class Ino extends NarutoRole {
             inv.setItem(j, new ItemBuilder(Material.SKULL_ITEM).setSkullOwner(player1.getName()).setDurability(SkullType.PLAYER.ordinal()).setName("§6" + player1.getName()).setLore(
                     lore,
                     " ",
-                    "§f§l» §eCliquez-ici pour changer"
+                    "§8» §7Cliquez-ici pour changer"
             ).toItemStack());
             j++;
         }

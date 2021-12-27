@@ -13,7 +13,6 @@ C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\ro
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\akatsuki\Itachi.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\biju\impl\Matatabi.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\shinobu\RockLee.java
-C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\module\Chakra.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\packet\PacketManager.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\biju\impl\SonGoku.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\orochimaru\Tayuya.java
@@ -83,6 +82,7 @@ C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\ro
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\packet\RayTrace.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\shinobu\Neji.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\crafter\NarutoRole.java
+C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\module\ChakraManager.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\particle\DoubleCircleEffect.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\module\Hokage.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\orochimaru\Jirobo.java
@@ -105,6 +105,7 @@ C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\ro
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\module\NarutoGui.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\sankyodai\Gaara.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\shinobu\Sakura.java
+C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\packet\Pair.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\roles\zabuza_haku\Haku.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\crafter\Chakra.java
 C:\Users\hdufo\Documents\GitHub\Naruto-UHC\src\main\java\fr\lyneris\narutouhc\crafter\Camp.java

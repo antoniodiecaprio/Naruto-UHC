@@ -73,7 +73,7 @@ public class Shikamaru extends NarutoRole {
                     "§7peut être utilisé que 3 fois dans la partie",
                     "§7et ne possède aucun délai.",
                     " ",
-                    "§f§l» §eCliquez-ici pour y accéder"
+                    "§8» §7Cliquez-ici pour y accéder"
             ).toItemStack());
             inv.setItem(2, new ItemBuilder(Material.IRON_SWORD).setName("§6Étreinte Mortelle").setLore(
                     "§7Lorsqu’il l’utilise, tous les joueurs se",
@@ -86,7 +86,7 @@ public class Shikamaru extends NarutoRole {
                     "§7pouvoir ne peut être utilisé qu’une fois",
                     "§7dans la partie.",
                     " ",
-                    "§f§l» §eCliquez-ici pour y accéder"
+                    "§8» §7Cliquez-ici pour y accéder"
             ).toItemStack());
             inv.setItem(3, new ItemBuilder(Material.EYE_OF_ENDER).setName("§6Oeil").setLore(
                     "§7Lorsqu’il l’utilise, tous les joueurs se",
@@ -98,7 +98,7 @@ public class Shikamaru extends NarutoRole {
                     "§7partie, ce pouvoir peut être utilisé 5 fois",
                     "§7dans la partie.",
                     " ",
-                    "§f§l» §eCliquez-ici pour y accéder"
+                    "§8» §7Cliquez-ici pour y accéder"
             ).toItemStack());
             inv.setItem(4, new ItemBuilder(Material.SPIDER_EYE).setName("§6Recherche").setLore(
                     "§7Lorsqu’il l’utilise, tous les joueurs se",
@@ -110,7 +110,7 @@ public class Shikamaru extends NarutoRole {
                     "§7joueurs morts, ce pouvoir ne peut être",
                     "§7utilisé qu’une fois dans la partie.",
                     " ",
-                    "§f§l» §eCliquez-ici pour y accéder"
+                    "§8» §7Cliquez-ici pour y accéder"
             ).toItemStack());
 
             player.openInventory(inv);

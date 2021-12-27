@@ -238,8 +238,8 @@ import java.util.UUID;
 
             Inventory inv = Bukkit.createInventory(null, 9, "Manipulation du sable");
 
-            inv.setItem(3, new ItemBuilder(Material.IRON_SWORD).setName("§6Attaque").setLore("", "§f§l» §eCliquez-ici pour accéder au menu").toItemStack());
-            inv.setItem(5, new ItemBuilder(Material.DIAMOND_CHESTPLATE).setName("§6Défense").setLore("", "§f§l» §eCliquez-ici pour accéder au menu").toItemStack());
+            inv.setItem(3, new ItemBuilder(Material.IRON_SWORD).setName("§6Attaque").setLore("", "§8» §7Cliquez-ici pour accéder au menu").toItemStack());
+            inv.setItem(5, new ItemBuilder(Material.DIAMOND_CHESTPLATE).setName("§6Défense").setLore("", "§8» §7Cliquez-ici pour accéder au menu").toItemStack());
 
             player.openInventory(inv);
         }

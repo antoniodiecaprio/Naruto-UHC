@@ -22,7 +22,6 @@ fr\lyneris\narutouhc\roles\sankyodai\Gaara$1.class
 fr\lyneris\narutouhc\events\NarutoListener$1.class
 fr\lyneris\narutouhc\biju\impl\Kokuo$KokuoRunnable.class
 fr\lyneris\narutouhc\roles\shinobu\Hinata.class
-fr\lyneris\narutouhc\module\Chakra$ChakraTask.class
 fr\lyneris\narutouhc\roles\taka\Jugo$SasukeSkin.class
 fr\lyneris\narutouhc\packet\PacketManager.class
 fr\lyneris\narutouhc\commands\RevealCommand.class
@@ -48,6 +47,7 @@ fr\lyneris\narutouhc\roles\akatsuki\Nagato.class
 fr\lyneris\narutouhc\roles\shinobu\Shikamaru.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$3.class
 fr\lyneris\narutouhc\biju\impl\Isobu$IsobuRunnable.class
+fr\lyneris\narutouhc\module\ChakraManager$ChakraTask.class
 fr\lyneris\narutouhc\biju\impl\Matatabi$MetatabiRunnable.class
 fr\lyneris\narutouhc\packet\BoundingBox.class
 fr\lyneris\narutouhc\packet\Cuboid.class
@@ -60,7 +60,6 @@ fr\lyneris\narutouhc\roles\akatsuki\Deidara$2.class
 fr\lyneris\narutouhc\packet\npc\NPC.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$Wave.class
 fr\lyneris\narutouhc\commands\naruto\LastWord.class
-fr\lyneris\narutouhc\module\Chakra$1.class
 fr\lyneris\narutouhc\roles\shinobu\Konohamaru.class
 fr\lyneris\narutouhc\roles\shinobu\YondaimeRaikage$1.class
 fr\lyneris\narutouhc\roles\taka\Jugo$JugoSkinsTask.class
@@ -68,6 +67,7 @@ fr\lyneris\narutouhc\packet\changer\IdentityChanger.class
 fr\lyneris\narutouhc\roles\orochimaru\Kidomaru.class
 fr\lyneris\narutouhc\roles\jubi\Madara.class
 fr\lyneris\narutouhc\roles\taka\Jugo$3.class
+fr\lyneris\narutouhc\module\ChakraManager.class
 fr\lyneris\narutouhc\packet\TapisSableEffect.class
 fr\lyneris\narutouhc\biju\impl\SonGoku.class
 fr\lyneris\narutouhc\packet\changer\VariablesUtils.class
@@ -85,6 +85,7 @@ fr\lyneris\narutouhc\packet\QuartzTreeDelegator.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffect.class
 fr\lyneris\narutouhc\particle\MathL.class
 fr\lyneris\narutouhc\particle\WingsEffect$1.class
+fr\lyneris\narutouhc\packet\Pair.class
 fr\lyneris\narutouhc\roles\taka\Karin.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffect$1.class
 fr\lyneris\narutouhc\roles\akatsuki\Konan.class
@@ -108,12 +109,12 @@ fr\lyneris\narutouhc\manager\Manager.class
 fr\lyneris\narutouhc\manager\RoleManager.class
 fr\lyneris\narutouhc\packet\changer\IdentityChanger$2.class
 fr\lyneris\narutouhc\crafter\Camp.class
+fr\lyneris\narutouhc\roles\orochimaru\Orochimaru$1.class
 fr\lyneris\narutouhc\utils\CC.class
 fr\lyneris\narutouhc\roles\solo\Danzo.class
 fr\lyneris\narutouhc\roles\akatsuki\Itachi.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffectRedstone.class
 fr\lyneris\narutouhc\packet\PathFinderAttackPlayer.class
-fr\lyneris\narutouhc\module\Chakra.class
 fr\lyneris\narutouhc\particle\ProgressBar.class
 fr\lyneris\narutouhc\roles\zabuza_haku\Haku.class
 fr\lyneris\narutouhc\particle\WingsEffect.class
@@ -141,6 +142,7 @@ fr\lyneris\narutouhc\roles\shinobu\Sai$1.class
 fr\lyneris\narutouhc\roles\shinobu\Ino.class
 fr\lyneris\narutouhc\utils\Item.class
 fr\lyneris\narutouhc\roles\orochimaru\Kimimaro.class
+fr\lyneris\narutouhc\module\ChakraManager$1.class
 fr\lyneris\narutouhc\packet\KokuoInvoker.class
 fr\lyneris\narutouhc\roles\orochimaru\Ukon.class
 fr\lyneris\narutouhc\biju\impl\Matatabi$1.class
@@ -155,6 +157,7 @@ fr\lyneris\narutouhc\roles\shinobu\Jiraya$1.class
 fr\lyneris\narutouhc\roles\shinobu\TenTen.class
 fr\lyneris\narutouhc\packet\Cuboid$CuboidIterator.class
 fr\lyneris\narutouhc\roles\jubi\Madara$1.class
+fr\lyneris\narutouhc\roles\orochimaru\Sakon$1.class
 fr\lyneris\narutouhc\biju\BijuListener.class
 fr\lyneris\narutouhc\biju\impl\Saiken.class
 fr\lyneris\narutouhc\commands\naruto\MyRoleCommand.class

@@ -11,6 +11,7 @@ import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
+import fr.lyneris.uhc.gui.config.ConfigurationMenu;
 import fr.lyneris.uhc.module.Module;
 import fr.lyneris.uhc.utils.Utils;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -182,17 +183,21 @@ public class NarutoModule implements Module {
 
         ItemStack[] slots = new ItemStack[mainInventorySize() * 9];
 
-        HashMap<Camp, Integer> map = new HashMap<>();
+        HashMap<Camp, Integer> roles = new HashMap<>();
+        HashMap<Camp, Integer> enabledRoles = new HashMap<>();
 
         for (NarutoRoles value : NarutoRoles.values()) {
             if (value.getNarutoRole() != null) {
-                map.put(value.getCamp(), map.getOrDefault(value.getCamp(), 0) + 1);
+                roles.put(value.getCamp(), roles.getOrDefault(value.getCamp(), 0) + 1);
+                if(NarutoUHC.getNaruto().getRoleManager().getRoles().contains(value)) {
+                    enabledRoles.put(value.getCamp(), enabledRoles.getOrDefault(value.getCamp(), 0) + 1);
+                }
             }
         }
 
         List<String> lore = new ArrayList<>();
-        map.keySet().forEach(camp -> {
-            lore.add(CC.prefix(camp.getFormat() + "§8: §f" + map.getOrDefault(camp, 0)));
+        roles.keySet().forEach(camp -> {
+            lore.add(CC.prefix(camp.getFormat() + "§8: §f" + enabledRoles.getOrDefault(camp, 0) + "/" + roles.getOrDefault(camp, 0)));
         });
 
         for (int i : Utils.getGlassInInventory(mainInventorySize())) {
@@ -210,11 +215,18 @@ public class NarutoModule implements Module {
         slots[31] = new ItemBuilder(Material.INK_SACK).setDurability(2).setName(Camp.SANKYODAI.getFormat()).toItemStack();
         slots[32] = new ItemBuilder(Material.INK_SACK).setDurability(7).setName(Camp.SOLO.getFormat()).toItemStack();
 
+        slots[40] = new ItemBuilder(Material.ARROW).setName("§6§l« §eRetour").toItemStack();
+
         return () -> slots;
     }
 
     @Override
     public void onMainInventoryClick(Player player, Inventory inventory, ItemStack is, int slot, boolean rightClick) {
+
+        if(is.getType() == Material.ARROW) {
+            UHC.getUHC().getGameManager().getGuiManager().open(player, ConfigurationMenu.class);
+            return;
+        }
 
         Camp camp = null;
 
