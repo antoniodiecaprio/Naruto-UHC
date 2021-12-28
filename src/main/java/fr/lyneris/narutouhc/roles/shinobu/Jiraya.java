@@ -1,11 +1,13 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.Cuboid;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityHeadRotation;
@@ -90,7 +92,11 @@ public class Jiraya extends NarutoRole {
                 player.sendMessage(Messages.cooldown(senjutsuCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 1, false, false));
             Tasks.runLater(() -> {
@@ -169,6 +175,12 @@ public class Jiraya extends NarutoRole {
 //                    return;
 //                }
 //
+//            if(Kisame.isBlocked(player)) {
+//                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+//                return;
+//            }
+//            NarutoUHC.usePower(player);
+//
 //                List<Player> players = new ArrayList<>();
 //                int i = 0;
 //                for (Player player1 : Loc.getNearbyPlayers(player, 30)) {
@@ -189,6 +201,11 @@ public class Jiraya extends NarutoRole {
                     Messages.getCooldown(kisuoiriCooldown).queue(player);
                     return;
                 }
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 List<Entity> burning = new ArrayList<>();
                 new BukkitRunnable() {
                     int timer = 40;

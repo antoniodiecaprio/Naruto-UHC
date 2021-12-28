@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.orochimaru;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -71,7 +73,11 @@ public class Tayuya extends NarutoRole {
                 player.sendMessage(Messages.cooldown(marqueCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             player.sendMessage(CC.prefix("Vous avez utilisé votre pouvoir &aMarque Maudite&f."));
             Tasks.runLater(() -> {
@@ -89,7 +95,11 @@ public class Tayuya extends NarutoRole {
                 player.sendMessage(Messages.cooldown(fluteCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             Player nearestPlayer = null;
             double nearestDistance = Integer.MAX_VALUE;
             for (Player players : Role.getAliveOnlinePlayers()) {

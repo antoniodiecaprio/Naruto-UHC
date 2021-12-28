@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -180,7 +182,11 @@ public class Ino extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             transfer = target.getUniqueId();
             target.sendMessage(CC.prefix("§aIno §fa utilisé son pouvoir de transfert sur vous. De ce fait lors de votre mort, vous pourrez envoyer un message de dernière volontée. Attention, si vous mourrez dans §c20 minutes§f ou plus, vous ne pourrez pas utiliser cette dernière volontée."));
             player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir sur §a" + target.getName()));
@@ -204,7 +210,11 @@ public class Ino extends NarutoRole {
                 player.sendMessage(CC.prefix("§cIl n'y a personne dans votre liste."));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             StringBuilder message = new StringBuilder();
             for (int i = 1; i < args.length; i++) {
                 message.append(args[i]).append(" ");

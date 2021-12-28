@@ -7,6 +7,7 @@ import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.Cuboid;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -116,6 +117,12 @@ public class Naruto extends NarutoRole {
 //                    return;
 //                }
 //
+//            if(Kisame.isBlocked(player)) {
+//                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+//                return;
+//            }
+//            NarutoUHC.usePower(player);
+//
 //                List<Player> players = new ArrayList<>();
 //                int i = 0;
 //                for (Player player1 : Loc.getNearbyPlayers(player, 30)) {
@@ -124,7 +131,7 @@ public class Naruto extends NarutoRole {
 //                        i++;
 //                    }
 //                }
-//                player.sendMessage(prefix("Vous avez utilisé votre &a&f."));
+//                player.sendMessage(prefix("Vous avez utilisé votre &aIsan&f."));
 //                //TODO TELEPORTER DANS LA MAP QUI EST PAS ARRIVEE
 //
 //                isanCooldown = 20*60;
@@ -136,6 +143,11 @@ public class Naruto extends NarutoRole {
                     Messages.getCooldown(kisuoiriCooldown).queue(player);
                     return;
                 }
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 List<Entity> burning = new ArrayList<>();
                 new BukkitRunnable() {
                     int timer = 40;
@@ -413,7 +425,11 @@ public class Naruto extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous  n'êtes pas en train d'utiliser l'item Kurama"));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             boolean var1 = false;
 
             NarutoRole targetRole = NarutoUHC.getNaruto().getRoleManager().getRole(target);
@@ -453,7 +469,11 @@ public class Naruto extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             if (Role.isRole(target, NarutoRoles.GAI_MAITO)) {
                 if (GaiMaito.isUsingGai) {
                     GaiMaito.paumeSaved = true;

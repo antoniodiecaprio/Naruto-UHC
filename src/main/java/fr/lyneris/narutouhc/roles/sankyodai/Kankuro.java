@@ -6,6 +6,7 @@ import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.events.NarutoListener;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
@@ -74,6 +75,11 @@ public class Kankuro extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event, "Marionnettes")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             Inventory inv = Bukkit.createInventory(null, 9, "Marionnettes");
             int i = 0;
             for (String s : manager.getDeath().keySet()) {
@@ -152,7 +158,11 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 target.sendMessage(prefix("&aKankurô &fa décidé de vous ressuscité&f. Vous obtenez également l'item &aShuryûdan&f."));
                 giveStuff(target);
                 UHC.getUHC().getGameManager().getPlayers().add(target.getUniqueId());
@@ -170,7 +180,11 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 target.sendMessage(prefix("&aKankurô &fa décidé de vous ressuscité&f. &fVous disposez de §bSpeed 1 &fainsi qu'une probabilité de &a20% &fd'infliger faiblesse et lenteur."));
                 giveStuff(target);
                 NarutoListener.kuroari.add(target.getUniqueId());
@@ -190,7 +204,11 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 target.sendMessage(prefix("&aKankurô &fa décidé de vous ressuscité&f. &fVous disposez de §7Résistance 1&f."));
                 giveStuff(target);
                 target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
@@ -209,7 +227,11 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 target.sendMessage(prefix("&aKankurô &fa décidé de vous ressuscité&f. &fVous disposez de §c5 coeurs&f en plus."));
                 giveStuff(target);
                 target.setMaxHealth(target.getMaxHealth() + 10);

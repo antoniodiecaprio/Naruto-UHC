@@ -6,6 +6,7 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -92,7 +93,11 @@ public class Minato extends NarutoRole {
                 player.sendMessage(Messages.cooldown(kuramaCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             usedKurama = true;
             kuramaCooldown = 20 * 60;
             player.sendMessage(CC.prefix("§fVous avez utilisé votre item §aKurama§f."));
@@ -104,6 +109,11 @@ public class Minato extends NarutoRole {
         if (Item.interactItem(event.getItem(), "Shuriken Jutsu")) {
 
             if (player.isSneaking()) {
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 TextComponent text = new TextComponent("§7▎ §aCliquez-ici si vous souhaitez poser une balise ou utilisez la commande /ns balise");
                 text.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ns balise"));
                 player.spigot().sendMessage(text);
@@ -144,6 +154,11 @@ public class Minato extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             Inventory inv = Bukkit.createInventory(null, 9, "Balises » " + target.getName());
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
             int i = 1;
@@ -160,6 +175,13 @@ public class Minato extends NarutoRole {
             event.setCancelled(true);
             Player target = Bukkit.getPlayer(event.getInventory().getName().replace("Balises » ", ""));
             if (!event.getCurrentItem().hasItemMeta()) return;
+
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             int i = Integer.parseInt(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6Balise ", ""));
             Location balise = balises.get(i - 1);
 
@@ -245,7 +267,11 @@ public class Minato extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous  n'êtes pas en train d'utiliser l'item Kurama"));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             boolean var1 = false;
 
             NarutoRole targetRole = NarutoUHC.getNaruto().getRoleManager().getRole(target);
@@ -277,6 +303,11 @@ public class Minato extends NarutoRole {
             if (balises.size() >= 5) {
                 player.sendMessage(CC.prefix("§cVous avez déjà posé 5 balises."));
             } else {
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 this.balises.add(player.getLocation());
                 player.sendMessage(CC.prefix("§fVous venez de poser une §aBalise§f."));
             }

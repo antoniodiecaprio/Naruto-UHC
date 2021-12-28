@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -67,7 +69,11 @@ public class KillerBee extends NarutoRole {
                 player.sendMessage(Messages.cooldown(gyukiCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5 * 20 * 60, 3, false, false));
 
@@ -76,6 +82,11 @@ public class KillerBee extends NarutoRole {
         }
 
         if (Item.interactItem(event.getItem(), "Revive")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.getInventory().removeItem(player.getItemInHand());
             timer = 99;
         }
@@ -89,7 +100,11 @@ public class KillerBee extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             Messages.sendDeathMessage(player);
             Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(player));
             player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Revive")).toItemStack());

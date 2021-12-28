@@ -7,6 +7,7 @@ import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.packet.Pair;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -213,6 +214,11 @@ public class Sakon extends NarutoRole {
             if (senpoTimer > 0) {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             senpoTimer = 15;
 
@@ -243,6 +249,11 @@ public class Sakon extends NarutoRole {
             if (barrierTimer > 0) {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             barrierTimer = 15;
 

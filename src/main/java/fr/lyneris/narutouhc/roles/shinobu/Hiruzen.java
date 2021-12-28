@@ -1,12 +1,14 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.packet.Reach;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.*;
@@ -192,6 +194,11 @@ public class Hiruzen extends NarutoRole implements Listener {
 
             if (this.power == 1) {
                 List<Entity> burning = new ArrayList<>();
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 new BukkitRunnable() {
                     int timer = 40;
 
@@ -287,6 +294,11 @@ public class Hiruzen extends NarutoRole implements Listener {
                 this.karyuuCooldown = 6 * 60;
             }
             if (this.power == 2) {
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 char c = Loc.getCharCardinalDirection(player);
                 this.using = true;
                 Location loc = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
@@ -359,6 +371,11 @@ public class Hiruzen extends NarutoRole implements Listener {
             }
 
             if (this.power == 3) {
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 char c = Loc.getCharCardinalDirection(player);
                 Cuboid cuboid;
                 if (c == 'W') {
@@ -384,6 +401,11 @@ public class Hiruzen extends NarutoRole implements Listener {
                 this.deihekiCooldown = 6 * 60;
             }
             if (this.power == 4) {
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 for (Player entity : Loc.getNearbyPlayers(player, 15)) {
                     Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
                     fromPlayerToTarget.multiply(4);
@@ -405,7 +427,11 @@ public class Hiruzen extends NarutoRole implements Listener {
                 player.sendMessage(Messages.cooldown(enmaCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.removePotionEffect(PotionEffectType.SPEED);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 * 20 * 60, 1, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 5 * 20 * 60, 3, false, false));
@@ -457,7 +483,11 @@ public class Hiruzen extends NarutoRole implements Listener {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             int i = 9;
             int nearbyPlayer = 0;
             for (Player ignored : Loc.getNearbyPlayers(player, 20)) {

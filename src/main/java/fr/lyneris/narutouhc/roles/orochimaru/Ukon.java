@@ -1,8 +1,10 @@
 package fr.lyneris.narutouhc.roles.orochimaru;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -86,6 +88,12 @@ public class Ukon extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             senpoTimer = 15;
 
             player.sendMessage(CC.prefix("§fSi §aSakon §futilise cet item dans les 15 prochaines secondes l'item §as'activera§f."));
@@ -108,7 +116,11 @@ public class Ukon extends NarutoRole {
                 player.sendMessage(CC.prefix("§cUkon doit être au maximum à 40 blocks de vous."));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             if (Sakon.barrierTimer > 0) {
                 Sakon.useBarrier();
                 return;

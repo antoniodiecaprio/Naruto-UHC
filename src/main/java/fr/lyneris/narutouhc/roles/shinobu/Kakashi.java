@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -132,7 +134,11 @@ public class Kakashi extends NarutoRole {
                 player.sendMessage(Messages.cooldown(pakkunCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
             wolf.setAngry(false);
             wolf.setSitting(false);
@@ -240,6 +246,11 @@ public class Kakashi extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous utilisez déjà ce pouvoir sur quelqu'un"));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             kakashiTarget = target.getUniqueId();
 
@@ -299,7 +310,11 @@ public class Kakashi extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.sendMessage(CC.prefix("§cVotre chien traquera désormais " + target.getName()));
 
             wolf.setAngry(true);
@@ -334,7 +349,11 @@ public class Kakashi extends NarutoRole {
                     player.sendMessage(Messages.cooldown(sonohokaCooldown));
                     return;
                 }
-
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 player.teleport(manager.getKamuiSpawn());
                 this.oldLocation.put(player.getUniqueId(), oldLocation);
                 player.sendMessage(CC.prefix("§fVous serez retéléporté à votre ancienne position dans §a10 minutes§f."));
@@ -349,6 +368,7 @@ public class Kakashi extends NarutoRole {
             }
 
             if (event.getSlot() == 2) {
+
                 int i = 9;
                 int nearbyPlayer = 0;
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
@@ -392,7 +412,11 @@ public class Kakashi extends NarutoRole {
             }
 
             player.closeInventory();
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.sendMessage(CC.prefix("§fVous avez téléporté §a" + player.getName() + " §fdans le monde lié de Kamui."));
             target.teleport(manager.getKamuiSpawn());
             this.oldLocation.put(target.getUniqueId(), oldLocation);
@@ -413,7 +437,11 @@ public class Kakashi extends NarutoRole {
     public void onSubCommand(Player player, String[] args) {
 
         if (!args[0].equalsIgnoreCase("yameru")) return;
-
+        if(Kisame.isBlocked(player)) {
+            player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+            return;
+        }
+        NarutoUHC.usePower(player);
         for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
             if (Bukkit.getPlayer(uuid) != null) {
                 Player target = Bukkit.getPlayer(uuid);

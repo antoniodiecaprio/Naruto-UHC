@@ -11,6 +11,7 @@ import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.packet.RayTrace;
 import fr.lyneris.narutouhc.packet.TapisSableEffect;
 import fr.lyneris.narutouhc.particle.WorldUtils;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -249,7 +250,11 @@ import java.util.UUID;
                 player.sendMessage(Messages.cooldown(shukakuCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.sendMessage(prefix("Vous avez utilisé votre &aShukaka&f."));
             usingShukaku = true;
 
@@ -262,6 +267,7 @@ import java.util.UUID;
     public void onAllPlayerItemInteract(PlayerInteractEvent event, Player player) {
 
         if(Role.isRole(player, NarutoRoles.GAARA)) {
+
             if(event.getClickedBlock() == null) {
                 player.removePotionEffect(PotionEffectType.FAST_DIGGING);
                 return;
@@ -324,7 +330,11 @@ import java.util.UUID;
                 player.sendMessage(prefix("&cVous devez être à moins de 30 blocks de ce joueur."));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             UUID targetUUID = target.getUniqueId();
             Location oldLocation = target.getLocation();
 
@@ -589,6 +599,11 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 30 sables pour utiliser ce pouvoir."));
                         return;
                     }
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Role.removeItem(player, Material.SAND, 30);
                     useTsunami(player);
                     manipulation = AUCUN;
@@ -598,6 +613,11 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 45 sables pour utiliser ce pouvoir."));
                         return;
                     }
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Role.removeItem(player, Material.SAND, 45);
                     useSarcophage(player);
                     manipulation = AUCUN;
@@ -607,6 +627,11 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 64 sables pour utiliser ce pouvoir."));
                         return;
                     }
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Role.removeItem(player, Material.SAND, 64);
                     useLance(player);
                     manipulation = AUCUN;
@@ -616,6 +641,11 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 64 sables pour utiliser ce pouvoir."));
                         return;
                     }
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Role.removeItem(player, Material.SAND, 64);
                     useBouclier(player);
                     manipulation = AUCUN;
@@ -625,6 +655,11 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 32 sables pour utiliser ce pouvoir."));
                         return;
                     }
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Role.removeItem(player, Material.SAND, 32);
                     useArmure(player);
                     manipulation = AUCUN;
@@ -634,6 +669,11 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 96 sables pour utiliser ce pouvoir."));
                         return;
                     }
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Role.removeItem(player, Material.SAND, 96);
                     useSuspension(player);
                     manipulation = AUCUN;

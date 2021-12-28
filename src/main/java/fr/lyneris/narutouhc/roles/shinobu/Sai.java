@@ -6,6 +6,7 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -151,6 +152,13 @@ public class Sai extends NarutoRole {
                         player.sendMessage(Messages.cooldown(montureCooldown));
                         break;
                     }
+
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
+
                     manager.setStuned(player, true, 5);
                     Tasks.runLater(() -> {
                         Horse horse = (Horse) player.getWorld().spawnEntity(player.getLocation(), EntityType.HORSE);
@@ -173,6 +181,12 @@ public class Sai extends NarutoRole {
                         player.sendMessage(Messages.cooldown(tigresCooldown));
                         break;
                     }
+
+                    if(Kisame.isBlocked(player)) {
+                        player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                        return;
+                    }
+                    NarutoUHC.usePower(player);
                     Player target = null;
                     for (Player nearbyEntity : Loc.getNearbyPlayers(player, 20)) {
                         target = nearbyEntity;
@@ -206,6 +220,7 @@ public class Sai extends NarutoRole {
                         player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                         return;
                     }
+
                     int i = 9;
                     int nearbyPlayer = 0;
                     for (Player entity : Loc.getNearbyPlayers(player, 20)) {
@@ -236,11 +251,17 @@ public class Sai extends NarutoRole {
             event.setCancelled(true);
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
+
             Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
             if (target == null) {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             manager.setStuned(player, true, 60);
             Tasks.runLater(() -> {
                 if (UHC.getUHC().getGameManager().getPlayers().contains(player.getUniqueId())) {

@@ -6,6 +6,7 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -116,6 +117,11 @@ public class Orochimaru extends NarutoRole {
                 player.sendMessage(prefix("&cVous êtes déjà sous l'effet de Manda."));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             int random = (int) (Math.random() * 6);
             if (random == 0) {
@@ -190,6 +196,11 @@ public class Orochimaru extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             giveStuff(target);
             UHC.getUHC().getGameManager().getPlayers().add(target.getUniqueId());

@@ -1,11 +1,13 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.DoubleCircleEffect;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -72,6 +74,11 @@ public class Choji extends NarutoRole {
     public void onPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {
 
         if (Item.interactItem(event.getItem(), "Akimichi")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             new DoubleCircleEffect(20 * 60, EnumParticle.WATER_SPLASH).start(player);
 
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
@@ -96,7 +103,11 @@ public class Choji extends NarutoRole {
                 player.sendMessage(Messages.cooldown(decuplementCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * 20, 1, false, false));
             Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false)), 21 * 20);
@@ -110,7 +121,11 @@ public class Choji extends NarutoRole {
                 player.sendMessage(Messages.cooldown(bouletCooldown));
                 return;
             }
-
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60 * 20, 1, false, false));
 
             bouletCooldown = 15 * 60;
