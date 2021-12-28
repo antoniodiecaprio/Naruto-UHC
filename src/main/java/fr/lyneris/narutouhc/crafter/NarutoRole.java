@@ -62,6 +62,9 @@ public abstract class NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
     }
 
+    public void onPlayerInteractLeft(PlayerInteractEvent event, Player player) {
+    }
+
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
     }
 

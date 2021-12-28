@@ -13,7 +13,7 @@ public class Hokage {
 
     public static final List<NarutoRoles> CAN_BE_HOKAGE;
     public static final List<NarutoRoles> DOESNT_SEE_HOKAGE;
-    public int hokageTimer = 20 * 60;
+    public int hokageTimer = 50 * 60;
     private final NarutoUHC narutoUHC;
     private UUID hokage;
     private boolean usedBoost;
@@ -71,6 +71,14 @@ public class Hokage {
 
     public void setHokageTimer(int hokageTimer) {
         this.hokageTimer = hokageTimer;
+    }
+
+    public void addHokageTime(int add) {
+        setHokageTimer(Math.min(getHokageTimer() + add, 60 * 60));
+    }
+
+    public void removeHokageTime(int remove) {
+        setHokageTimer(Math.max(getHokageTimer() - remove, 60));
     }
 
     public boolean isUsedBoost() {

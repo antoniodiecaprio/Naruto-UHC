@@ -2,8 +2,11 @@ package fr.lyneris.narutouhc.packet;
 
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
+import fr.lyneris.narutouhc.utils.CC;
+import fr.lyneris.narutouhc.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,11 +42,16 @@ public class Reach implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Action action = event.getAction();
-        if (action.name().toLowerCase().contains("left")) return;
+        if (action.name().contains("LEFT")) return;
+        if(!event.getPlayer().getItemInHand().getType().equals(Material.DIAMOND_SWORD)) return;
         if (!reachPlayers.contains(player.getUniqueId())) return;
-        Bukkit.getOnlinePlayers().stream().filter(p -> p.getLocation().distance(player.getLocation()) <= 6).forEach(p -> {
+        Bukkit.getOnlinePlayers().stream().filter(p -> p.getLocation().distance(player.getLocation()) <= 6.5).forEach(p -> {
+            if(!canHit.getOrDefault(player.getUniqueId(), true)) {
+                player.sendMessage(CC.prefix("§CVous devez attendre 60 secondes avant de mettre un coup de reach."));
+                return;
+            }
             if (getLookingAt(player, p) && canHit.getOrDefault(player.getUniqueId(), true)) {
-                p.damage(lastDamage.get(player.getUniqueId()));
+                p.damage(lastDamage.getOrDefault(player.getUniqueId(), 10.0));
                 p.setVelocity(player.getLocation().getDirection().multiply(0.9).setY(0.3));
                 canHit.put(player.getUniqueId(), false);
                 Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> canHit.put(player.getUniqueId(), true), 60*20);
@@ -56,7 +64,7 @@ public class Reach implements Listener {
         Vector toEntity = player1.getEyeLocation().toVector().subtract(eye.toVector());
         double dot = toEntity.normalize().dot(eye.getDirection());
 
-        return dot > 0.99D;
+        return dot > 0.59D;
     }
 
 }

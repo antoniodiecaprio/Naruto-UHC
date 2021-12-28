@@ -1,8 +1,10 @@
 package fr.lyneris.narutouhc.roles.zabuza_haku;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -121,6 +123,12 @@ public class Haku extends NarutoRole {
                 player.sendMessage(Messages.cooldown(hyotonCooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 2*60*20, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2*60*20, 1, false, false));

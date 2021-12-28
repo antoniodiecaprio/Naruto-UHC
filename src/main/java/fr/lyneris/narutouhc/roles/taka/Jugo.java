@@ -7,6 +7,7 @@ import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.changer.IdentityChanger;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -98,6 +99,12 @@ public class Jugo extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (!Item.interactItem(event, "Marque Maudite")) return;
+
+        if(Kisame.isBlocked(player)) {
+            player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+            return;
+        }
+        NarutoUHC.usePower(player);
 
         if (player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE))
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);

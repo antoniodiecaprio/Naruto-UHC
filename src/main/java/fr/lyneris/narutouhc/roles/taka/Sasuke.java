@@ -1,11 +1,13 @@
 package fr.lyneris.narutouhc.roles.taka;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.packet.Reach;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -142,6 +144,11 @@ public class Sasuke extends NarutoRole {
                 player.sendMessage(prefix("&cVous êtes déjà sous l'effet de Manda."));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             int random = (int) (Math.random() * 5);
             if (random == 0) {
@@ -169,6 +176,12 @@ public class Sasuke extends NarutoRole {
                 Messages.getCooldown(amaterasuCooldown).queue(player);
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             for (Player players : Loc.getNearbyPlayers(player, 50)) {
                 if (Reach.getLookingAt(player, players) && Role.isAlive(players)) {
@@ -201,6 +214,12 @@ public class Sasuke extends NarutoRole {
                 player.sendMessage(Messages.cooldown(rinneganCooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             for (Player players : Loc.getNearbyPlayers(player, 50)) {
                 if (Reach.getLookingAt(player, players) && Role.isAlive(players)) {
                     Location loc1 = player.getLocation();
@@ -232,6 +251,11 @@ public class Sasuke extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.sendMessage(prefix("&fVous avez utilisé votre &aSusano&f."));
             player.getInventory().addItem(new ItemBuilder(Material.BOW).addEnchant(Enchantment.ARROW_DAMAGE, 7).setName(Item.specialItem("Arc")).toItemStack());
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, susanoTime() * 20 * 60, 0, false, false));
@@ -261,6 +285,12 @@ public class Sasuke extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aIzanagi§f."));
 

@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.WorldUtils;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -54,6 +56,7 @@ public class Shikamaru extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
         if (Item.interactItem(event.getItem(), "Inton")) {
+
             Inventory inv = Bukkit.createInventory(null, 9, "Inton");
 
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -225,6 +228,12 @@ public class Shikamaru extends NarutoRole {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 }
 
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
 
                 if (!manager.getDeath().containsValue(target.getUniqueId())) {
@@ -238,6 +247,8 @@ public class Shikamaru extends NarutoRole {
                     }
                 });
 
+
+
                 usedSearch = true;
 
             }
@@ -247,6 +258,11 @@ public class Shikamaru extends NarutoRole {
             event.setCancelled(true);
             if (event.getSlot() == 0) {
                 player.closeInventory();
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 manager.setStuned(player, true, 10);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10 * 20, 1, false, false));
                 Loc.getNearbyPlayers(player, radius).forEach(target -> {
@@ -274,6 +290,11 @@ public class Shikamaru extends NarutoRole {
                 if (!event.getCurrentItem().hasItemMeta()) return;
                 if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
                 player.closeInventory();
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
                 intonUses++;
 
                 Player target = Bukkit.getPlayer(event.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
@@ -310,6 +331,12 @@ public class Shikamaru extends NarutoRole {
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             player.closeInventory();
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             if (usedEtreinte) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
@@ -352,6 +379,12 @@ public class Shikamaru extends NarutoRole {
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             player.closeInventory();
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             if (eyeUses >= 5) {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir 5 fois."));

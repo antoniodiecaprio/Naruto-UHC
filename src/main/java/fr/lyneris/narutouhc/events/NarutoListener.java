@@ -201,6 +201,13 @@ public class NarutoListener implements Listener {
     }
 
     @EventHandler
+    public void onRoleInteractLeft(PlayerInteractEvent event) {
+        if (event.getAction().name().contains("RIGHT")) return;
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerInteractLeft(event, event.getPlayer());
+    }
+
+    @EventHandler
     public void onRoleDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         if (NarutoUHC.getNaruto().getRoleManager().getRole((Player) event.getEntity()) == null) return;

@@ -64,7 +64,7 @@ public class Kisame extends NarutoRole {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, Integer.MAX_VALUE, 100, false, false));
-        player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName(Item.specialItem("Samehada")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName(Item.specialItem("Samehada")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.ENCHANTED_BOOK).addStoredEnchantment(Enchantment.DEPTH_STRIDER, 3).toItemStack());
     }
 
@@ -74,6 +74,7 @@ public class Kisame extends NarutoRole {
             if (blocked.contains(event.getEntity().getName())) return;
             blocked.add(event.getEntity().getName());
             event.getEntity().sendMessage(CC.prefix("§cSamehada §fa utilisé son épée sur vous, vous ne pouvez plus utiliser vos pouvoirs pendant §c1 minute§f."));
+            damager.sendMessage(prefix("&fVous avez utilisé votre épée sur &a" + event.getEntity().getName()));
             Tasks.runLater(() -> blocked.remove(event.getEntity().getName()), 60 * 20);
         }
     }

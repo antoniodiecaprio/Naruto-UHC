@@ -128,11 +128,11 @@ public class Kokuo extends Biju implements Listener {
         @Override
         public void run() {
 
-            if (this.timer == (40 * 60 + spawn) - 30) {
+            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() * 60 + spawn) - 30) {
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fva apparaître dans &a30 &fsecondes."));
             }
 
-            if (this.timer == (40 * 60 + spawn)) {
+            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() * 60 + spawn)) {
                 spawnEntity();
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fvient d'apparaître."));
                 cancel();

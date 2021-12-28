@@ -109,6 +109,7 @@ fr\lyneris\narutouhc\manager\Manager.class
 fr\lyneris\narutouhc\manager\RoleManager.class
 fr\lyneris\narutouhc\packet\changer\IdentityChanger$2.class
 fr\lyneris\narutouhc\crafter\Camp.class
+fr\lyneris\narutouhc\gui\NarutoGui.class
 fr\lyneris\narutouhc\roles\orochimaru\Orochimaru$1.class
 fr\lyneris\narutouhc\utils\CC.class
 fr\lyneris\narutouhc\roles\solo\Danzo.class
@@ -116,6 +117,7 @@ fr\lyneris\narutouhc\roles\akatsuki\Itachi.class
 fr\lyneris\narutouhc\particle\DoubleCircleEffectRedstone.class
 fr\lyneris\narutouhc\packet\PathFinderAttackPlayer.class
 fr\lyneris\narutouhc\particle\ProgressBar.class
+fr\lyneris\narutouhc\gui\TimersMenu.class
 fr\lyneris\narutouhc\roles\zabuza_haku\Haku.class
 fr\lyneris\narutouhc\particle\WingsEffect.class
 fr\lyneris\narutouhc\utils\Damage.class

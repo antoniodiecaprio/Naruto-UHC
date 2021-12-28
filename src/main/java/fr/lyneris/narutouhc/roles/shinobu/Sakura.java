@@ -1,10 +1,12 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
@@ -57,7 +59,7 @@ public class Sakura extends NarutoRole {
             byakugoCooldown--;
         }
 
-        if(damageTaken < 30) {
+        if(usingByakugo && damageTaken < 30) {
             Title.sendActionBar(getPlayer(), CC.prefix("&fDégâts: &c" + damageTaken + "&8/&730"));
         }
     }
@@ -145,6 +147,12 @@ public class Sakura extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             usingByakugo = true;
             damageTaken = 0;
 
@@ -162,6 +170,12 @@ public class Sakura extends NarutoRole {
                 player.sendMessage(Messages.cooldown(katsuyuCooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 3 * 20 * 60, 0, false, false));
@@ -207,6 +221,8 @@ public class Sakura extends NarutoRole {
 
         if (!args[0].equalsIgnoreCase("shosenjutsu")) return;
 
+
+
         if (args.length != 2) {
             player.sendMessage(Messages.syntax("/ns shosenjutsu <player>"));
             return;
@@ -233,6 +249,12 @@ public class Sakura extends NarutoRole {
             player.sendMessage(CC.prefix("§cCe joueur n'est pas à 5 blocks de vous."));
             return;
         }
+
+        if(Kisame.isBlocked(player)) {
+            player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+            return;
+        }
+        NarutoUHC.usePower(player);
 
         usingJutsu = true;
 

@@ -1,11 +1,14 @@
 package fr.lyneris.narutouhc;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import fr.lyneris.narutouhc.biju.BijuListener;
 import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.commands.BoostCommand;
 import fr.lyneris.narutouhc.commands.NarutoCommand;
 import fr.lyneris.narutouhc.commands.RevealCommand;
 import fr.lyneris.narutouhc.events.NarutoListener;
+import fr.lyneris.narutouhc.gui.TimersMenu;
 import fr.lyneris.narutouhc.jubi.Jubi;
 import fr.lyneris.narutouhc.manager.Manager;
 import fr.lyneris.narutouhc.manager.RoleManager;
@@ -18,12 +21,17 @@ import fr.lyneris.narutouhc.packet.PacketManager;
 import fr.lyneris.narutouhc.packet.Reach;
 import fr.lyneris.narutouhc.roles.jubi.Madara;
 import fr.lyneris.narutouhc.roles.shinobu.Hiruzen;
+import fr.lyneris.narutouhc.utils.Role;
 import fr.lyneris.uhc.UHC;
-import fr.lyneris.uhc.game.config.WorldGeneration;
 import fr.lyneris.uhc.module.Module;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class NarutoUHC extends JavaPlugin {
@@ -71,6 +79,8 @@ public class NarutoUHC extends JavaPlugin {
         this.getCommand("ns").setExecutor(new NarutoCommand());
         this.getCommand("reveal").setExecutor(new RevealCommand());
         this.getCommand("boost").setExecutor(new BoostCommand());
+
+        UHC.getUHC().registerMenu(new TimersMenu());
 
         initRecipies();
     }
@@ -126,4 +136,29 @@ public class NarutoUHC extends JavaPlugin {
     public Jubi getJubi() {
         return jubi;
     }
+
+    public String[] getFromName(String name) {
+        try {
+            URL url_0 = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
+            InputStreamReader reader_0 = new InputStreamReader(url_0.openStream());
+            String uuid = new JsonParser().parse(reader_0).getAsJsonObject().get("id").getAsString();
+
+            URL url_1 = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
+            InputStreamReader reader_1 = new InputStreamReader(url_1.openStream());
+            JsonObject textureProperty = new JsonParser().parse(reader_1).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
+            String texture = textureProperty.get("value").getAsString();
+            String signature = textureProperty.get("signature").getAsString();
+
+            return new String[] {texture, signature};
+        } catch (IOException e) {
+            System.err.println("Could not get skin data from session servers!");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void usePower(Player player) {
+        Role.getAliveOnlinePlayers().forEach(player1 -> Role.getRole(player1).onAllPlayerPowerUse(player));
+    }
+
 }

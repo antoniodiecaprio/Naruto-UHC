@@ -84,17 +84,18 @@ public class Hiruzen extends NarutoRole implements Listener {
     public void onDistribute(Player player) {
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Enma")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Parchemin Interdit")).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Shiki Fûjin")).toItemStack());
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
     }
 
     @Override
     public void onAllPlayerMove(PlayerMoveEvent event, Player player) {
-        if(player.getLocation().distance(getPlayer().getLocation()) <= 30) {
-            if(!using) return;
-            if(!player.getLocation().getBlock().isLiquid()) return;
-            if(!player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER)) return;
-            if(player.getName().equals(getPlayer().getName())) return;
+        if (player.getLocation().distance(getPlayer().getLocation()) <= 30) {
+            if (!using) return;
+            if (!player.getLocation().getBlock().isLiquid()) return;
+            if (!player.getLocation().getBlock().getType().equals(Material.STATIONARY_WATER)) return;
+            if (player.getName().equals(getPlayer().getName())) return;
             player.setVelocity(player.getLocation().getDirection().multiply(3).setY(2));
         }
     }
@@ -112,6 +113,10 @@ public class Hiruzen extends NarutoRole implements Listener {
             if (target == null) return;
 
             if (avancement >= 120) {
+
+                avancement = 0;
+                avancementTarget = null;
+
                 target.setHealth(0);
                 target.sendMessage(prefix("&cHiruzen &fa utilisé son &aShiki Fûjin &fsur vous et est resté plus de 2 minutes à côté de vous."));
                 target.sendMessage(prefix("&fDe ce fait, vous êtes &cmort&f."));
@@ -119,8 +124,6 @@ public class Hiruzen extends NarutoRole implements Listener {
                 player.sendMessage(prefix("&fDe ce fait, il est &cmort&f mais vous perdez &c5 coeurs &fpermanent."));
                 player.setMaxHealth(player.getMaxHealth() - 10);
 
-                avancement = 0;
-                avancementTarget = null;
             }
 
             if (player.getLocation().distance(target.getLocation()) <= 15) {
@@ -176,6 +179,223 @@ public class Hiruzen extends NarutoRole implements Listener {
         }
     }
 
+    @Override
+    public void onPlayerInteractLeft(PlayerInteractEvent event, Player player) {
+
+        if (!Item.interactItem(event, "Parchemin Interdit")) return;
+
+            if (this.power != 0) {
+            if (parcheminCooldown > 0) {
+                Messages.getCooldown(parcheminCooldown).queue(player);
+                return;
+            }
+
+            if (this.power == 1) {
+                List<Entity> burning = new ArrayList<>();
+                new BukkitRunnable() {
+                    int timer = 40;
+
+                    @Override
+                    public void run() {
+                        if (timer == 0) {
+                            burning.clear();
+                            cancel();
+                            return;
+                        }
+                        char c = Loc.getCharCardinalDirection(player);
+                        Cuboid cuboid;
+                        if (c == 'W') {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 10);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() + 1);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        } else if (c == 'E') {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() - 10);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 1);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        } else if (c == 'N') {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        } else {
+                            Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
+                            Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
+                            cuboid = new Cuboid(one, two);
+                            cuboid.getBlocks().forEach(block -> {
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
+                                    player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                }
+                                for (double i = 0.0; i < 1; i += 0.1) {
+                                    for (double j = 0.2; j < 1.2; j += 0.2) {
+                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
+                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
+                                    }
+                                }
+                            });
+                        }
+                        player.getNearbyEntities(20, 20, 20).forEach(entity -> {
+                            for (Block block : cuboid.getBlocks()) {
+                                if (block.getLocation().distance(entity.getLocation()) <= 3 && entity.getUniqueId() != player.getUniqueId() ) {
+                                    entity.setFireTicks(20);
+                                    burning.add(entity);
+                                    break;
+                                }
+                            }
+                        });
+                        timer--;
+                        burning.forEach(entity -> entity.setFireTicks(20));
+                    }
+                }.runTaskTimer(narutoUHC, 0, 5);
+                this.power = 0;
+                this.parcheminCooldown = 60;
+                this.karyuuCooldown = 6 * 60;
+            }
+            if (this.power == 2) {
+                char c = Loc.getCharCardinalDirection(player);
+                this.using = true;
+                Location loc = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
+                Location loc2 = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
+                Location one;
+                Location two;
+                if (c == 'W' || c == 'E') {
+                    one = loc.add(7, 7, 0);
+                    two = loc2.add(-7, 0, 0);
+                    new BukkitRunnable() {
+                        int timer = 32;
+
+                        @Override
+                        public void run() {
+                            if (timer == 0) {
+                                Cuboid old = new Cuboid(one, two);
+                                old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                using = false;
+                                cancel();
+                                return;
+                            }
+                            if (c == 'W') {
+                                Cuboid old = new Cuboid(one, two);
+                                Cuboid cuboid = new Cuboid(one.add(0, 0, 1), two.add(0, 0, 1));
+                                old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                            } else {
+                                Cuboid old = new Cuboid(one, two);
+                                Cuboid cuboid = new Cuboid(one.add(0, 0, -1), two.add(0, 0, -1));
+                                old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                            }
+                            timer--;
+                        }
+                    }.runTaskTimer(narutoUHC, 0, 5);
+                } else {
+                    one = loc.add(0, 7, 7);
+                    two = loc2.add(0, 0, -7);
+                    new BukkitRunnable() {
+                        int timer = 32;
+
+                        @Override
+                        public void run() {
+                            if (timer == 0) {
+                                Cuboid old = new Cuboid(one, two);
+                                old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                using = false;
+                                cancel();
+                                return;
+                            }
+                            if (c == 'S') {
+                                Cuboid old = new Cuboid(one, two);
+                                Cuboid cuboid = new Cuboid(one.add(1, 0, 0), two.add(1, 0, 0));
+                                old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                            } else {
+                                Cuboid old = new Cuboid(one, two);
+                                Cuboid cuboid = new Cuboid(one.add(-1, 0, 0), two.add(-1, 0, 0));
+                                old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
+                                cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
+                            }
+                            timer--;
+                        }
+                    }.runTaskTimer(narutoUHC, 0, 5);
+                }
+
+                this.power = 0;
+                this.parcheminCooldown = 60;
+                this.doryuuCooldown = 6 * 60;
+            }
+
+            if (this.power == 3) {
+                char c = Loc.getCharCardinalDirection(player);
+                Cuboid cuboid;
+                if (c == 'W') {
+                    Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 3, player.getLocation().getBlockY() + 3, player.getLocation().getBlockZ() + 2);
+                    Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 3, player.getLocation().getBlockY() - 3, player.getLocation().getBlockZ() + 2);
+                    cuboid = new Cuboid(one, two);
+                } else if (c == 'E') {
+                    Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 3, player.getLocation().getBlockY() + 3, player.getLocation().getBlockZ() - 2);
+                    Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 3, player.getLocation().getBlockY() - 3, player.getLocation().getBlockZ() - 2);
+                    cuboid = new Cuboid(one, two);
+                } else if (c == 'N') {
+                    Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 2, player.getLocation().getBlockY() + 3, player.getLocation().getBlockZ() + 3);
+                    Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 2, player.getLocation().getBlockY() - 3, player.getLocation().getBlockZ() - 3);
+                    cuboid = new Cuboid(one, two);
+                } else {
+                    Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 2, player.getLocation().getBlockY() + 3, player.getLocation().getBlockZ() + 3);
+                    Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 2, player.getLocation().getBlockY() - 3, player.getLocation().getBlockZ() - 3);
+                    cuboid = new Cuboid(one, two);
+                }
+                cuboid.getBlocks().forEach(block -> block.setType(Material.COBBLESTONE));
+                this.power = 0;
+                this.parcheminCooldown = 60;
+                this.deihekiCooldown = 6 * 60;
+            }
+            if (this.power == 4) {
+                for (Player entity : Loc.getNearbyPlayers(player, 15)) {
+                    Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
+                    fromPlayerToTarget.multiply(4);
+                    fromPlayerToTarget.setY(2);
+                    entity.setVelocity(fromPlayerToTarget.normalize());
+                }
+                this.power = 0;
+                this.parcheminCooldown = 60;
+                this.kazegafukiCooldown = 6 * 60;
+            }
+        }
+    }
 
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
@@ -192,255 +412,45 @@ public class Hiruzen extends NarutoRole implements Listener {
             Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false)), 5 * 20 * 60 + 1);
             player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).setName(Item.specialItem("Kongounyai")).addEnchant(Enchantment.DAMAGE_ALL, 4).toItemStack());
             Reach.addReachPlayerTemp(player.getUniqueId(), 5 * 60);
+
+            enmaCooldown = 20*60;
         }
 
         if (Item.interactItem(event, "Parchemin Interdit")) {
-            if (this.power != 0) {
-                if (parcheminCooldown > 0) {
-                    Messages.getCooldown(parcheminCooldown).queue(player);
-                    return;
-                }
-
-                if (this.power == 1) {
-                    List<Entity> burning = new ArrayList<>();
-                    new BukkitRunnable() {
-                        int timer = 40;
-
-                        @Override
-                        public void run() {
-                            if (timer == 0) {
-                                burning.clear();
-                                cancel();
-                                return;
-                            }
-                            char c = Loc.getCharCardinalDirection(player);
-                            Cuboid cuboid;
-                            if (c == 'W') {
-                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 10);
-                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() + 1);
-                                cuboid = new Cuboid(one, two);
-                                cuboid.getBlocks().forEach(block -> {
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
-                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                    }
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        for (double j = 0.2; j < 1.2; j += 0.2) {
-                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
-                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                        }
-                                    }
-                                });
-                            } else if (c == 'E') {
-                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 0.5, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() - 10);
-                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 0.5, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 1);
-                                cuboid = new Cuboid(one, two);
-                                cuboid.getBlocks().forEach(block -> {
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
-                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                    }
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        for (double j = 0.2; j < 1.2; j += 0.2) {
-                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX() + (i + 0.1), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ());
-                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                        }
-                                    }
-                                });
-                            } else if (c == 'N') {
-                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
-                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
-                                cuboid = new Cuboid(one, two);
-                                cuboid.getBlocks().forEach(block -> {
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
-                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                    }
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        for (double j = 0.2; j < 1.2; j += 0.2) {
-                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
-                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                        }
-                                    }
-                                });
-                            } else {
-                                Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 10, player.getLocation().getBlockY() + 1.5, player.getLocation().getBlockZ() + 0.5);
-                                Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 1, player.getLocation().getBlockY() + 1, player.getLocation().getBlockZ() - 0.5);
-                                cuboid = new Cuboid(one, two);
-                                cuboid.getBlocks().forEach(block -> {
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() + (i + 0.1));
-                                        player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                    }
-                                    for (double i = 0.0; i < 1; i += 0.1) {
-                                        for (double j = 0.2; j < 1.2; j += 0.2) {
-                                            Location three = new Location(block.getWorld(), block.getLocation().getBlockX(), block.getLocation().getBlockY() + j, block.getLocation().getBlockZ() + (i + 0.1));
-                                            player.getWorld().spigot().playEffect(three, Effect.FLAME, 0, 1, 23, 23, 23, 0, 0, 64);
-                                        }
-                                    }
-                                });
-                            }
-                            player.getNearbyEntities(20, 20, 20).forEach(entity -> {
-                                for (Block block : cuboid.getBlocks()) {
-                                    if (block.getLocation().distance(entity.getLocation()) <= 3 && entity.getUniqueId() != player.getUniqueId() ) {
-                                        entity.setFireTicks(20);
-                                        burning.add(entity);
-                                        break;
-                                    }
-                                }
-                            });
-                            timer--;
-                            burning.forEach(entity -> entity.setFireTicks(20));
-                        }
-                    }.runTaskTimer(narutoUHC, 0, 5);
-                    this.power = 0;
-                    this.parcheminCooldown = 60;
-                    this.karyuuCooldown = 6 * 60;
-                }
-                if (this.power == 2) {
-                    char c = Loc.getCharCardinalDirection(player);
-                    this.using = true;
-                    Location loc = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
-                    Location loc2 = new Location(player.getLocation().getWorld(), player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
-                    Location one;
-                    Location two;
-                    if (c == 'W' || c == 'E') {
-                        one = loc.add(7, 7, 0);
-                        two = loc2.add(-7, 0, 0);
-                        new BukkitRunnable() {
-                            int timer = 32;
-
-                            @Override
-                            public void run() {
-                                if (timer == 0) {
-                                    Cuboid old = new Cuboid(one, two);
-                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
-                                    using = false;
-                                    cancel();
-                                    return;
-                                }
-                                if (c == 'W') {
-                                    Cuboid old = new Cuboid(one, two);
-                                    Cuboid cuboid = new Cuboid(one.add(0, 0, 1), two.add(0, 0, 1));
-                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
-                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
-                                } else {
-                                    Cuboid old = new Cuboid(one, two);
-                                    Cuboid cuboid = new Cuboid(one.add(0, 0, -1), two.add(0, 0, -1));
-                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
-                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
-                                }
-                                timer--;
-                            }
-                        }.runTaskTimer(narutoUHC, 0, 5);
-                    } else {
-                        one = loc.add(0, 7, 7);
-                        two = loc2.add(0, 0, -7);
-                        new BukkitRunnable() {
-                            int timer = 32;
-
-                            @Override
-                            public void run() {
-                                if (timer == 0) {
-                                    Cuboid old = new Cuboid(one, two);
-                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
-                                    using = false;
-                                    cancel();
-                                    return;
-                                }
-                                if (c == 'S') {
-                                    Cuboid old = new Cuboid(one, two);
-                                    Cuboid cuboid = new Cuboid(one.add(1, 0, 0), two.add(1, 0, 0));
-                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
-                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
-                                } else {
-                                    Cuboid old = new Cuboid(one, two);
-                                    Cuboid cuboid = new Cuboid(one.add(-1, 0, 0), two.add(-1, 0, 0));
-                                    old.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.AIR));
-                                    cuboid.getBlocks().stream().filter(Objects::nonNull).forEach(block -> block.setType(Material.STATIONARY_WATER));
-                                }
-                                timer--;
-                            }
-                        }.runTaskTimer(narutoUHC, 0, 5);
-                    }
-
-                    this.power = 0;
-                    this.parcheminCooldown = 60;
-                    this.doryuuCooldown = 6 * 60;
-                }
-
-                if (this.power == 3) {
-                    char c = Loc.getCharCardinalDirection(player);
-                    Cuboid cuboid;
-                    if (c == 'W') {
-                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 2, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() + 4);
-                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 2, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() + 4);
-                        cuboid = new Cuboid(one, two);
-                    } else if (c == 'E') {
-                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 2, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() - 4);
-                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 2, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() - 4);
-                        cuboid = new Cuboid(one, two);
-                    } else if (c == 'N') {
-                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() - 4, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() + 2);
-                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() - 4, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() - 2);
-                        cuboid = new Cuboid(one, two);
-                    } else {
-                        Location one = new Location(player.getWorld(), player.getLocation().getBlockX() + 4, player.getLocation().getBlockY() + 2, player.getLocation().getBlockZ() + 2);
-                        Location two = new Location(player.getWorld(), player.getLocation().getBlockX() + 4, player.getLocation().getBlockY() - 2, player.getLocation().getBlockZ() - 2);
-                        cuboid = new Cuboid(one, two);
-                    }
-                    cuboid.getBlocks().forEach(block -> block.setType(Material.COBBLESTONE));
-                    this.power = 0;
-                    this.parcheminCooldown = 60;
-                    this.deihekiCooldown = 6 * 60;
-                }
-                if (this.power == 4) {
-                    for (Player entity : Loc.getNearbyPlayers(player, 15)) {
-                        Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(player.getLocation().toVector());
-                        entity.setVelocity(new Vector(0, 1.3, 0));
-                        fromPlayerToTarget.multiply(50);
-                        fromPlayerToTarget.setY(2);
-                        entity.setVelocity(fromPlayerToTarget.normalize());
-                    }
-                    this.power = 0;
-                    this.parcheminCooldown = 60;
-                    this.kazegafukiCooldown = 6 * 60;
-                }
-            } else {
-                if (parcheminCooldown > 0) {
-                    Messages.getCooldown(parcheminCooldown).queue(player);
-                    return;
-                }
-                Inventory inv = Bukkit.createInventory(null, 9, "Karyuu Endan");
-
-                inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
-                inv.setItem(1, new ItemBuilder(Material.NETHER_STAR).setName("§6Karyuu Endan").setLore(
-                        "§7Ce pouvoir permet à Hiruzen de créer un",
-                        "§7surpuissant lance-flamme aura pour effet",
-                        "§7de cramer toutes choses face à lui,",
-                        "§7lorsqu’un joueur est enflammé par ce",
-                        "§7pouvoir il ne pourra s’éteindre et ce",
-                        "§7pendant 10 secondes."
-                ).toItemStack());
-                inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§6Doryuu Heki").setLore(
-                        "§7Ce pouvoir permet à Hiruzen de créer une",
-                        "§7puissante vague d’eau qui permet d’éjecter",
-                        "§7les joueurs et les créatures hostiles face",
-                        "§7à lui."
-                ).toItemStack());
-                inv.setItem(3, new ItemBuilder(Material.NETHER_STAR).setName("§6Deiheki").setLore(
-                        "§7Ce pouvoir permet à Hiruzen de créer un",
-                        "§7gigantesque mur de pierre face à lui."
-                ).toItemStack());
-                inv.setItem(4, new ItemBuilder(Material.NETHER_STAR).setName("§6Kazegafuki").setLore(
-                        "§7Ce pouvoir permet à Hiruzen d’éjecter tout",
-                        "§7les joueurs proches de lui à environ 15",
-                        "§7blocs de lui."
-                ).toItemStack());
-
-                player.openInventory(inv);
+            if (parcheminCooldown > 0) {
+                Messages.getCooldown(parcheminCooldown).queue(player);
+                return;
             }
+            Inventory inv = Bukkit.createInventory(null, 9, "Karyuu Endan");
+
+            inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
+            inv.setItem(1, new ItemBuilder(Material.NETHER_STAR).setName("§6Karyuu Endan").setLore(
+                    "§7Ce pouvoir permet à Hiruzen de créer un",
+                    "§7surpuissant lance-flamme aura pour effet",
+                    "§7de cramer toutes choses face à lui,",
+                    "§7lorsqu’un joueur est enflammé par ce",
+                    "§7pouvoir il ne pourra s’éteindre et ce",
+                    "§7pendant 10 secondes."
+            ).toItemStack());
+            inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§6Doryuu Heki").setLore(
+                    "§7Ce pouvoir permet à Hiruzen de créer une",
+                    "§7puissante vague d’eau qui permet d’éjecter",
+                    "§7les joueurs et les créatures hostiles face",
+                    "§7à lui."
+            ).toItemStack());
+            inv.setItem(3, new ItemBuilder(Material.NETHER_STAR).setName("§6Deiheki").setLore(
+                    "§7Ce pouvoir permet à Hiruzen de créer un",
+                    "§7gigantesque mur de pierre face à lui."
+            ).toItemStack());
+            inv.setItem(4, new ItemBuilder(Material.NETHER_STAR).setName("§6Kazegafuki").setLore(
+                    "§7Ce pouvoir permet à Hiruzen d’éjecter tout",
+                    "§7les joueurs proches de lui à environ 15",
+                    "§7blocs de lui."
+            ).toItemStack());
+
+            player.openInventory(inv);
         }
+
 
         if (Item.interactItem(event, "Shiki Fûjin")) {
             if (usedShiki) {
@@ -532,6 +542,9 @@ public class Hiruzen extends NarutoRole implements Listener {
                 return;
             }
 
+            player.closeInventory();
+            player.sendMessage(prefix("&fVous avez utilisé votre &aShiki Fûjin &fsur &a" + target.getName()));
+            target.sendMessage(prefix("&fVous êtes sous l'emprise de &cShiki Fûjin &fpar &cHiruzen&f."));
             avancement = 0;
             avancementTarget = target.getUniqueId();
             usedShiki = true;

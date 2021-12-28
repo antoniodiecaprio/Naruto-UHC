@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.shinobu;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
@@ -136,6 +138,11 @@ public class Shino extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             Player target = Bukkit.getPlayer(args[1]);
 
@@ -195,6 +202,12 @@ public class Shino extends NarutoRole {
                     player.sendMessage(CC.prefix("§cPour utiliser cette commande sur ce joueur, vous devez avoir utilisé votre Kikaichû sur lui."));
                     return;
                 }
+
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
 
                 player.sendMessage(CC.prefix("§fVous avez utilisé votre §aFeed §fsur §c" + target.getName()));
                 target.setMaxHealth(target.getMaxHealth() - 2);

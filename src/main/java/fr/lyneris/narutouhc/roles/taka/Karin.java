@@ -1,8 +1,10 @@
 package fr.lyneris.narutouhc.roles.taka;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
@@ -74,6 +76,11 @@ public class Karin extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event, "Karin")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             player.sendMessage(" ");
             player.sendMessage(prefix("&aVoici les joueurs autour de vous :"));
             Loc.getNearbyPlayers(player, 100).forEach(target -> player.sendMessage(" &8- &c" + target.getName()));
@@ -100,6 +107,12 @@ public class Karin extends NarutoRole {
                 player.sendMessage(Messages.cooldown(kagurashinganCooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             this.kagurashinganTarget = target.getUniqueId();
             this.kagurashinganCooldown = 5 * 60;
@@ -128,6 +141,11 @@ public class Karin extends NarutoRole {
                 target.setMaxHealth(player.getMaxHealth() - 2);
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             target.setHealth(player.getMaxHealth());
 
             usedOnceInEpisode = true;

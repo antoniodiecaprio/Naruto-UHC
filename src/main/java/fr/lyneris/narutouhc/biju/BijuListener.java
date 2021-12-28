@@ -37,6 +37,8 @@ import java.util.UUID;
 
     private int chomeiCooldown = 0;
 
+    private int bijuStart = 40*60;
+
     public void runnableTask() {
         if (matatabiCooldown > 0) matatabiCooldown--;
         if (isobuCooldown > 0) isobuCooldown--;
@@ -238,6 +240,22 @@ import java.util.UUID;
 
     public void setChomeiCooldown(int chomeiCooldown) {
         this.chomeiCooldown = chomeiCooldown;
+    }
+
+    public int getBijuStart() {
+        return bijuStart;
+    }
+
+    public void setBijuStart(int bijuStart) {
+        this.bijuStart = bijuStart;
+    }
+
+    public void addBijuStart(int add) {
+        setBijuStart(Math.min(getBijuStart() + add, 60 * 60));
+    }
+
+    public void removeBijuStart(int remove) {
+        setBijuStart(Math.max(getBijuStart() - remove, 60));
     }
 
 }

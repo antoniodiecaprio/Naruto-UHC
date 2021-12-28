@@ -5,7 +5,6 @@ import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.uhc.UHC;
-import fr.lyneris.uhc.gui.config.ModuleMenu;
 import fr.lyneris.uhc.utils.Utils;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -39,7 +38,7 @@ public class NarutoGui implements Listener {
         if (is.hasItemMeta() && is.getItemMeta().getDisplayName().equalsIgnoreCase("§6§l« §eRetour")) {
             event.getWhoClicked().closeInventory();
             Tasks.runLater(() -> {
-                UHC.getUHC().getGameManager().getGuiManager().open((Player) event.getWhoClicked(), ModuleMenu.class);
+                UHC.getUHC().getGameManager().getGuiManager().open((Player) event.getWhoClicked(), fr.lyneris.narutouhc.gui.NarutoGui.class);
                 ((Player) event.getWhoClicked()).updateInventory();
             }, 1);
             return;
