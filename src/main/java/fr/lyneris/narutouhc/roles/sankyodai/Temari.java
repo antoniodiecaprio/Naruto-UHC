@@ -55,8 +55,27 @@ public class Temari extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §eTemari\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §eSankyôdai\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d’un item nommé “§rKamatari§7”, celui-ci lui permet d’invoquer un chien, il possède les effets §bVitesse 1§7, §cForce 2§7 et §9Résistance 3§7, cet item est à usage unique.\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d’une épée en diamant Tranchant 4 nommée “§rÉventail§7“, lorsqu’elle tient son épée en main, elle reçoit l’effet §9Résistance 1§7, si elle fait clique droit avec son épée tous les joueurs se trouvant dans un rayon de 20 blocs autour d’elle seront éjectés à l’opposé de sa position, ceci possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l’effet §cForce 1§7.\n" +
+                "§e §f\n" +
+                "§7• Elle connaît les identités de §eGaara§7 et §eKankurô§7, si §eGaara§7 vient à rejoindre un autre camp, elle en sera averti et le rejoindra automatiquement.\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -83,7 +102,7 @@ public class Temari extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -107,7 +126,7 @@ public class Temari extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

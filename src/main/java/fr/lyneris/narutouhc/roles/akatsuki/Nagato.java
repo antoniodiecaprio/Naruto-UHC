@@ -1,6 +1,7 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
@@ -59,8 +60,43 @@ public class Nagato extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cNagato\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item “§rChibaku Tensei§7”, à son utilisation, il est dirigé vers un menu dans lequel il peut utiliser deux pouvoirs différents :\n" +
+                "§e §f\n" +
+                "§7Banshô Ten’in : Lorsqu’il l’utilise, il dispose d’une liste de tous les joueurs dans un rayon de 30 blocs autour de lui, en cliquant sur l’un des joueurs celui-ci sera téléporté instantanément à sa position, son pouvoir possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7Shinra Tensei : Lorsqu’il l’utilise, tous les joueurs et projectiles dans un rayon de 20 blocs seront propulsés à l’opposé de sa position, ils sont propulsés d’environ 10 blocs, son pouvoir possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item “§rOiseau§7”, celui-ci lui permet de voler pendant 10 secondes, il possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns sharingan <Joueur>§7, celle-ci lui permet d’avoir toutes les informations possible à propos du joueur : Son rôle, s’il a tué des joueurs, si oui qui il a tué ainsi que le nombre et combien de pomme d’or lui reste-t’il, il peut l'utiliser seulement 2 fois dans la partie.\n" +
+                "§e §f\n" +
+                "§r→ /ns osama§7, celui-ci lui permet de ressusciter tous les joueurs morts depuis 10 minutes (ils faut que les joueurs à ressusciter soient toujours connecter) cependant 1 minute après l’utilisation de sa commande, il meurt.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités : \n" +
+                "§e §f\n" +
+                "§7• Il dispose de la liste de tous les membres de l'§cAkatsuki§7. Mais attention §dObito§7 fait parti de cette liste.  \n" +
+                "§e §f\n" +
+                "§7• En restant à côté des joueurs, il peut augmenter leurs délai, toutes les 5 secondes proches d’un joueur augmente le délai des pouvoir du joueur de 1 seconde, cela ne fonctionne pas sur les membres de l’§cAkatsuki§7.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il reçoit un coup, il dispose de 5% de chance de recevoir l’effet §9Résistance 1§7 pendant 25 secondes,\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §bVitesse 1§7, §cForce 1§7 et §c2 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il n’est pas en combat (ne reçoit/inflige aucun dégâts dans les 30 dernières secondes), il reçoit l’effet §dRégénération 1§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §9Suiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -91,6 +127,12 @@ public class Nagato extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
         if (Item.interactItem(event.getItem(), "Oiseau")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             player.setAllowFlight(true);
             player.setFlying(true);
 
@@ -171,6 +213,12 @@ public class Nagato extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             usedOsama = true;
 
             latestDeaths.stream().filter(uuid -> Bukkit.getPlayer(uuid) != null).map(Bukkit::getPlayer).forEach(target -> {
@@ -203,6 +251,12 @@ public class Nagato extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.sendMessage(CC.CC_BAR);
             if (manager.getDeath().keySet().stream().noneMatch(s -> manager.getDeath().get(s).equals(target.getUniqueId()))) {
@@ -266,6 +320,12 @@ public class Nagato extends NarutoRole {
                     return;
                 }
 
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aShinra Tensei§f."));
 
                 for (Player entity : Loc.getNearbyPlayers(player, 20)) {
@@ -298,6 +358,12 @@ public class Nagato extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             target.teleport(player);
             player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fà vous."));

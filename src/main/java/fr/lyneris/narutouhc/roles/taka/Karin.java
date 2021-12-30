@@ -51,8 +51,35 @@ public class Karin extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §6Karin\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp de §6Taka\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d’un livre lui permettant de voir les pseudos des joueurs se trouvant dans un rayon de 100 blocs autour d’elle.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns kagurashingan <Joueur>§7, cette commande lui permet de voir la position d’un joueur avec l’aide d’une flèche au dessus de sa barre de raccourcis, elle peut l’utiliser uniquement si le joueur ciblé se situe dans un rayon de 100 blocs autour d’elle. La position du joueur est inconnu s’il se trouve à plus de 200 blocs de §6Karin§7. La commande possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§r→ /ns morsure <Joueur>§7, celle-ci lui permet de régénérer instantanément le joueur ciblé, elle peut le faire sur elle-même. Elle ne possède aucun délai, cependant si elle l’utilise plus d’une fois par épisode, à chaque utilisation elle perd §c1 cœur§7 permanent. Elle doit se trouver dans un rayon de 10 blocs du joueur ciblé.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l’effet §cForce 1§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d’une particularité qui lui permet de connaître le rôle exacte d’un joueur en restant à côté de lui à environ 20 blocs de rayon du joueur pendant 10 minutes, cela fonctionne sur tout le monde, cependant pour les membres de son camp, il lui faudra attendre 2 minutes proche de l’un d’entre eux.\n" +
+                "§e §f\n" +
+                "§7• Son camp se retrouvera souvent allié avec un autre camp, c’est pour cela qu’au début de la partie, son camp fait partie du camp d’§5Orochimaru§7. Si §5Orochimaru§7 vient à mourir alors son camp sera sans allié, suite à ça, si §cItachi§7 vient à mourir, son camp s’alliera avec l’§cAkatsuki§7 et donc il connaîtra  l’identité de §cNagato§7. Si §dTobi§7 et §dMadara§7 rassemble les 9 biju pour former Jûbi, il s’alliera au camp §aShinobi§7.\n" +
+                "§e §f\n" +
+                "§7• Elle connaît l’identité d’§5Orochimaru§7.\n" +
+                "§e §f\n" +
+                "§7• A la mort d’§5Orochimaru§7, elle obtient l’identité de §6Sasuke§7.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -77,7 +104,7 @@ public class Karin extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event, "Karin")) {
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -109,7 +136,7 @@ public class Karin extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -142,7 +169,7 @@ public class Karin extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

@@ -72,8 +72,33 @@ public class Minato extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rMinato\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un arc spécial nommé \"§rShurikenJutsu§7\" celui-ci lui permet de se téléporter à l'emplacement où la flèche atterrit. Il est le seul à pouvoir l'utiliser.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rShurikenJutsu§7\", le même nom que son arc, lorsqu’il utilise son item en étant accroupis (en sneak), un message apparaît dans le chat lui demandant s’il souhaite poser une balise (shuriken dans l’univers), pour accepter il lui suffit de cliquer sur le message. Une fois cela fait, il doit cliquer normalement sur son item et une liste de tous les joueurs autour de lui dans un rayon de 20 blocs s’affiche. S’il clique sur l’un des joueur, un autre menu s’affiche avec toutes ses balises numérotés de 1 à 5 puisqu’il dispose d’un maximum de 5 balises, lorsqu’il clique sur l’une d’entre elles, le joueur ciblé sera téléporté sur la balise sélectionnée. Ce pouvoir possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un item nommé \"§rKurama§7\", lorsqu’il clique sur celui-ci, l'item permet de recevoir §cForce 1§7 et §bVitesse 2§7 pendant 5 minutes, après avoir cliqué sur cet item, il pourra effectuer la commande ci-dessous.  \n" +
+                "§e §f\n" +
+                "§r➜ /ns smell <Joueur>§7, cette commande lui permet de savoir si la personne choisie possède des intentions meurtrières. Tout camps autres que celui des §aShinobi§7 possèdent des intentions meurtrières. Cependant §cItachi§7, §6Karin§7 et §dTobi§7 ne possèdent aucunes intentions meurtrières et lorsque §aSaï§7 se situe dans un rayon de 30 blocs proche de §6Sasuke§7, il possède des intentions meurtrières.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l'effet §bVitesse 2§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il tue un joueur ne faisant pas partie de son camp, il reçoit l’effet §bVitesse 3§7 pendant 2 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’identité de §aNaruto§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §cKaton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -94,7 +119,7 @@ public class Minato extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -110,7 +135,7 @@ public class Minato extends NarutoRole {
 
             if (player.isSneaking()) {
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -155,7 +180,7 @@ public class Minato extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -178,7 +203,7 @@ public class Minato extends NarutoRole {
 
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -268,7 +293,7 @@ public class Minato extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -304,7 +329,7 @@ public class Minato extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous avez déjà posé 5 balises."));
             } else {
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);

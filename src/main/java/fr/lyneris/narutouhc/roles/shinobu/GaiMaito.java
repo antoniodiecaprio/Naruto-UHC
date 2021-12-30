@@ -38,8 +38,25 @@ public class GaiMaito extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aGaï Maito\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item \"§rTrois Portes§7\", lorsqu’il clique sur l’item il obtient l'effet §bVitesse 1§7 pendant 2 minutes mais perdra aussi §c1 cœur§7. \n" +
+                "      \n" +
+                "§7• Il dispose de l'item \"§rSix Portes§7\", lorsqu’il clique sur l’item, il obtient les effets §cForce 1§7 et §bVitesse 1§7 pendant 5 minutes cependant il perd §c1 cœur§7 permanent et des particules vertes émaneront de §aGaï§7. \n" +
+                "      \n" +
+                "§7• Il dispose de l'item \"§rHuit Portes§7\", lorsqu’il clique sur l’item, il obtient les effets §cForce 1§7, §bVitesse 2§7, §9Résistance 1§7, §6Résistance au feu§7 et donne §c5 cœurs§7 supplémentaires régénérés, des particules de feu émaneront de §aGaï§7, malheureusement après avoir utiliser ce pouvoir il ne pourra plus utiliser un seul de ses items et  sera bloqué à §c6 cœurs§7, et obtiendra l’effet §lFaiblesse 1§7 pendant 15 minutes. Cependant lorsqu’il utilise sa porte, son item se transforme en \"§cGaï de la Nuit§7\", lorsqu’il l’utilise, il obtient les effets §bVitesse 3§7 et §cForce 3§7 pendant 10 secondes, les particules rouges autour de lui seront plus intenses et suite à ces 10 secondes, il meurt.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il connaît l'identité de §aRock Lee§7. \n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -60,7 +77,7 @@ public class GaiMaito extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -75,7 +92,7 @@ public class GaiMaito extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -88,7 +105,7 @@ public class GaiMaito extends NarutoRole {
 
         if (Item.interactItem(event.getItem(), "Huit Portes")) {
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -118,7 +135,7 @@ public class GaiMaito extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

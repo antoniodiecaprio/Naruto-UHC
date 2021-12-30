@@ -191,8 +191,29 @@ public class Sakon extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §5Sakon\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp d'§5Orochimaru\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rSenpô§7”, il doit l’utiliser en même temps que §5Ukon§7 avec un délai de 15 secondes à son utilisation pour que l’item puisse être utilisé, à l’utilisation, lui et §5Ukon§7 reçoivent les effets §cForce 1§7 et §5Vitesse 1§7 pendant 5 minutes, il perd §c1 cœur§7 permanent à la fin de l’utilisation et il possède un délai de 10 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rBarrière protectrice§7”, celui-ci lui permet de faire apparaître une barrière violette qui est indestructible, celle-ci est en forme de carré et se forme selon la position de §5Sakon§7 et de §5Ukon§7, cette barrière est donc utilisable de la façon suivante: §5Ukon§7 et §5Sakon§7 doivent utiliser leur item en même temps avec un délai de 15 secondes et être à 40 blocs maximum de distance l’un de l’autre. L’item ne peut être utilisé qu’une seule fois et la barrière reste active pendant 5 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il se trouve dans un rayon de 15 blocs de §5Ukon§7, il reçoit l’effet §cForce 1§7.\n" +
+                "§e §f\n" +
+                "§7• Si §5Ukon§7 ou bien §5Sakon§7 vient à mourir dans un rayon de 15 blocs proche de l'autre, alors il mourra à son tour, cependant dans le cas contraire, si l’un meurt dans un rayon supérieur à 15 blocs de l’autre alors il ne mourra pas et ressuscitera 5 minutes après sa mort à l’emplacement de celui qui est toujours en vie mais si l’autre meurt dans les 5 minutes suivant la mort du premier alors tout deux mourront définitivement et ne pourront pas être ressusciter par n’importe quel autre rôle.\n" +
+                "§e §f\n" +
+                "§7• Il possède un chat permettant de communiquer avec §5Ukon§7, il lui suffit simplement d’écrire dans le chat avec l’aide du préfixe \"!\" pour pouvoir communiquer avec lui.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l'identité de §5Ukon§7.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -215,7 +236,7 @@ public class Sakon extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -250,7 +271,7 @@ public class Sakon extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

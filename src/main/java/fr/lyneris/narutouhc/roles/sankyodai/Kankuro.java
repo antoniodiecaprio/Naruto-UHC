@@ -44,8 +44,37 @@ public class Kankuro extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §eKankurô\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §eSankyôdai\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "• Il dispose d’un item nommé \"§rMarionnettes§7\" lorsqu’il l’utilise, il obtient la liste des joueurs qu’il a tué. Lorsqu’il clique sur l’un d’entre eux, un autre menu s’offre à lui avec 3 options listées ci-dessous, qu’il pourra choisir qu’une seule fois pour chacun dans la partie, une fois une option choisit, le joueur ciblé sera ressuscité, ce joueur ne pourra plus utiliser un seul de ces pouvoirs, cependant il disposera des pouvoirs que lui à donner §eKankurô§7 avec l’aide de l’option choisit au départ, voici les pouvoirs que procure les options:\n" +
+                "§e §f\n" +
+                "§7Karasu: Le joueur choisit disposera d’un item nommé \"§rShuryûdan§7\", celui-ci lui permet de créer une zone de 10 blocs qui empoisonnera pendant 10 secondes tous les joueurs présents dans la zone, cette zone est limité avec des particules, ce pouvoir dure 1 minute et possède un délai de 10 minutes. Ce joueur disposera aussi de la particularité, avec 20% de chance, d’infliger poison pendant 5 secondes à lorsqu’il inflige un coup d’épée ou une flèche à l’arc.\n" +
+                "§e §f\n" +
+                "§7Kuroari: Le joueur choisit disposera de la particularité, avec 20% de chance, d’infligé lenteur et faiblesse pendant 5 secondes lorsqu’il inflige un coup d’épée ou une flèche à l’arc, il disposera aussi de l’effet §bVitesse 1§7.\n" +
+                "§e §f\n" +
+                "§7Sanshôuo: Le joueur choisit disposera de l’effet §9Résistance 1§7.\n" +
+                "§e §f\n" +
+                "§7Si §cSasori§7 vient à mourir, il obtiendra une seconde utilisation pour §rKuroari§7 et de la marionnette §rSasori§7, donc il obtiendra une nouvelle option dans son item §rMarionnettes§7, voici donc ce que procure la marionnette:\n" +
+                "§e §f\n" +
+                "§7Sasori: Le joueur choisit disposera de §c5 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7Si §eKankurô§7 vient à mourir alors les marionnettes mourront 3 minutes après sa mort, s’il est ressuscité dans un autre camp ou rejoint un autre camp d’une quelconque manière, les marionnettes rejoindront son camp sans avoir à mourir, ce pouvoir ne possède aucun délai.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §bVitesse 1§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Il connaît les identités de §eGaara§7 et §eTemari§7, si §eGaara§7 vient à rejoindre un autre camp, Il en sera averti et le rejoindra automatiquement.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §9Suiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -76,7 +105,7 @@ public class Kankuro extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event, "Marionnettes")) {
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -159,7 +188,7 @@ public class Kankuro extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -181,7 +210,7 @@ public class Kankuro extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -205,7 +234,7 @@ public class Kankuro extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -228,7 +257,7 @@ public class Kankuro extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);

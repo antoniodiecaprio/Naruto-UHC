@@ -63,8 +63,43 @@ public class Orochimaru extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §5Orochimaru\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp d'§5Orochimaru\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item nommé “§rEdo Tensei§7”, celui-ci lui permet de voir un menu de la liste de tous les joueurs morts dans un rayon de 20 blocs (emplacement de leur cadavre), lorsqu’il clique sur l’un d’entre eux, le joueur ressuscite d’entre les morts. Il rejoint le camp d’§5Orochimaru§7.\n" +
+                "§e §f\n" +
+                "§7• Il possède une épée en diamant Tranchant 4 nommé “§rKusanagi§7”.\n" +
+                "§e §f\n" +
+                "§7• Il dispose aussi d’un item nommé “§rManda§7”, pour utiliser celui-ci, il doit avoir tué un joueur, un joueur de plus pour la deuxième utilisation et ainsi de suite, §rManda§7 donnera à §5Orochimaru§7 un pouvoir aléatoire parmi ceux cités ci-dessous, le pouvoir reçu aura une durée de 5 minutes et cet item ne possède aucun délai, il ne peut faire deux utilisation en même temps, il doit attendre que le premier pouvoir s’arrête, voici donc les pouvoirs que lui octroie Manda :\n" +
+                "§7- Il octroie §9Résistance 2§7 à §5Orochimaru§7.\n" +
+                "§7- Il octroie §bVitesse 2§7 à §5Orochimaru§7.\n" +
+                "§7- Il octroie §cForce 1§7 à §5Orochimaru§7.\n" +
+                "§7- Il ressuscite instantanément §5Orochimaru§7 lorsqu’il meurt\n" +
+                "§7- Il ne donne rien à §5Orochimaru§7.\n" +
+                "§7- Il enlève §c1 cœur§7 non permanent toutes les 30 secondes à §5Orochimaru§7.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns marquemaudite <Joueur>§7, celui-ci lui permet de donner 5% de §cForce§7 et de §9Résistance§7 supplémentaires au joueur ciblé, si le joueur possède déjà la marque maudite alors il reçoit 10% de §cForce§7 et de §9Résistance§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• À partir de 40 minutes de jeu il perd §c1 cœur§7 de manière permanente toutes les 10 minutes, pour résoudre ce problème, à chaque fois qu’il effectue un meurtre sa vie revient à la normal pendant les dix minutes qui suivent son meurtre, ce cycle revient et il se doit de refaire un meurtre pour dévier le problème.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §9Résistance 1§7, cependant lorsqu’il se trouve à moins de §c4 cœurs§7 sur sa barre de vie, il reçoit l’effet §9Résistance 2§7.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il mange une pomme d’or, il régénère §c3 cœurs§7 à la place des §c2 cœurs§7 de base.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la liste du camp §5Orochimaru§7 et une autre liste du camp §6Taka§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une nature de Chakra aléatoire.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -118,17 +153,19 @@ public class Orochimaru extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
 
             int random = (int) (Math.random() * 6);
             if (random == 0) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 1, false, false));
+                Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false)), 5*20*60+1);
                 player.sendMessage(prefix("&fVous avez obtenu &7Résistance&f pendant 5 minutes."));
             } else if (random == 1) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 1, false, false));
                 player.sendMessage(prefix("&fVous avez obtenu &bSpeed&f pendant 5 minutes."));
             } else if (random == 2) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
@@ -197,7 +234,7 @@ public class Orochimaru extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

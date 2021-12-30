@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public class TimersMenu implements CustomInventory {
     @Override
     public String getName() {
-        return "Activation PvP";
+        return "Timers";
     }
 
     @Override
@@ -61,6 +61,19 @@ public class TimersMenu implements CustomInventory {
         slots[24] = new ItemBuilder(Material.BANNER).setDurability(11).setName("§a+30s").toItemStack();
         slots[25] = new ItemBuilder(Material.BANNER).setDurability(14).setName("§6+5m").toItemStack();
         slots[26] = new ItemBuilder(Material.BANNER).setDurability(1).setName("§c+10m").toItemStack();
+
+        slots[27] = new ItemBuilder(Material.BANNER).setDurability(1).setName("§c-10m").toItemStack();
+        slots[28] = new ItemBuilder(Material.BANNER).setDurability(14).setName("§6-5m").toItemStack();
+        slots[29] = new ItemBuilder(Material.BANNER).setDurability(11).setName("§a-30s").toItemStack();
+
+        slots[31] = new ItemBuilder(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal()).setTexture(
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWU4ZmQwYmM3ZTUyOTA0NzQ3MWIwZmI3MTY0Mjg0NTU2NjY2NGFlMmJkN2JmZmNlMGUxNzNjOTUyNWEwNTIzOSJ9fX0="
+        ).setName("§8» §7Pierres Tombales: §f" + Utils.getFormattedTime(NarutoUHC.getNaruto().getBijuListener().getBijuStart())).toItemStack();
+
+        slots[33] = new ItemBuilder(Material.BANNER).setDurability(11).setName("§a+30s").toItemStack();
+        slots[34] = new ItemBuilder(Material.BANNER).setDurability(14).setName("§6+5m").toItemStack();
+        slots[35] = new ItemBuilder(Material.BANNER).setDurability(1).setName("§c+10m").toItemStack();
+
 
         return () -> slots;
     }

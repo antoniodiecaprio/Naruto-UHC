@@ -19,6 +19,7 @@ import fr.lyneris.narutouhc.module.NarutoModule;
 import fr.lyneris.narutouhc.packet.NPCManager;
 import fr.lyneris.narutouhc.packet.PacketManager;
 import fr.lyneris.narutouhc.packet.Reach;
+import fr.lyneris.narutouhc.pierre.PierreTombaleManager;
 import fr.lyneris.narutouhc.roles.jubi.Madara;
 import fr.lyneris.narutouhc.roles.shinobu.Hiruzen;
 import fr.lyneris.narutouhc.utils.Role;
@@ -46,6 +47,7 @@ public class NarutoUHC extends JavaPlugin {
     private ChakraManager chakra;
     private BijuListener bijuListener;
     private Jubi jubi;
+    private PierreTombaleManager pierreTombaleManager;
     public static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
     public static NarutoUHC getNaruto() {
@@ -67,6 +69,7 @@ public class NarutoUHC extends JavaPlugin {
         this.chakra = new ChakraManager(this);
         this.jubi = new Jubi(this);
         this.bijuListener = new BijuListener();
+        this.pierreTombaleManager = new PierreTombaleManager(this);
 
         this.getServer().getPluginManager().registerEvents(new NarutoListener(), this);
         this.getServer().getPluginManager().registerEvents(new Madara(), this);
@@ -95,6 +98,10 @@ public class NarutoUHC extends JavaPlugin {
         jubi.setIngredient('%', Bijus.SAIKEN.getBiju().getItem().getData());
         jubi.setIngredient('#', Bijus.CHOMEI.getBiju().getItem().getData());
         this.getServer().addRecipe(jubi);
+    }
+
+    public PierreTombaleManager getPierreTombaleManager() {
+        return pierreTombaleManager;
     }
 
     public ChakraManager getChakra() {

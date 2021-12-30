@@ -42,8 +42,26 @@ public class YondaimeRaikage extends NarutoRole {
 
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aYondaime Raikage\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rArmure de foudre§7“, lorsqu’il l’utilise il possède l’effet §9Résistance 1§7 pendant 20 minutes. En cliquant à nouveau sur son item, cela annule son armure et donc son effet. Les 20 minutes sont le total de temps qu’il peut porter l’armure. A chaque fois, qu’il remet l’armure, le temps restant diminue en fonction de son utilisation.\n" +
+                "§7Exemple : Si l’armure est utilisée 5 minutes puis désactivée, alors l’utilisation suivant, il ne pourra l’utiliser que 15 minutes maximum et ainsi de suite.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l'effet §bVitesse 2§7 permanent. \n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité de §aKiller Bee§7, Lorsque celui-ci vient à mourir, il obtient §c2 cœurs§7 supplémentaires et l’identité de la personne ayant tué ce dernier.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §eRaiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -75,7 +93,7 @@ public class YondaimeRaikage extends NarutoRole {
         if (Item.interactItem(event.getItem(), "Armure de foudre")) {
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

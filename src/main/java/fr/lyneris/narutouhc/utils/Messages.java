@@ -25,7 +25,13 @@ public class Messages {
 
     public static void sendDeathMessage(Player player) {
         NarutoRole role = NarutoUHC.getNaruto().getRoleManager().getRole(player);
-        if (role == null) return;
+        if (role == null) {
+            Bukkit.broadcastMessage(CC.CC_BAR);
+            Bukkit.broadcastMessage("§7▎ §fLe joueur §c" + player.getName() + " §fest mort.");
+            Bukkit.broadcastMessage("§7▎ §fIl n'avait pas de rôle");
+            Bukkit.broadcastMessage(CC.CC_BAR);
+            return;
+        }
         Bukkit.broadcastMessage(CC.CC_BAR);
         Bukkit.broadcastMessage("§7▎ §fLe joueur §c" + player.getName() + " §fest mort.");
         Bukkit.broadcastMessage("§7▎ §fIl était " + Role.getCamp(player).getColor() + role.getRoleName() + "§f.");

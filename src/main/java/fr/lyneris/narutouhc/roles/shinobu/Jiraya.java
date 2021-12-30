@@ -71,8 +71,31 @@ public class Jiraya extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rJiraya\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un item nommé \"§rSenjutsu§7\", lorsqu’il clique sur celui-ci, il obtient les effets §bVitesse 1§7 et §cForce 2§7 pendant 5 minutes, il possède un délai de 30 minutes. Lors de l'activation de son item, ses coordonnées sont envoyées à §aNaruto§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rGamabunta§7\", lorsqu’il clique sur celui-ci, il obtient un menu avec 3 options différentes avec des pouvoirs tous très différents, et pour cela après avoir choisit une option, il lui faudra faire un clique gauche pour actionner le pouvoir, il ne peut utiliser son item §rSenjutsu§7 pendant 2 minutes s’il utilise un des pouvoirs de §rGamabunta§7, cet item possède un délai de 1 minute entre chaque pouvoirs, voici les pouvoirs différents :\n" +
+                "§e §f\n" +
+                "- Dasshu : Ce pouvoir permet à §aJiraya§7 de faire un grand saut dans la direction qu’il regarde, il saute d’environ 30 blocs, celui-ci possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "- Isan : Ce pouvoir permet à §aJiraya§7 de téléporter 5 joueurs proches de lui, dans un rayon de 30 blocs, dans le suc gastrique de Gamabunta, dans cette zone les joueurs ne peuvent utilisés leurs pouvoirs, seuls les effets restent actifs et perdent 1 cœur non permanent toutes les 30 secondes (hormis §aJiraya§7), ce pouvoir dure 3 minutes et possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "- Kisuoiru : ce pouvoir permet à §aJiraya§7 de créer un surpuissant lance-flamme qui aura pour effet de cramer toutes choses face à lui, lorsqu’un joueur est enflammé par ce pouvoir il ne pourra s’éteindre et ce pendant 10 secondes, cependant s’il reste pendant ces 10 secondes dans l’eau, il ne prendra pas de dégâts des flammes , ce pouvoir possède un délai de 10 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §cForce 1§7 et §9Résistance 1§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §cKaton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -93,7 +116,7 @@ public class Jiraya extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -176,7 +199,7 @@ public class Jiraya extends NarutoRole {
 //                }
 //
 //            if(Kisame.isBlocked(player)) {
-//                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+//                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
 //                return;
 //            }
 //            NarutoUHC.usePower(player);
@@ -202,7 +225,7 @@ public class Jiraya extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);

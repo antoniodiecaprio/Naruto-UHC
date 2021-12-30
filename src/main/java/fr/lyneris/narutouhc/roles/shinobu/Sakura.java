@@ -148,7 +148,7 @@ public class Sakura extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -172,7 +172,7 @@ public class Sakura extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -197,8 +197,29 @@ public class Sakura extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rSakura\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r➜ /ns shosenjutsu <Joueur>§7, cette commande permet de donner l’effet §dRégénération 3§7 au joueur ciblé pendant 20 secondes. Elle doit se situer à 5 blocs de la personne. La commande possède un délai de 10 minutes, elle ne peut pas l’utiliser sur elle-même. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Lorsque §6Sasuke effectue un meurtre et qu’après cela il rencontre §aSakura§7 dans une zone de 20 blocs, elle connaîtra son identité, s'il meurt elle perdra §c4 cœurs§7 permanent. \n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l'effet §cForce 1 permanent.\n" +
+                "§e §f\n" +
+                "§7• Lors de la mort de §aTsunade§7 elle hérite de l’item §rKatsuyu§7. (voir fiche §aTsunade§7)\n" +
+                "§e §f\n" +
+                "§7• Lorsque l’entièreté du camp de l’§cAkatsuki§7 sera mort, elle obtiendra l’item §rByakugô§7 (voir fiche §aTsunade§7)\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de la nature de Chakra : §6Doton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -251,7 +272,7 @@ public class Sakura extends NarutoRole {
         }
 
         if(Kisame.isBlocked(player)) {
-            player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+            player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
             return;
         }
         NarutoUHC.usePower(player);

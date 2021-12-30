@@ -85,13 +85,13 @@ public enum NarutoRoles {
      * ZABUZA AND HAKU
      */
     ZABUZA(Zabuza.class, "Zabuza", Camp.ZABUZA_HAKU),
-    HAKU(Haku.class, "", Camp.ZABUZA_HAKU),
+    HAKU(Haku.class, "Haku", Camp.ZABUZA_HAKU),
 
     /**
      * Sankyôdai
      */
     TEMARI(Temari.class, "Temari", Camp.SANKYODAI),
-    KANKURO(Kankuro.class, "", Camp.SANKYODAI),
+    KANKURO(Kankuro.class, "Kankuro", Camp.SANKYODAI),
     GAARA(Gaara.class, "Gaara", Camp.SANKYODAI),
 
     /**

@@ -71,12 +71,41 @@ public class Sasuke extends NarutoRole {
 
     @Override
     public String getRoleName() {
-        return null;
+        return "Sasuke";
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §6Sasuke\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp de §6Taka\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rSusano§7\" qui lui permet d'enflammer un ennemi dès qu'il le frappe, il gagne également l’effet §9Résistance 1§7, il reçoit aussi un arc Puissance 7, il peut tirer avec son arc une fois toutes les 20 secondes, ce pouvoir dure 5 minutes et possède un délai d'utilisation de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item “§rRinnegan§7”, celui-ci lui permet à son utilisation il reçoit l’effet §bVitesse 2§7 pendant 2 minutes et ce pouvoir lui permet d’échanger de place avec un joueur en se téléportant à sa position et en faisant pareil pour le joueur, pour cela il doit simplement regarder le joueur. Le pouvoir possède un délai 5 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose aussi de l’item “§rAmaterasu§7”, celui-ci lui permet d’enflammer un joueur en cliquant sur l’item en regardant le joueur qu’il souhaite ciblé, ce pouvoir dure 1 minute, la particularité de ces flammes sont qu’elles ne peuvent s’éteindre et ce même si le joueur reste dans de l’eau, cependant §6Sasuke§7 perd §c1 cœur§7 permanent lors de l’utilisation de l’item et ce même pouvoir possède un délai d’utilisation de 15 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns Izanagi§7, celle-ci lui permet de recevoir 5 pommes d’or et d’être entièrement régénéré, cependant il perd §c1 cœur§7 permanent, et il ne pourra plus utiliser le §rSusano§7, il peut l’utiliser qu’une seule fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Son camp se retrouvera souvent allié avec un autre camp, c’est pour cela qu’au début de la partie, son camp fait partie du camp d’§5Orochimaru§7. Si §5Orochimaru§7 vient à mourir alors son camp sera sans allié, suite à ça, si §cItachi§7 vient à mourir, son camp s’alliera avec l’§cAkatsuki§7 et donc il connaîtra  l’identité de §cNagato§7. Si §dTobi§7 et §dMadara§7 rassemble les 9 biju pour former Jûbi, il s’alliera au camp §aShinobi§7.\n" +
+                "§e §f\n" +
+                "§7• S’il tue §cItachi§7, il reçoit §c3 cœurs§7 supplémentaires et son §rSusano§7 fusionne avec celui de §cItachi§7, il  recevra donc l’épée d’§cItachi§7 et le pouvoir dure 10 minutes à la place des 5 minutes de base.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §bVitesse 1§7, §6Résistance au feu 1§7 et §c5 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité d’§5Orochimaru§7, à la mort de celui-ci, il obtient les identités de §6Karin§7, §6Suigetsu§7 et §6Jugô§7, il reçoit aussi l’item §rManda§7 (voir rôle §5Orochimaru§7).\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §cKaton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -145,17 +174,17 @@ public class Sasuke extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
 
             int random = (int) (Math.random() * 5);
             if (random == 0) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5*20*60, 1, false, false));
                 player.sendMessage(prefix("&fVous avez obtenu &7Résistance&f pendant 5 minutes."));
             } else if (random == 1) {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 0, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5*20*60, 1, false, false));
                 player.sendMessage(prefix("&fVous avez obtenu &bSpeed&f pendant 5 minutes."));
             } else if (random == 2) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5*20*60, 0, false, false));
@@ -178,7 +207,7 @@ public class Sasuke extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -216,7 +245,7 @@ public class Sasuke extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -252,7 +281,7 @@ public class Sasuke extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -287,7 +316,7 @@ public class Sasuke extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

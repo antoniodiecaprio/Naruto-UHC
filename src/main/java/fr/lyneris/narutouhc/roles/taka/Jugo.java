@@ -55,8 +55,31 @@ public class Jugo extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §6Jugô\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp de §6Taka\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rMarque Maudite§7”, celui-ci lui permet de recevoir les effets §cForce 2§7, §bVitesse 2§7 et §c3 cœurs§7 supplémentaires régénérés, cependant les pseudos et skin des joueurs lui sont cachés, hormis §6Sasuke§7 et §5Kimimaro§7, à la fin de son utilisation, il perd les coeurs reçus ainsi que §c1.5 coeurs§7 permanents, son pouvoir dure 5 minutes et possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §cForce 1§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Toutes les 20 minutes, pendant 3 minutes il ne voit ni les pseudos, ni les skin des joueurs, hormis §6Sasuke§7 et §5Kimimaro§7.\n" +
+                "§e §f\n" +
+                "§7• Son camp se retrouvera souvent allié avec un autre camp, c’est pour cela qu’au début de la partie, son camp fait partie du camp d’§5Orochimaru§7. Si §5Orochimaru§7 vient à mourir alors son camp sera sans allié, suite à ça, si §cItachi§7 vient à mourir, son camp s’alliera avec l’§cAkatsuki§7 et donc il connaîtra  l’identité de §cNagato§7. Si §dTobi§7 et §dMadara§7 rassemble les 9 biju pour former Jûbi, il s’alliera au camp §aShinobi§7.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité de §5Kimimaro§7.\n" +
+                "§e §f\n" +
+                "§7• A la mort d’§5Orochimaru§7, il obtient l’identité de §6Sasuke§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -101,7 +124,7 @@ public class Jugo extends NarutoRole {
         if (!Item.interactItem(event, "Marque Maudite")) return;
 
         if(Kisame.isBlocked(player)) {
-            player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+            player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
             return;
         }
         NarutoUHC.usePower(player);

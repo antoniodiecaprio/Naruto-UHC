@@ -52,8 +52,33 @@ public class Asuma extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rAsuma\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "• Il dispose d’une épée en fer Tranchant 5.\n" +
+                "§e §f\n" +
+                "• Il dispose d’un item nommé \"§rNuées Ardentes§7\", celui-ci lui permet de créer une explosion 3 mètres face à lui et cela 3 secondes après l’avoir utilisé, il possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "• Lorsqu’il se trouve proche de §aIno§7, §aShikamaru§7 ou de §aChôji§7, une progression invisible commence, celle-ci a pour but de donner l’identité de l’un d’entre eux, cela ne donne pas le rôle mais seulement le pseudo, la progression se réalise de la manière suivante :\n" +
+                "§e §f\n" +
+                "§7- 20 blocs = 1pt/s\n" +
+                "§7- 10 blocs = 5pts/s\n" +
+                "§7- 5 blocs = 10pts/s\n" +
+                "§e §f\n" +
+                "§7La limite de cette progression est de 2500, une fois cela atteint, un message affichant l’identité du joueur auquel la progression est terminée, lui est affiché.\n" +
+                "§e §f\n" +
+                "§7• Il possède l'effet §cForce 1§7 et §bVitesse 1§7 permanent. \n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -131,7 +156,7 @@ public class Asuma extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

@@ -53,7 +53,6 @@ public class Manager {
         return resistance;
     }
 
-
     public Location getJumpLocation() {
         return jumpLocation;
     }
@@ -78,25 +77,29 @@ public class Manager {
         return naruto;
     }
 
-    public void distributeRoles() {
+    public void distributeRoles() throws InstantiationException, IllegalAccessException {
         ArrayList<NarutoRoles> roles = new ArrayList<>(NarutoUHC.getNaruto().getRoleManager().getRoles());
         Collections.shuffle(roles);
 
-        UHC.getUHC().getGameManager().getPlayers().stream().filter(uuid -> roles.size() != 0).forEach(uuid -> {
-            NarutoRoles role = roles.get(0);
-            try {
-                NarutoUHC.getNaruto().getRoleManager().setRole(uuid, role.getNarutoRole().newInstance());
-                NarutoUHC.getNaruto().getRoleManager().setCamp(uuid, NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getCamp());
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+        for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
+            if (roles.size() != 0) {
+                try {
+                    NarutoRoles role = roles.get(0);
+                    NarutoRole roleInstance = role.getNarutoRole().newInstance();
+                    NarutoUHC.getNaruto().getRoleManager().setRole(uuid, roleInstance);
+                    NarutoUHC.getNaruto().getRoleManager().setCamp(uuid, roleInstance.getCamp());
+                    Bukkit.getPlayer(uuid).sendMessage(roleInstance.getDescription());
+
+                    roleInstance.onDistribute(Bukkit.getPlayer(uuid));
+                    roles.remove(role);
+                    Bukkit.broadcastMessage("name :" + Bukkit.getPlayer(uuid));
+                    Bukkit.broadcastMessage("role :" + roleInstance.getRoleName());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            NarutoRole roleInstance = NarutoUHC.getNaruto().getRoleManager().getRole(uuid);
-            for (String s : roleInstance.getDescription()) {
-                Bukkit.getPlayer(uuid).sendMessage(s);
-            }
-            roleInstance.onDistribute(Bukkit.getPlayer(uuid));
-            roles.remove(role);
-        });
+        }
         Tasks.runLater(() -> naruto.getChakra().setupChakras(), 10 * 20);
     }
 

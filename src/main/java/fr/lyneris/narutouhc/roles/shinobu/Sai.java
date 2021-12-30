@@ -68,8 +68,31 @@ public class Sai extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>(Arrays.asList("frérot", "t'es sai grosse merde"));
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rSaï\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item nommé \"§rToile aux Monstres Fantomatiques§7\" lorsqu’il clique sur celui-ci, un menu s’affiche et propose 3 choix : \n" +
+                "§e §f\n" +
+                "➜ Monture : Lorsqu’il l’utilise, il est immobilisé pendant 5 secondes suite auxquelles un cheval apparaît à sa position, seulement lui peut le chevaucher. Ce pouvoir possède un délai de 10 minutes.\n" +
+                "§e §f\n" +
+                "➜ Tigres : Lorsqu’il l’utilise, il est immobilisé pendant 3 secondes et après cela 5 poissons d’argent apparaissent, ils attaqueront le joueur le plus proche, ils ont pour effet Vitesse 2. Ce pouvoir à un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "➜ Fûinjutsu : Lorsqu’il l’utilise, il lui est affiché tous les joueurs présents dans un rayon de 20 blocs autour de lui. Lorsqu’il clique sur l’un des joueurs, §aSaï§7 est immobilisé pendant 1 minute, le joueur est prévenu qu’il a une minute pour tuer §aSaï§7, afin d’éviter de se faire sceller par son §rFûinjutsu§7. À la fin de cette minute, le joueur ciblé se retrouve en spectateur, il ne peux plus parler et ne peux pas se séparer de §aSaï§7. Si ce dernier vient à mourir, le joueur ciblé sera libéré et sera de retour à la position de la mort de §aSaï§7. Cependant s’il ne meurt pas et que le camp §aShinobi§7 vient à gagner la partie, le joueur ciblé est donc considéré comme mort, puisqu’il a été scellé durant toute la partie. Son pouvoir est utilisable une seule fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• S’il vient à tuer §6Sasuke§7, il reçoit §c2 cœurs§7 supplémentaires et apprend l’identité de §aSakura§7.\n" +
+                "§e §f\n" +
+                "§7• Si sa vie est inférieur ou égale à §c2 cœurs§7, il perd la permission de parler sur Mumble.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §3Suiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -154,7 +177,7 @@ public class Sai extends NarutoRole {
                     }
 
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -183,7 +206,7 @@ public class Sai extends NarutoRole {
                     }
 
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -258,7 +281,7 @@ public class Sai extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

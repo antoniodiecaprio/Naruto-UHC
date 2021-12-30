@@ -50,8 +50,23 @@ public class Konohamaru extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aKonohamaru\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rRasengan§7”, lorsqu’il l’utilise, et qu’après cela il frappe un joueur, celui-ci explosera de la valeur d’une dynamite (TNT) dans le jeu, son item possède un délai de 10 minutes. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §bVitesse 1§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -77,7 +92,7 @@ public class Konohamaru extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

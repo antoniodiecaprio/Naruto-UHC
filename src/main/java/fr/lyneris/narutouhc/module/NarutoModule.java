@@ -104,6 +104,7 @@ public class NarutoModule implements Module {
         }, 1);
         Messages.sendDeathMessage(player);
         Bukkit.getOnlinePlayers().forEach(players -> players.playSound(players.getLocation(), Sound.WITHER_DEATH, 1f, 1f));
+        NarutoUHC.getNaruto().getManager().getDeathLocation().put(player.getUniqueId(), player.getLocation());
 
         Role.attemptWin();
     }
@@ -121,7 +122,11 @@ public class NarutoModule implements Module {
             Bukkit.broadcastMessage("§7▎ §c" + Bukkit.getOfflinePlayer(uuid) + " §fa été éliminé.");
         });
 
-        NarutoUHC.getNaruto().getManager().distributeRoles();
+        try {
+            NarutoUHC.getNaruto().getManager().distributeRoles();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Tasks.runTimer(() -> {
             timer++;

@@ -39,8 +39,23 @@ public class ZetsuBlanc extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cZetsu Blanc\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns métamorphose <Joueur>§7, celle-ci lui permet de prendre le skin et le pseudo de la personne et donc se faire passer pour le joueur ciblé, le pouvoir dure 5 minutes et il possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§r→ /ns reset <Joueur>§7, celle-ci lui permet de mettre à 0 le délai d’un joueur, cependant il perd §c2 cœurs permanents§7 à l’utilisation et il peut le faire qu’une seule fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une nature de Chakra aléatoire. \n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -77,6 +92,12 @@ public class ZetsuBlanc extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             String copiedName = target.getName();
             Property copiedSkin = NarutoUHC.getNaruto().getNpcManager().getPlayerTextures(target);
@@ -126,6 +147,12 @@ public class ZetsuBlanc extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             player.sendMessage(CC.prefix("§fVous avez reset les délais de §a" + target.getName()));
             roleManager.getRole(target).resetCooldowns();
             target.sendMessage(CC.prefix("§fLe §aZetsu Blanc §fa reset vos cooldowns."));

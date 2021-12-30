@@ -49,8 +49,35 @@ public class Danzo extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §8Danzo\n" +
+                "§7▎ Objectif: §rSon but est de gagner seul\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une épée en diamant Tranchant 4, qui a 5% de chance d’effectuer 25% de dégât supplémentaires.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns izanagi§7, celle-ci lui permet de recevoir 5 pommes d’or et d’être entièrement régénéré, cependant il perd §c1 cœur permanent, il peut l’utiliser qu’une seule fois dans la partie.\n" +
+                "§e §f\n" +
+                "§r→ /ns hokage§7, celle-ci lui permet de retirer §c2 emplacements de cœurs§7 au Hokage et de lui donner les effets §lFaiblesse 1§7 et §8Lenteur 1§7, ceci pendant 2 minutes, ce pouvoir est utilisable une seule fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il a la particularité de pouvoir se ressusciter, il peut se faire ressusciter une fois, cependant à chaque éliminations qu’il effectue, il reçoit une vie de plus, lorsqu’il ressuscite, il apparaît dans un rayon de 30 blocs de sa mort, mais sa vie n’est pas régénéré, il apparaît donc avec §c5 cœurs§7 et il perd §c0.5 cœur§7 permanent par nouvelle vie utilisée.\n" +
+                "§e §f\n" +
+                "§7• Il dispose du rôle de l’Hokage lors de son annonce.\n" +
+                "§e §f\n" +
+                "§7• S’il vient à tuer l’Hokage, il devient à son tour Hokage 5 minutes après l’avoir tué, il obtiendra donc à ce moment les pouvoirs du Hokage (voir fiche Hokage).\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §cForce 1§7, §9Résistance 1§7, §bVitesse 1§7 et §c2 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -77,7 +104,7 @@ public class Danzo extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

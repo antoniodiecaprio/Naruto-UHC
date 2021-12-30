@@ -38,8 +38,23 @@ public class Shino extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aShino\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rkikaichû§7\", lorsqu’il effectue un clique droit en visant joueur avec celui-ci, il recevra toutes les informations de ce joueur, les informations dites sont les dégâts infligés (à qui ou à quoi), les dégâts subis (par qui ou par quoi), s’il mange des pommes en or, s’il meurt par qui il se fait tuer et s’il tue quelqu’un. Son item possède 5 utilisations maximum. \n" +
+                "§e §f\n" +
+                "Commandes :\n" +
+                "§e §f\n" +
+                "§r➜ /ns tracking <Joueur>§7, celle-ci lui permet d’avoir la position d’un joueur indiqué au dessus de sa barre de raccourci à l’aide d’une flèche. Pour que sa commande fonctionne il lui faut avoir utilisé son pouvoir ci-dessus sur la personne ciblé, cependant après avoir utilisé son pouvoir, il ne pourra plus accéder aux informations du joueur dans son chat..\n" +
+                "§e §f\n" +
+                "§r➜ /ns feed <Joueur>§7, celle-ci lui permet de voler §c1 cœur§7 permanent au joueur ciblé, la personne perdra 1 cœur de manière permanent puis Shino obtient 1 cœur supplémentaire. Pour que sa commande fonctionne il lui faut avoir utilisé son item ci-dessus sur la personne ciblé, cependant après avoir utilisé son pouvoir, il ne pourra plus accéder aux informations du joueur dans son chat.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -139,7 +154,7 @@ public class Shino extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -204,7 +219,7 @@ public class Shino extends NarutoRole {
                 }
 
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);

@@ -60,8 +60,33 @@ public class Ino extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aIno\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d’un item en son nom, celui-ci permet de voir la liste de tous les joueurs qui sont encore en vie dans la partie, lorsqu’elle clique sur un des joueurs, celui-ci ne pourra pas voir ses messages dans le chat (voir la commande ci-dessous), vous pourrez voir si vous avez activé ou désactivé la communication avec un joueur en plaçant votre curseur sur celui-ci.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r➜ /ns transfer <Joueur>§7, celle-ci lui permet de donner la permission au joueur ciblé d’effectuer ses dernières volontés lors de sa mort, il sera mit au courant et il disposera de 30 secondes après sa mort pour envoyer un message que tous les joueurs se trouvant dans un rayon de 200 blocs proches de sa mort verront. Ce pouvoir est unique et si le joueur ciblé meurt 20 minutes après qu’Ino utilise la commande, le pouvoir est annulé.\n" +
+                "      \n" +
+                "§r➜ /ns chat <message>§7, celle-ci lui permet de communiquer avec les personnes qu’elle a choisi grâce à son item (voir l’item ci-dessus), votre commande possède un délai de 10 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Elle possède l’effet §bVitesse 1§7 permanent. \n" +
+                "§e §f\n" +
+                "§7• Elle obtient la position d’un Biju 2 minutes après qu’il apparaisse.\n" +
+                "§e §f\n" +
+                "§7• Elle connaît l’identité de §aShikamaru§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §6Doton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     public void openInoMenu(Player player) {
@@ -183,7 +208,7 @@ public class Ino extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -211,7 +236,7 @@ public class Ino extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

@@ -63,8 +63,27 @@ public class Tsunade extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rTsunade\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d'un item nommé \"§rKatsuyu§7\" qui permet de donner l’effet §dRégénération 3§7 à tous les joueurs autour d’elle, celui-ci possède un délai de 20 minutes, pour une durée d'une seule minute, son item possède un rayon maximum de 30 blocs. \n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l’item \"§rByakugô§7\", celui-ci permet de lui donner l’effet §dRégénération 5§7, une fois avoir perdu un total de §c15 cœurs§7 sous l’effet de ce pouvoir, celui-ci s’arrête et elle perd §c2 cœurs§7 pendant 15 minutes, l’item possède un délai de 30 minutes. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l’effet §cForce 1§7 permanent cependant lorsqu’elle utilise son item §rKatsuyu§7, elle perd son effet de §cForce 1§7 pendant 5 minutes et reçoit l’effet §lFaiblesse 1§7 pendant 3 minutes. \n" +
+                "§e §f\n" +
+                "§7• Elle a 5% de chance lorsqu’elle tape un joueur, de l’étourdir, lorsque le joueur est étourdi, il reçoit les effets §0Cécité 1§7 et §8Lenteur 4§7 pendant 3 secondes.\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de la nature de Chakra : §6Doton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -115,7 +134,7 @@ public class Tsunade extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -147,7 +166,7 @@ public class Tsunade extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

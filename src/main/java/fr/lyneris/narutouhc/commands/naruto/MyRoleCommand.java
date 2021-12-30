@@ -15,7 +15,6 @@ public class MyRoleCommand {
             return;
         }
 
-        role.getDescription().forEach(player::sendMessage);
-
+        player.sendMessage(role.getDescription());
     }
 }

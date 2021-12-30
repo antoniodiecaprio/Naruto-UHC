@@ -89,8 +89,53 @@ import java.util.UUID;
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §eGaara\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §eSankyôdai\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rManipulation du sable§7\", lorsqu’il effectue un clique droit sur celui-ci, un menu s’affiche avec deux options, la première se nomme “§rAttaque§7” et l’autre “§rDéfense§7”, pour utiliser ses pouvoirs, il est impératif pour lui de ramasser du sable, puisque chaque technique lui coûte un nombre défini de sable, il ne pourra pas utiliser une technique, s’il n’a pas suffisamment de sable. Pour plus de détails sur l’item la page nommé \"§rManipulation du sable§7\" qui se trouve ci-dessous.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item “§rShukaku§7”, celui-ci, lui permet, pendant 5 minutes, de réduire le nombre de sables qu’il doit utiliser, il utilise donc 2 fois moins de sable que d’habitude, en utilisant l’une de ses techniques. Son pouvoir possède un délai de 20 minutes. \n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns fix <Joueur>§7, cette commande permet à §eGaara§7 de sceller le joueur ciblé dans un énorme cube, pendant 5 minutes, dans lequel, il devra faire un parcours peu compliqué pour sortir de celui-ci, s’il réussi le parcours, ou si son temps est écoulé, il sera téléporter là où il se trouvait avant d’être scellé. Ce pouvoir peut-être utilisé uniquement si le joueur ciblé se trouve dans un rayon de 30 blocs autour de Gaara, il possède un délai de 15 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de 128 blocs de sables.\n" +
+                "§e §f\n" +
+                "§7• S’il meurt et que §aNaruto§7 l’a tapé dans les 30 secondes qui précède sa mort, alors il se fera ressusciter dans un rayon de 60 blocs du lieu de sa mort, de plus il rejoint le camp §aShinobi§7.\n" +
+                "§e §f\n" +
+                "§7• Il connaît les identités de §6Temari§7 et §6Kankurô§7, s’il vient à rejoindre un autre camp, ils en seront averti et le rejoindront automatiquement.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§l▎ Manipulation du sable :\n" +
+                "§e §f\n" +
+                "§7• lorsque §eGaara clique sur l’item §rAttaque§7, celui-ci le dirige vers un nouveau menu, lui montrant plusieurs options, ayant toutes des avantages différents.\n" +
+                "      \n" +
+                "§7→ Tsunami de Sable : Il permet de créer une vague de sable qui déferle face à §eGaara§7, si elle vient à touché un joueur, le joueur sera propulsé violemment en arrière, et reçoit §c2 cœurs§7 de dégâts. Ce pouvoir nécessite 30 blocs de sables. \n" +
+                "§e §f\n" +
+                "§7→ Sarcophage de Sable : Il permet de créer une structure de sable ayant une base de 4x4 avec une hauteur de 5 blocs, le milieu de la structure est occupée par le joueur ciblé, pour cibler un joueur, il suffit de viser celui-ci et d’effectuer un clique gauche avec l’item. Ce pouvoir nécessite 45 blocs de sables. \n" +
+                "§e §f\n" +
+                "§7→ Lance : Il permet de donner à §eGaara§7 une épée en diamant Tranchant 4, cependant celle-ci possède seulement 25 points de durabilités. Ce pouvoir nécessite 64 blocs de sables. \n" +
+                "§e §f\n" +
+                "§7Lorsqu’il est dans le menu de son item et qu’il clique sur l’option §rDéfense§7, celui-ci le dirige vers un nouveau menu, lui montrant plusieurs options, ayant toutes des avantages différents.\n" +
+                "§e §f\n" +
+                "§7→ Bouclier de Sable : Il permet d’entourer §eGaara§7 de blocs de pierres de sables qui sont 5 fois plus difficiles à détruire qu’un bloc normal, cependant à l’intérieur §eGaara§7 reçoit l’effet §eCélérité 2§7, ce qui lui permet de casser les blocs qui l’entoure plus facilement. Ce pouvoir nécessite 64 blocs de sables. \n" +
+                "§e §f\n" +
+                "§7→ Armure de Sable : Il permet de donner à §eGaara§7 l’effet §9Résistance 1§7. Ce pouvoir nécessite 32 blocs de sables, cependant chaque coup qu’il reçoit lui coûte 5 blocs de sables, s’il n’a plus ou pas suffisamment de blocs de sables, son pouvoir ne fait plus effet. \n" +
+                "§e §f\n" +
+                "§7→ Suspension du Désert : Il permet à §eGaara§7 de voler pendant 20 secondes, lorsqu’il vole des particules oranges apparaissent sous ses pieds, elles forment une plateforme. S’il vient à infliger ou recevoir un dégâts, son pouvoir se désactive instantanément. Ce pouvoir nécessite 96 blocs de sables.\n" +
+                "§e §f\n" +
+                "§7Après avoir sélectionné l’un de ces pouvoirs, pour utiliser le pouvoir choisit, il doit faire un clique gauche avec son item et le pouvoir s’utilisera, les pouvoirs cités ci-dessus peuvent être utilisés simultanément.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -232,7 +277,7 @@ import java.util.UUID;
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
         if(Item.interactItem(event, "Manipulation du sable"))  {
-            if(manipulation == Manipulation.AUCUN) {
+            if(manipulation != Manipulation.AUCUN) {
                 manipulation.runPower(player);
                 return;
             }
@@ -251,7 +296,7 @@ import java.util.UUID;
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -331,7 +376,7 @@ import java.util.UUID;
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -600,7 +645,7 @@ import java.util.UUID;
                         return;
                     }
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -614,7 +659,7 @@ import java.util.UUID;
                         return;
                     }
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -628,7 +673,7 @@ import java.util.UUID;
                         return;
                     }
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -642,7 +687,7 @@ import java.util.UUID;
                         return;
                     }
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -656,7 +701,7 @@ import java.util.UUID;
                         return;
                     }
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);
@@ -670,7 +715,7 @@ import java.util.UUID;
                         return;
                     }
                     if(Kisame.isBlocked(player)) {
-                        player.sendMessage(CC.prefix("&cVous êtes sous l'emprise de Samehada."));
+                        player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
                     NarutoUHC.usePower(player);

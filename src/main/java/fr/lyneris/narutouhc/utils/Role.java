@@ -101,7 +101,7 @@ public class Role {
     public static int getItemAmount(Player player, Material material) {
         int toReturn = 0;
         for (ItemStack content : player.getInventory().getContents()) {
-            if(content.getType() == material) {
+            if(content != null && content.getType() == material) {
                 toReturn += content.getAmount();
             }
         }

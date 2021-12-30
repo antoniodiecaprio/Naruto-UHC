@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
@@ -49,8 +50,25 @@ public class Sasori extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cSasori\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rMarionnettisme§7\" lorsqu’il l’utilise, il obtient la liste des joueurs qu’il a tué. Lorsqu’il clique sur l’un d’entre eux, la personne ciblée sera ressuscitée, elle reçoit un équipement basique et devra gagner avec lui, cependant, cette personne sera bloquée à §c6 cœurs§7 et §cSasori§7 perd un emplacement de §ccœur§7 tant que le joueur ciblé est en vie et reçoit un effet aléatoire positif lorsqu’il reste à côté du joueur (des effets peuvent être supérieur au niveau 1, comme l’effet §bVitesse 2§7 ou l’effet §rSaut Amélioré 4§7), son pouvoir ne possède aucun délai, il est limité à une fois par personne, la personne garde tous les pouvoirs qu’elle avait auparavant, si §cSasori§7 meurt alors les marionnettes mourront 3 minutes après sa mort, s’il est ressuscité dans un autre camp ou pacte avec §rIzanami§7, les marionnettes rejoindront son camp, ce pouvoir ne possède aucun délai.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de §c5 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité de §cDeidara§7. \n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "\n";
     }
 
     @Override
@@ -135,6 +153,12 @@ public class Sasori extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur est en vie."));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             UHC.getUHC().getGameManager().getPlayers().add(target.getUniqueId());
             target.setGameMode(GameMode.SURVIVAL);

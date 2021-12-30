@@ -46,8 +46,29 @@ public class Zabuza extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §bZabuza\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §bHaku\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une épée en diamant Tranchant 4 nommée “§rKubikiribôchô§7”, elle possède 10% de chance de régénérer celui-ci du même nombre de dégâts qu’il a infligé.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item nommé “§rCamouflage§7”, il lui permet d’être entièrement invisible même s’il porte une armure, lorsqu’il inflige ou reçoit un coup, il est à nouveau visible, cet item possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §bVitesse 1§7 et §cForce 1§7.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’un joueur utilise un item ou une commande, il est mit au courant que le joueur vient d’utiliser une technique avec le nom de celle-ci.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’identité de §bHaku§7, à la mort de celui-ci, il reçoit l’effet §9Résistance 1§7 de manière permanente ainsi que l’effet §bVitesse 2§7 pendant 10 minutes.\n" +
+                "     \n" +
+                "§7• Il possède la particularité de parler avec §bHaku§7 dans le chat, il lui suffit simplement d’écrire dans le chat avec l’aide du préfixe \"!\" pour pouvoir communiquer avec lui.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -76,6 +97,11 @@ public class Zabuza extends NarutoRole {
     }
 
     @Override
+    public void onAllPlayerPowerUse(Player player) {
+        getPlayer().sendMessage(prefix("&a" + player.getName() + "&f a utilisé son pouvoir. Il est " + Role.getRole(player).getRoleName()));
+    }
+
+    @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if(Item.interactItem(event, "Camouflage")) {
             if(camouflageCooldown > 0) {
@@ -84,14 +110,15 @@ public class Zabuza extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
 
             camouflageCooldown = 5*60;
             invisible = true;
-            Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(player));
+
+
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
         }
     }

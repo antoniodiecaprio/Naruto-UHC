@@ -41,8 +41,27 @@ public class Kiba extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aKiba\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un item nommé \"§rAkamaru§7\", il lui permet de faire apparaître un chien, il lui permet aussi de recevoir l'effet §cForce 1§7, cependant, l'effet ne dure que 10 minutes, après quoi, son chien disparaît et il perd son effet de §cForce§7.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r➜ /ns sniff <Joueur>§7, celle-ci lui permet d’avoir la position d’un joueur indiqué au dessus de sa barre de raccourcis à l’aide d’une flèche. Le joueur ciblé doit être situé dans un rayon de 20 blocs autour de §aKiba§7. La commande est utilisable une seule fois.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l'effet §bVitesse 1§7 de manière permanente. \n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §6Doton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -60,7 +79,7 @@ public class Kiba extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -122,7 +141,7 @@ public class Kiba extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

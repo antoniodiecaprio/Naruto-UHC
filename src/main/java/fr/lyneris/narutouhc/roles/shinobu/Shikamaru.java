@@ -42,8 +42,35 @@ public class Shikamaru extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aShikamaru\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rInton§7“, lorsqu’il clique sur celui-ci, il est dirigé dans un menu, dans lequel plusieurs choix s’offrent à lui :\n" +
+                "§e §f\n" +
+                "§7- Manipulation : (obsidienne) Lorsqu’il l’utilise, tous les joueurs se trouvant à 15 blocs autour de lui sont affichés dans ce menu, il dispose aussi d’une option qui lui permet de le faire sur tous les joueurs qui se situent dans ce même rayon, lorsqu’il clique sur la tête d’un des joueurs, il est immobilisé ainsi que le joueur ciblé et cela pendant 10 secondes, pendant ce laps de temps ils recevront tous les deux l’effet §9Résistance 2§7, lorsque lui et la personne ciblé sont immobilisés, ils pourront recevoir des coups venant d’autres joueurs, ce pouvoir ne peut être utilisé que 3 fois dans la partie et ne possède aucun délai.\n" +
+                "§e §f\n" +
+                "§7- Étreinte Mortelle : (épée en fer) Lorsqu’il l’utilise, tous les joueurs se trouvant à 15 blocs autour de lui sont affichés dans ce menu, lorsqu’il clique sur la tête d’un des joueur, lui et le joueur ciblé reçoivent les mêmes effets que la Manipulation cependant le joueur ciblé reçoit l’effet §aPoison 2§7 pendant 10 secondes, ce pouvoir ne peut être utilisé qu’une fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7- Œil : (œil de l’end) Lorsqu’il l’utilise, tous les joueurs se trouvant à 15 blocs autour de lui, sont affichés dans ce menu, lorsqu’il clique sur la tête d’un des joueur, à partir de ce moment il pourra voir la vie du joueur ciblé au dessus de sa tête jusqu’à la fin de la partie, ce pouvoir peut être utilisé 5 fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7- Recherche : (cœur d’araignée) Lorsqu’il l’utilise, tous les joueurs se trouvant à 15 blocs autour de lui, sont affichés dans ce menu, lorsqu’il clique sur la tête d’un des joueur, il pourra voir si le joueur ciblé a commis des meurtres et (si c’est le cas) l’identité du ou des joueurs morts, ce pouvoir ne peut être utilisé qu’une fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités\n" +
+                "      \n" +
+                "§7• Lorsqu’il fait nuit, le rayon pour utiliser son pouvoir s’étend à un rayon de 30 blocs.\n" +
+                "§e §f\n" +
+                "§7• S’il utilise au moins deux techniques (hormis Œil) dans un intervalle de moins de 5 minutes, il obtiendra les effets §lFaiblesse 1§7 et §8Lenteur 1§7 pendant 1 minute à chaque fois qu’il utilisera une technique et ce, pendant toute la partie.\n" +
+                "§e §f\n" +
+                "§7• A 70 minutes de jeu, il obtient la particularité de voir la vie de tous les joueurs dans la partie.\n" +
+                "      \n" +
+                "§7• Il connaît l’identité de §aChôji§7.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -229,7 +256,7 @@ public class Shikamaru extends NarutoRole {
                 }
 
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -259,7 +286,7 @@ public class Shikamaru extends NarutoRole {
             if (event.getSlot() == 0) {
                 player.closeInventory();
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -291,7 +318,7 @@ public class Shikamaru extends NarutoRole {
                 if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
                 player.closeInventory();
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -333,7 +360,7 @@ public class Shikamaru extends NarutoRole {
             player.closeInventory();
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -381,7 +408,7 @@ public class Shikamaru extends NarutoRole {
             player.closeInventory();
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

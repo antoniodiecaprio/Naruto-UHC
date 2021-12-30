@@ -49,8 +49,27 @@ public class Hidan extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cHidan\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il possède 5 blocs de redstone enchanté. \n" +
+                "§e §f\n" +
+                "§7• Il possède une Houe en diamant enchantée tranchant 5. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Lorsqu'il frappe un ennemi à l'aide de la Houe en diamant, il lie sa vie à celle du joueur frappé. Afin d’activer son pouvoir, il doit placer un bloc de redstone enchanté et lorsque §cHidan§7 se place sur sa plateforme, le joueur lié à sa vie prendra les dégâts à sa place. Il prend 20% de Recul supplémentaire, si le joueur se situe à plus de 100 blocs d’§cHidan§7, le pouvoir ne peut fonctionner, ce pouvoir dure 5 minutes et possède un délai d'utilisation de 30 minutes. \n" +
+                "§e §f\n" +
+                "§7• Il possède l'effet §cForce 1§7 et §bVitesse 1§7 permanent. \n" +
+                "      \n" +
+                "§7• Il connaît l’identité de §cKakuzu§7 et obtient l’effet §9Résistance 1§7 lorsqu’il est dans un rayon de 10 blocs proches de §cKakuzu§7.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override

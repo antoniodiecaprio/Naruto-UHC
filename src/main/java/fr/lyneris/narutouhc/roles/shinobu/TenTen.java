@@ -49,8 +49,19 @@ public class TenTen extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aTenTen\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d'une épée en fer Tranchant 5 et d'un arc Puissance 3 Punch 1.\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l’item nommé \"§rParchemin§7\", celui-ci lui permet de recevoir l’effet §bVitesse 1§7 pendant 5 minutes et d’envoyer 20 flèches tout autour d’elle, pour la protéger. Ce pouvoir possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -71,7 +82,7 @@ public class TenTen extends NarutoRole {
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

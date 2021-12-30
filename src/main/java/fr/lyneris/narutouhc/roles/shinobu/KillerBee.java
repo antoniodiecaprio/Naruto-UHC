@@ -50,8 +50,31 @@ public class KillerBee extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aKiller Bee\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rGyûki§7\", lorsqu’il clique dessus, il obtient les effets §bVitesse 1§7 et §rSaut Amélioré 4§7 pendant 5 minutes, il ne peut utiliser cet item qu'une fois toutes les 20 minutes. \n" +
+                "§e §f\n" +
+                "§7• Il dispose d'une épée en fer Tranchant 5. \n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r➜ /ns death§7, celle-ci permet de faire croire à tout les joueurs de la partie que §aKiller Bee§7 est mort avec l'aide d'un message dans le chat, suite à cela §aKiller Bee§7 sera invisible aux yeux de tous, le pouvoir dure 5 minutes et il pourra se rendre visible avec l'aide d'un item nommé \"§rrevive§7\".\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l'effet §cForce 1§7 permanent. \n" +
+                "§e §f\n" +
+                "§7• Il n’est pas affecté par les pouvoirs de §rSamehada§7 et de §rTsukuyomi§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §eRaiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -70,7 +93,7 @@ public class KillerBee extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -83,7 +106,7 @@ public class KillerBee extends NarutoRole {
 
         if (Item.interactItem(event.getItem(), "Revive")) {
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -101,7 +124,7 @@ public class KillerBee extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

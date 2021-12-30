@@ -118,7 +118,7 @@ public class Naruto extends NarutoRole {
 //                }
 //
 //            if(Kisame.isBlocked(player)) {
-//                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+//                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
 //                return;
 //            }
 //            NarutoUHC.usePower(player);
@@ -144,7 +144,7 @@ public class Naruto extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -247,40 +247,39 @@ public class Naruto extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("§f§m-------------------------------");
-        list.add("§7Vous êtes Naruto");
-        list.add("");
-        list.add("§7Son but est de gagner avec les §aShinobi§7.");
-        list.add("");
-        list.add("§7§lItems");
-        list.add(" ");
-        list.add("§7• Il dispose d'un item nommé '§8Kurama§7', lorsqu’il clique sur celui-ci, l'item permet de recevoir §cForce 1§7 et §bVitesse 2 §7pendant 5 minutes, après avoir cliqué sur cet item, il pourra effectuer la commande ci-dessous.");
-        list.add(" ");
-        list.add("§8➜ /ns smell <Joueur>§7, cette commande lui permet de savoir si la personne choisit possède des intentions meurtrières, tout camps autres que celui des §aShinobi§7 possèdent des intentions meurtrières et inversement ce n’est pas le cas, cependant §cItachi§7, §6Karin§7 et §dTobi§7 ne possèdent aucunes intentions meurtrières, lorsque §aSaï§7 se situe dans un rayon de 30 blocs proche de §6Sasuke§7, il possède des intentions meurtrières.");
-        list.add(" ");
-        list.add("§7• Il dispose d’un item nommé “§8Rasengan§7”, lorsqu’il l’utilise, et qu’après cela il frappe un joueur, celui-ci explosera de la valeur d’une dynamite (TNT) dans le jeu, son item possède un délai de 5 minutes.");
-        list.add(" ");
-        list.add("§7• Il dispose d'un item nommé '§8Senjutsu§7', lorsqu’il clique sur celui-ci, il obtient les effets §bVitesse 1§7 et §cForce 2§7 pendant 5 minutes, il possède un délai de 30 minutes.");
-        list.add(" ");
-        list.add("§7§lCommandes :");
-        list.add(" ");
-        list.add("§8➜ /ns paume <Joueur>§7, cette commande permet au joueur ciblé de recevoir les effets §dRégénération 10§7 et §eAbsorption 2 §7pendant 5 secondes, le joueur ciblé doit être à moins de dix blocs de lui, il peut le faire 2 fois dans la partie, il ne peut pas se choisir lui même. Lorsqu’il utilise son pouvoir sur §aGaï§7, pendant qu’il utilise son item §8Gaï de la nuit§7, il ne meurt pas à la fin de son utilisation.");
-        list.add(" ");
-        list.add("§7§lParticularités :");
-        list.add(" ");
-        list.add("§7• Il dispose de §c2 cœurs§7 supplémentaires.");
-        list.add(" ");
-        list.add("§7• Il connaît l'identité de §aJiraya§7, lorsque celui-ci utilise son pouvoir, il est écrit dans son chat que §aJiraya§7 vient d'utiliser son pouvoir ainsi que l'emplacement ou il a utilisé celui-ci.");
-        list.add(" ");
-        list.add("§7• Si §aJiraya§7 vient à mourir, il obtient §c3 cœurs§7 supplémentaires.");
-        list.add(" ");
-        list.add("§7• A 30 minutes et 40 minutes de jeu, ses coordonnées sont écrites par message textuels uniquement à l’§cAkatsuki§7.");
-        list.add("");
-        list.add("§7• Il dispose de la nature de Chakra : §aFûton");
-        list.add("§f§m-------------------------------");
-        return list;
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rNaruto\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un item nommé \"§rKurama§7\", lorsqu’il clique sur celui-ci, il reçoit les effets §cForce 1§7 et §bVitesse 2§7 pendant 5 minutes, après avoir cliqué sur cet item, il pourra effectuer la commande ci-dessous.\n" +
+                "§e §f\n" +
+                "§r➜ /ns smell <Joueur>§7, cette commande lui permet de savoir si la personne choisie possède des intentions meurtrières. Tout camps autres que celui des §aShinobi§7 possèdent des intentions meurtrières. Cependant §cItachi§7, §6Karin§7 et §dTobi§7 ne possèdent aucunes intentions meurtrières et lorsque §aSaï§7 se situe dans un rayon de 30 blocs proche de §6Sasuke§7, il possède des intentions meurtrières.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rRasengan§7”, lorsqu’il l’utilise puis frappe un joueur, celui-ci explosera de la valeur d’une dynamite (TNT) dans le jeu, son item possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un item nommé \"§rSenjutsu§7\", lorsqu’il clique sur celui-ci, il obtient les effets §bVitesse 1§7 et §cForce 2§7 pendant 5 minutes, il possède un délai de 30 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r➜ /ns paume <Joueur>§7, cette commande permet au joueur ciblé de recevoir les effets §dRégénération 10§7 et §eAbsorption 2§7 pendant 5 secondes, le joueur ciblé doit être à moins de dix blocs de lui, il peut le faire 2 fois dans la partie, il ne peut pas se choisir lui même. Lorsqu’il utilise son pouvoir sur §aGaï Maito§7, pendant qu’il utilise son item §rGaï de la nuit§7, il ne meurt pas à la fin de son utilisation.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de §c2 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l'identité de §aJiraya§7, lorsque celui-ci utilise son pouvoir, il est écrit dans son chat que §aJiraya§7 vient d'utiliser son pouvoir ainsi que l'emplacement où il l’a utilisé.\n" +
+                "§e §f\n" +
+                "§7• Si §aJiraya§7 vient à mourir, il obtient §c3 cœurs§7 supplémentaires ainsi que l’item §rGamabunta§7 (voir rôle §aJiraya§7).\n" +
+                "§e §f\n" +
+                "§7• À 30 minutes et 40 minutes de jeu, ses coordonnées sont écrites par message textuels uniquement à l’§cAkatsuki§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §aFûton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -426,7 +425,7 @@ public class Naruto extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -470,7 +469,7 @@ public class Naruto extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

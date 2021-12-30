@@ -5,6 +5,7 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -57,8 +58,35 @@ public class Kabuto extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §5Kabuto\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp d'§5Orochimaru\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item nommé “§rSenpô§7”, celui-ci lui permet, lors se son utilisation, d’immobiliser et aveugler tous les joueurs dans un rayon de 15 blocs autour de lui. Ils reçoivent donc les effets §0Cécité 1§7 et §8Lenteur 4§7 pendant 10 secondes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns shosenjutsu <Joueur>§7, cette commande permet de donner l’effet §9Régénération 3§7 au joueur ciblé pendant 20 secondes. Il doit se situer à 5 blocs de la personne. La commande possède un délai de 10 minutes, il ne peut pas l’utiliser sur lui-même.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §bVitesse 1§7, §cForce 1§7 et il régénère §c1 cœur§7 par minute. \n" +
+                "§e §f\n" +
+                "§7• Deux fois par épisode, à un moment aléatoire, il reçoit l’effet §0Célérité 1§7 pendant 5 secondes.\n" +
+                "§e §f\n" +
+                "§7• Il a 5% de chance lorsqu’il tape un joueur, d’étourdir celui-ci, lorsque le joueur est étourdi, il reçoit les effets §0Cécité 1§7 et §8Lenteur 4§7 pendant 3 secondes.\n" +
+                "§e §f\n" +
+                "§7• À la mort d’§5Orochimaru§7, il perd l’effet §bVitesse 1§7 et reçoit l’effet §9Résistance 1§7 ainsi que l’item “§rEdo Tensei§7” (voir fiche §5Orochimaru§7).\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité de §5Kimimaro§7 et d’§5Orochimaru§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §9Suiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -75,6 +103,12 @@ public class Kabuto extends NarutoRole {
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
         if (event.getInventory().getName().equals("Edo Tensei")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             event.setCancelled(true);
             if (!event.getCurrentItem().hasItemMeta()) return;
             if (event.getCurrentItem().getType() != Material.SKULL_ITEM) return;
@@ -117,6 +151,11 @@ public class Kabuto extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
         if (Item.interactItem(event.getItem(), "Edo Tensei")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             Inventory inv = Bukkit.createInventory(null, 18, "Edo Tensei");
             int j = 1;
             inv.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
@@ -135,6 +174,11 @@ public class Kabuto extends NarutoRole {
         }
 
         if (Item.interactItem(event.getItem(), "Senpô")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
             Loc.getNearbyPlayers(player, 15).forEach(target -> {
                 target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10 * 20, 0, false, false));
                 target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10 * 20, 3, false, false));
@@ -161,8 +205,6 @@ public class Kabuto extends NarutoRole {
             return;
         }
 
-        if (!args[1].equalsIgnoreCase("jutsu")) return;
-
         Player target = Bukkit.getPlayer(args[2]);
         if (target == null) {
             player.sendMessage(Messages.offline(args[2]));
@@ -179,6 +221,11 @@ public class Kabuto extends NarutoRole {
             return;
         }
 
+        if(Kisame.isBlocked(player)) {
+            player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+            return;
+        }
+        NarutoUHC.usePower(player);
         usingJutsu = true;
 
         player.sendMessage(CC.prefix("§fVous avez utilisé votre §aJutsu §fsur §a" + target.getName()));

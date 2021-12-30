@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
@@ -67,8 +68,33 @@ public class Deidara extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cDeidara\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un arc nommé \"§rDeidara§7\", il lui permet de faire des explosions à l'impact d’une de ses flèches. La puissance de son arc ainsi que le délai change en fonction de ce qu’il choisit avec l’item ci-dessous. \n" +
+                "§e §f\n" +
+                "§7• Il dispose aussi d’un item nommé “§rBakuton§7”, lorsqu’il l’utilise, un menu s’affiche avec plusieurs choix à sa disposition, les choix sont cités et expliqués ci-dessous :\n" +
+                "§e §f\n" +
+                "§7C1 : Lorsqu’il l’utilise, son arc effectue des explosions moyennes environ de la puissance de 2 à 3 dynamites (tnt), il possède un délai de 15 secondes entre chaque utilisation.\n" +
+                "§e §f\n" +
+                "§7C2 : Lorsqu’il l’utilise, il dispose d’une liste de tous les joueurs autour de lui dans un rayon de 20 blocs, après avoir cliqué sur l’un des joueurs, un chien apparaît et fonce sur le joueur ciblé, une fois la cible atteinte, le chien explose, ce pouvoir possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7C3 : Lorsqu’il l’utilise, son arc vient à changer, à l'emplacement où atterrit sa flèche, une pluie de dynamites (tnt) a lieu (environ une vingtaine de dynamites), il possède un délai de 5 minutes entre chaque utilisation.\n" +
+                "§e §f\n" +
+                "§7L’Art Ultime : Lorsqu’il l’utilise, pendant 10 secondes des particules noires apparaîtront sur lui, un bruit a lieu, suite à ses 10 secondes, une énorme explosion a lieu à sa position, aussi puissante que la météorite de Madara, cependant il ne survivra pas à l’explosion, s’il vient à mourir pendant ces 10 secondes, l’explosion s’annule.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité de §cSasori§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de 32 flèches.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -231,6 +257,12 @@ public class Deidara extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             player.closeInventory();
 
             Wolf wolf = (Wolf) player.getWorld().spawnEntity(player.getLocation(), EntityType.WOLF);
@@ -277,12 +309,24 @@ public class Deidara extends NarutoRole {
         if (!arrows.contains((Arrow) event.getEntity())) return;
 
         if (state == BowState.C1) {
+            if(Kisame.isBlocked(shooter)) {
+                shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(shooter);
+
             World world = event.getEntity().getWorld();
             Location explosion = event.getEntity().getLocation();
             world.createExplosion(explosion, 3.0f);
         }
 
         if (state == BowState.C3) {
+            if(Kisame.isBlocked(shooter)) {
+                shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(shooter);
+
             World world = event.getEntity().getWorld();
             Location explosion = event.getEntity().getLocation();
             for (int x = -20; x <= 20; x += 5) {
@@ -297,7 +341,7 @@ public class Deidara extends NarutoRole {
 
     @Override
     public void onProjectileLaunchEvent(ProjectileLaunchEvent event, Player shooter) {
-        if (!(event.getEntity() instanceof Arrow)) return;
+            if (!(event.getEntity() instanceof Arrow)) return;
         if (!Item.specialItem(shooter.getItemInHand(), "Deidara")) return;
 
         if (state == BowState.C1) {
@@ -307,6 +351,12 @@ public class Deidara extends NarutoRole {
                 shooter.sendMessage(Messages.cooldown(c1Cooldown));
                 return;
             }
+            if(Kisame.isBlocked(shooter)) {
+                shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(shooter);
+
             arrows.add((Arrow) event.getEntity());
 
             c1Cooldown = 15;
@@ -319,6 +369,12 @@ public class Deidara extends NarutoRole {
                 shooter.sendMessage(Messages.cooldown(c3Cooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(shooter)) {
+                shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(shooter);
 
             arrows.add((Arrow) event.getEntity());
 

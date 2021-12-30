@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
@@ -38,8 +39,23 @@ public class ZetsuNoir extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cZetsu Noir\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns zetsu§7, celle-ci lui permet d’envoyer des messages à tous les joueurs possédant le rôle §cZetsu Blanc§7.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Lorsqu'il enlève son armure, il reçoit les effets §3Invisibilité 1§7 et §bVitesse 2§7. Pour que cela fonctionne il doit obligatoirement se positionner sur de la terre. S’il tape un joueur, il redevient visible.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il tue un joueur, il obtient les pouvoirs de celui-ci (effets), en plus de ses pouvoirs à lui, cependant les délais sont multipliés par deux. S’il vient à tuer un deuxième joueur, il aura le choix à l’aide d’un message cliquable de copier les effets du joueur ou non.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -50,8 +66,14 @@ public class ZetsuNoir extends NarutoRole {
     @Override
     public void onSubCommand(Player player, String[] args) {
         if (args[0].equalsIgnoreCase("zetsu")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i <= 20; i++) {
+            for (int i = 0; i <= args.length; i++) {
                 builder.append(args[i]).append(" ");
             }
 
@@ -78,6 +100,12 @@ public class ZetsuNoir extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous n'avez pas tué ce joueur."));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             effectsMap.get(target.getName()).stream().filter(pe -> !player.hasPotionEffect(pe.getType())).forEach(player::addPotionEffect);
 

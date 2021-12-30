@@ -74,8 +74,29 @@ public class Kakashi extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rKakashi\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rSharingan§7” il permet lorsque §aKakashi§7 clique sur celui-ci, d’ouvrir un menu lui indiquant deux choix, le premier se nomme “§rcopie§7”, celui-ci lui permet de voir tous les joueurs dans un rayon de 20 blocs, lorsqu’il clique sur l’un des joueurs, une progression commence, ce pouvoir permet de copier le pouvoir ou les pouvoirs du joueur ciblé (les effets permanents), ensuite le deuxième menu se nomme “§rTechniques§7”, ce menu montre une liste de tout les pouvoirs qu’il a copié, cependant il faut réussir la progression de son pouvoir de copie et celle-ci possède certaines conditions, en effet il faut être proche du joueur ciblé pour que celle-ci avance, la progression se fait de la manière suivante : \n" +
+                "§e §f\n" +
+                "§720 blocs = 2pts/s\n" +
+                "§710 blocs = 5pts/s\n" +
+                "§75 blocs = 10pts/s \n" +
+                "§e §f\n" +
+                "§7Le tout sur un total de 2500 points, cependant il ne peut pas choisir un autre joueur, s’il en a déjà choisit un auparavant, il doit attendre que la progression se termine ou que le joueur ciblé finisse par mourir, pour choisir un autre joueur avec son pouvoir, il ne possède aucun délai et aucune limite d’utilisation.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un autre item nommé “§rKamui§7”, celui-ci lui affiche un menu dans lequel il a deux choix, le premier est nommé “§rArimasu§7”, celui-ci lui permet de le téléporter dans le monde lié à Kamui et ceci pendant 10 minutes, le deuxième nommé “§rSonohoka§7”, lui permet de téléporter un joueur dans un rayon de 20 blocs autour de lui, dans le monde lié à Kamui et cela pendant 5 minutes, “Arimasu” possède un délai de 15 minutes, “Sonohoka” possède un délai de 30 minutes. Dans le monde de Kamui on ne peut pas poser de blocs, sauf le seau de lave et d'eau qui s'enlève automatiquement au bout d'une minute, puis on ne peut pas prendre de dégâts de chutes, il peut utiliser la commande /ns yameru pour téléporter lui et le joueur (s’il en a téléporté un) dans le monde normal, suite à sa commande ou si le temps est écoulé, ils seront téléportés à l’endroit exact où ils se situaient avant que §aKakashi§7 utilise son pouvoir. \n" +
+                "§e §f\n" +
+                "§7• Il possède un dernier item nommé “§rPakkun§7“, celui-ci fera apparaître un chien inoffensif (c’est à dire qu’il n’attaquera personne), après cela un menu s'affiche avec la tête de tous les joueurs, lorsqu'il le en sélectionne un, le chien Pakkun traquera le joueur ciblé, il possède un délai de 30 minutes. \n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §7Raiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -135,7 +156,7 @@ public class Kakashi extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -247,7 +268,7 @@ public class Kakashi extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -311,7 +332,7 @@ public class Kakashi extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -350,7 +371,7 @@ public class Kakashi extends NarutoRole {
                     return;
                 }
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -413,7 +434,7 @@ public class Kakashi extends NarutoRole {
 
             player.closeInventory();
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -438,7 +459,7 @@ public class Kakashi extends NarutoRole {
 
         if (!args[0].equalsIgnoreCase("yameru")) return;
         if(Kisame.isBlocked(player)) {
-            player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+            player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
             return;
         }
         NarutoUHC.usePower(player);

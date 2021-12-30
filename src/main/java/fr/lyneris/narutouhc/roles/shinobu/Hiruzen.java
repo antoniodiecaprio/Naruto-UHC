@@ -78,8 +78,37 @@ public class Hiruzen extends NarutoRole implements Listener {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §rHiruzen\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item nommé \"§rEnma§7”, celui-ci lui permet de recevoir les effets §bVitesse 2§7 et §rSaut Améliorer 4§7, il reçoit aussi une épée en diamant tranchant 4 nommée \"§rKongounyai§7\" qui a la particularité de pouvoir taper un joueur à 6 blocs d’§aHiruzen§7 en effectuant un clique droit avec un délai de 1 minute par coup, ce pouvoir dure un total de 5 minutes et possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item \"§rParchemin Interdit§7\", cet item lui permet d’avoir une liste de pouvoir, lorsqu’il clique sur l’un d’entre eux, et que par la suite il effectue un clique gauche avec son item, ce même pouvoir va s’actionner, cet item possède un délai de 1 minute entre chaque pouvoirs et 6 minutes de délai pour le pouvoir utilisé, voici la liste des pouvoirs se trouvant dans l’item :\n" +
+                "§e §f\n" +
+                "- Karyuu Endan : ce pouvoir permet à §aHiruzen§7 de créer un surpuissant lance-flamme qui aura pour effet de cramer toutes choses face à lui, lorsqu’un joueur est enflammé par ce pouvoir il ne pourra s’éteindre et ce pendant 10 secondes.\n" +
+                "§e §f\n" +
+                "- Doryuu Heki : ce pouvoir permet à §aHiruzen§7 de créer une puissante vague d’eau qui permet d’éjecter les joueurs et les créatures hostiles face à lui.\n" +
+                "§e §f\n" +
+                "- Deiheki :  ce pouvoir permet à §aHiruzen§7 de créer un gigantesque mur de pierre face à lui.\n" +
+                "§e §f\n" +
+                "- Kazegafuki : ce pouvoir permet à §aHiruzen§7 d’éjecter tout les joueurs proches de lui à environ 15 blocs de lui.\n" +
+                "§e §f\n" +
+                "§7• Il dispose aussi de l’item \"§rShiki Fûjin§7\", celui-ci lui permet d’avoir une liste des joueurs proche de lui, une fois un joueur choisit, il aura pour objectif de rester à côté de lui pendant 2 minutes sur un rayon de 15 blocs tout en le maintenant en vie, s’il réussit cela, le joueur ciblé finira par mourir et lui perdra §c5 cœurs§7 permanents, cependant si le joueur meurt avant les 2 minutes, §aHiruzen§7 mourra lui aussi à son tour et si §aHiruzen§7 meurt avant les 2 minutes, alors le joueur ciblé recevra un malus au hasard parmi les suivants : perdre tout ses pouvoirs pendant 20 minutes (effets, commandes et items), recevoir l’effet §8Lenteur 1§7 pendant toute la partie et recevoir §0Cécité§7 1 pendant 5 secondes toutes les minutes. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il est immunisés à tout les effets négatifs, ce qui veut dire qu’il ne pourra jamais recevoir un effet négatif (ex: §2Poison§7, §9Lenteur§7, §0Cécité§7, etc.) de toute la partie.\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §9Résistance 1§7 et §bVitesse 1§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de toutes les natures de Chakra.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -155,7 +184,8 @@ public class Hiruzen extends NarutoRole implements Listener {
             avancementTarget.sendMessage(prefix("&aHiruzen &fest mort alors qu'il utilisait son &cShiki Fûjin &fsur vous."));
             int random = (int) (Math.random() * 3);
             if (random == 0) {
-                //TODO DISABLE POWERS avancementTarget FOR 20 MINUTES
+                Kisame.blocked.add(avancementTarget.getName());
+                Tasks.runLater(() -> Kisame.blocked.add(avancementTarget.getName()), 20*60*20);
                 avancementTarget.sendMessage(prefix("&cVous ne pouvez plus utiliser de pouvoirs pendant 20 minutes."));
             } else if (random == 1) {
                 avancementTarget.sendMessage(prefix("&cVous obtenez Slowness pour toute la game."));
@@ -195,7 +225,7 @@ public class Hiruzen extends NarutoRole implements Listener {
             if (this.power == 1) {
                 List<Entity> burning = new ArrayList<>();
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -295,7 +325,7 @@ public class Hiruzen extends NarutoRole implements Listener {
             }
             if (this.power == 2) {
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -372,7 +402,7 @@ public class Hiruzen extends NarutoRole implements Listener {
 
             if (this.power == 3) {
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -402,7 +432,7 @@ public class Hiruzen extends NarutoRole implements Listener {
             }
             if (this.power == 4) {
                 if(Kisame.isBlocked(player)) {
-                    player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
                 NarutoUHC.usePower(player);
@@ -428,7 +458,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -484,7 +514,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

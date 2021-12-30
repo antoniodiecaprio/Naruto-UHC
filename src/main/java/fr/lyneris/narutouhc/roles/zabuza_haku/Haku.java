@@ -1,5 +1,6 @@
 package fr.lyneris.narutouhc.roles.zabuza_haku;
 
+import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
@@ -22,10 +23,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Haku extends NarutoRole {
 
@@ -49,8 +47,25 @@ public class Haku extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §bHaku\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §bZabuza\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item “§rHyôton§7”, celui-ci lui permet de créer une grande sphère de glace, dans celle-ci il possède l’effet §bVitesse 2§7 ainsi que §cForce 1§7 et lorsqu’il utilise à nouveau son item, il peut se téléporter vers l’endroit qu’il regarder et ceci jusqu’à ce que cette sphère disparaisse, ce pouvoir dure 2 minutes et possède un délai de 15 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §bVitesse 1§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’identité de §bZabuza§7, lorsque celui-ci se retrouve en dessous de §c4 cœurs§7, §bHaku§7 recevra un message cliquable qui lui permettra de se téléporter à §bZabuza§7, ce pouvoir est utilisable une seule fois.\n" +
+                "§e §f\n" +
+                "§7• Il possède la particularité de parler avec §bZabuza§7 dans le chat, il lui suffit simplement d’écrire dans le chat avec l’aide du préfixe \"!\" pour pouvoir communiquer avec lui.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -73,15 +88,15 @@ public class Haku extends NarutoRole {
         if (!event.getMessage().startsWith("!")) return;
         event.setCancelled(true);
 
-        Player haku = Role.findPlayer(NarutoRoles.HAKU);
-        if (haku == null) {
+        Player zabuza = Role.findPlayer(NarutoRoles.ZABUZA);
+        if (zabuza == null) {
             player.sendMessage(prefix("&cHaku n'est pas dans la partie."));
             return;
         }
 
         String message = event.getMessage().substring(1);
-        haku.sendMessage(prefix("&6&lZabuza&8: &7" + message));
-        player.sendMessage(prefix("&6&lZabuza&8: &7" + message));
+        zabuza.sendMessage(prefix("&6&lHaku&8: &7" + message));
+        player.sendMessage(prefix("&6&lHaku&8: &7" + message));
     }
 
     @Override
@@ -119,37 +134,43 @@ public class Haku extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if(Item.interactItem(event, "Hyôton")) {
+
+            if(this.hyotonCooldown >= 13*60) {
+                Block block = player.getTargetBlock((Set<Material>) null, 100);
+                if(block != null) {
+                    player.teleport(block.getLocation().add(0, 1, 0));
+                    player.sendMessage(prefix("&aVous avez été téléporté au block que vous regardiez."));
+                }
+                return;
+            }
+
             if(hyotonCooldown > 0) {
                 player.sendMessage(Messages.cooldown(hyotonCooldown));
                 return;
             }
 
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
 
+            player.removePotionEffect(PotionEffectType.SPEED);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 2*60*20, 0, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2*60*20, 1, false, false));
+            Tasks.runLater(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false)), 2*60*20+1);
 
-            if(alreadyUsedHyoton) {
-                Block block = player.getTargetBlock((Set<Material>) null, 100);
-                if(block == null) {
-                    player.sendMessage(prefix("&cVous n'avez pas été téléporté car vous ne regardez aucun block."));
-                } else {
-                    player.teleport(block.getLocation().add(0, 1, 0));
-                    player.sendMessage(prefix("&aVous avez été téléporté au block que vous regardiez."));
-                }
-            } else {
-                alreadyUsedHyoton = true;
-            }
-
-            for(Location location : sphere(player.getLocation(), 50, true)) {
+            HashMap<Block, Material> map = new HashMap<>();
+            for(Location location : sphere(player.getLocation(), 15, true)) {
                 if(location.getBlock().getType() == Material.AIR || location.getBlock().getType() == Material.WATER || location.getBlock().getType() == Material.STATIONARY_WATER) {
+                    map.put(location.getBlock(), location.getBlock().getType());
                     location.getBlock().setType(Material.PACKED_ICE);
                 }
             }
+
+            Tasks.runLater(() -> {
+                map.keySet().forEach(location -> location.setType(map.get(location)));
+            }, 2*20*60);
 
             hyotonCooldown = 15*60;
         }

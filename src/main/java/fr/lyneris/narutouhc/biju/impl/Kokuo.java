@@ -84,6 +84,7 @@ public class Kokuo extends Biju implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if(!(event.getEntity() instanceof Player)) return;
+        if(this.horse == null) return;
         if(!event.getDamager().getUniqueId().equals(this.horse.getUniqueId())) return;
         int random = (int) (Math.random() * 5);
         if(random == 2) {

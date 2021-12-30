@@ -1,6 +1,7 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
@@ -96,8 +97,39 @@ public class Konan extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cKonan\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose d’un item nommé \"§rShikigami no Mai§7\", celui-ci lui ouvre un menu avec plusieurs choix s’offrant à elle : \n" +
+                "§e §f\n" +
+                "§7Yari : Lorsqu’elle l’utilise, une épée en diamant nommé \"§rYari§7\" lui est donné dans son inventaire, celle-ci est Tranchant 7 mais ne possède qu’une seule utilisation, ce pouvoir possède un délai de 5 minutes.\n" +
+                "§e §f\n" +
+                "§7Batafurai : Lorsqu’elle l’utilise, celle-ci lui permet de se mettre en mode spectateur et d’espionner les joueurs aux alentours d’elle, le pouvoir dure 45 secondes, lors de l’activation de son pouvoir elle n’est plus visible dans la tablist, elle ne peut s’éloigner de plus de 60 blocs de la position à laquelle elle a utilisé son pouvoir, son pouvoir possède un délai de 10 minutes.\n" +
+                "§e §f\n" +
+                "§7Kami Toku : Lorsqu’elle l’utilise, ce pouvoir lui permet de s'envoler pendant 8 secondes, lorsqu’elle utilise ce pouvoir des particules en forme d’ailes d’ange apparaît sur son dos et celui-ci possède un délai d'utilisation de 10 minutes. \n" +
+                "§e §f\n" +
+                "§7Chissoku : Lorsqu’elle l’utilise, un menu de tous les joueurs dans un rayon de 20 blocs autour d’elle est affiché, lorsqu’elle clique sur l’un d’entre eux, le joueur ciblé sera immobilisé et recevra l’effet poison 1 pendant 5 secondes, ce pouvoir possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7• Elle dispose également d’un item nommé \"§rKami no Shisha§7\", lorsqu’elle l’utilise, et qu’après cela elle frappe un joueur, une crevasse se formera sous ses pieds, le faisant tomber, 10 minutes après cela la crevasse disparaît et la terre reprend sa forme normal, cet item possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns Bakuhatsu§7, cette commande lui permet de créer des explosions tout autour d’elle pendant 1 minute, les explosions ont la valeur d’une dynamite (TNT), cependant elle est sensible aux explosions. Ce pouvoir possède un délai de 20 minutes. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l'effet §cForce 1§7 la nuit ainsi que §8NoFall§7 en permanence.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’elle se trouve dans l’eau, elle reçoit les effets §9Résistance 1§7 et §lFaiblesse 1§7 pendant 10 secondes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la liste de tous les membres de l'§cAkatsuki§7. Mais attention §dObito§7 fait parti de cette liste.  \n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -134,8 +166,15 @@ public class Konan extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             this.kamiNoShishaCooldown = 20 * 60;
             this.usingKamiNoShisha = true;
+            player.sendMessage(prefix("&fVous avez selectionné &aKami no Shisha"));
         }
 
         if (Item.interactItem(event.getItem(), "Shikigami no Mai")) {
@@ -193,6 +232,12 @@ public class Konan extends NarutoRole {
                     player.sendMessage(Messages.cooldown(yariCooldown));
                     return;
                 }
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 player.closeInventory();
                 player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 7).setName(Item.specialItem("Yari")).toItemStack());
 
@@ -208,6 +253,12 @@ public class Konan extends NarutoRole {
                     return;
                 }
 
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 player.closeInventory();
 
                 player.setGameMode(GameMode.SPECTATOR);
@@ -215,13 +266,13 @@ public class Konan extends NarutoRole {
 
                 player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aBatafurai§f."));
 
-                Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(player));
+                Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(player));
 
                 Tasks.runLater(() -> {
                     player.teleport(this.oldLocation);
                     player.setGameMode(GameMode.SURVIVAL);
                     oldLocation = null;
-                    Bukkit.getOnlinePlayers().forEach(player1 -> player.showPlayer(player));
+                    Bukkit.getOnlinePlayers().forEach(player1 -> player1.showPlayer(player));
                 }, 45 * 20);
 
                 batafuraiCooldown = 10 * 60;
@@ -233,6 +284,12 @@ public class Konan extends NarutoRole {
                     player.sendMessage(Messages.cooldown(kamiTokuCooldown));
                     return;
                 }
+
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
 
                 player.closeInventory();
 
@@ -248,10 +305,16 @@ public class Konan extends NarutoRole {
             }
 
             if (event.getSlot() == 4) {
-                if (yariCooldown > 0) {
+                if (chissokuCooldown > 0) {
                     player.sendMessage(Messages.cooldown(chissokuCooldown));
                     return;
                 }
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 player.closeInventory();
 
                 int i = 9;
@@ -289,6 +352,12 @@ public class Konan extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aChissoku Toku§f."));
 
             target.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5 * 20, 0, false, false));
@@ -307,6 +376,12 @@ public class Konan extends NarutoRole {
                 player.sendMessage(Messages.cooldown(bakuhatsuCooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir §aBakuhatsu§f."));
             new BukkitRunnable() {
@@ -365,8 +440,8 @@ public class Konan extends NarutoRole {
 
         if (this.usingKamiNoShisha) {
             Location loc = event.getEntity().getLocation();
-            Location one = new Location(Bukkit.getWorld("uhc_world"), loc.getBlockX() + 15, loc.getBlockY(), loc.getBlockZ() + 4);
-            Location two = new Location(Bukkit.getWorld("uhc_world"), loc.getBlockX() - 15, loc.getBlockY(), loc.getBlockZ() - 4);
+            Location one = new Location(Bukkit.getWorld("uhc_world"), loc.getBlockX() + 20, loc.getBlockY() + 1, loc.getBlockZ() + 4);
+            Location two = new Location(Bukkit.getWorld("uhc_world"), loc.getBlockX() - 20, loc.getBlockY() - 25, loc.getBlockZ() - 4);
             Cuboid cuboid = new Cuboid(one, two);
             HashMap<Location, Material> map = new HashMap<>();
             cuboid.getBlocks().stream().filter(Objects::nonNull).filter(block -> block.getType() != Material.AIR).forEach(block -> {

@@ -1,12 +1,14 @@
 package fr.lyneris.narutouhc.roles.jubi;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.biju.Biju;
 import fr.lyneris.narutouhc.biju.Bijus;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
@@ -78,8 +80,41 @@ public class Obito extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §dObito\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §dMadara\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d'un item nommé \"§rNinjutsu Spatio-Temporel§7\", il lui permet de devenir invisible même en portant son armure. Son pouvoir dure 1 minute, il peut le désactiver à tout moment, il possède un délai de 5 minutes, cependant lorsqu’il utilise son pouvoir, on pourra voir ses traces de pas (particules de redstone).\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un autre item nommé “§rKamui§7”, celui-ci lui affiche un menu dans lequel il a deux choix, le premier est nommé “§rArimasu§7”, celui-ci lui permet de le téléporter dans le monde lié à §rKamui§7 et ceci pendant 10 minutes. Le deuxième est nommé “§rSonohoka§7”, il lui permet de téléporter un joueur dans un rayon de 20 blocs autour de lui, dans le monde lié à §rKamui§7 et cela pendant 5 minutes. “§rArimasu§7” possède un délai de 5 minutes, “§rSonohoka§7” possède un délai de 15 minutes. Dans le monde de §rKamui§7 on ne peut pas poser de blocs, sauf les seaux de laves et d'eaux qui s'enlèvent automatiquement au bout d'une minute. On ne peut pas prendre de dégâts de chutes. Il peut utiliser la commande §r/ns yameru§7 pour téléporter lui et le joueur (s’il en a téléporté un) dans le monde normal, suite à sa commande ou si le temps est écoulé, ils seront téléportés à l’endroit exact où ils se situaient avant qu’Obito utilise son pouvoir.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rGenjutsu§7\", Lorsqu’il l’utilise, un menu s’affiche avec 3 pouvoirs différents (voir fiche §rGenjutsu§7)\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une boussole nommée \"§rBiju§7\", Lorsqu’il clique sur celle-ci, un menu s’ouvre avec affiché les 6 §6Biju§7, lorsqu’il clique sur l’un d’entre eux, il commence à traquer celui-ci ou le réceptacle (joueur possédant le §6Biju§7), il obtient aussi dans son chat à quel moment va apparaître le §6Biju§7 ainsi que ces coordonnées.\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns izanagi§7, celle-ci lui permet de recevoir 5 pommes d’or et d’être entièrement régénéré, cependant il perd §c1 cœur§7 permanent, et il ne pourra plus utiliser le Susano, s'il avait réussi à ramasser l'item auparavant, il peut l’utiliser qu’une seule fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la liste de tous les membres de l'§cAkatsuki§7 et de l’identité de §dMadara§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §bVitesse 1§7 et §6Résistance au feu 1§7.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il se trouve avec un nombre de vie plus bas, il obtient un certain pourcentage de résistance, il obtient 2% de résistance par demi-cœur en moins, donc s’il se trouve à la moitié de sa vie, il possède 20% de résistance (l’équivalent de l’effet Résistance 1), il peut aussi aller jusqu’à 38% de résistance maximum (1 demi-cœur).\n" +
+                "§e §f\n" +
+                "§7• Il possède la particularité de parler avec §dMadara§7 dans le chat, il lui suffit simplement d’écrire dans le chat avec l’aide du préfixe \"!\" pour pouvoir communiquer avec lui.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il tue un joueur, il régénère de §c3 cœurs§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §cKaton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -161,6 +196,12 @@ public class Obito extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             if(bijus.getBiju().getMaster() == null) {
                 if(bijus.getBiju().getMaster() == null) {
                     player.sendMessage(prefix("&fVous traquez désormais " + bijus.getBiju().getName() + " &fqui se situe en :"));
@@ -181,6 +222,12 @@ public class Obito extends NarutoRole {
                 player.sendMessage(CC.prefix("&cLes bijus ne sont toujours pas apparu."));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             Inventory inventory = Bukkit.createInventory(null, 9, "Biju");
             inventory.setItem(0, new ItemBuilder(Material.STAINED_GLASS_PANE).setDurability(7).setName(" ").toItemStack());
             int i = 1;
@@ -201,6 +248,12 @@ public class Obito extends NarutoRole {
                 player.sendMessage(prefix("&cVous avez utilisé votre Izanagi, vous ne pouvez pas utiliser le Susano."));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             usingSusano = true;
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             player.getInventory().addItem(new ItemBuilder(Material.IRON_SWORD).setName(Item.specialItem("Epee")).addEnchant(Enchantment.DAMAGE_ALL, 7).toItemStack());
@@ -252,6 +305,12 @@ public class Obito extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             ninjutsuCooldown = 5 * 60;
             invisible = true;
             player.sendMessage(prefix("&fVous êtes désormais &aInvisible&f."));
@@ -270,6 +329,12 @@ public class Obito extends NarutoRole {
         if(event.getInventory().getName().equals("Biju")) {
             event.setCancelled(true);
             if(event.getSlot() != 0) {
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 Biju biju = null;
                 for (Bijus value : Bijus.values()) {
                     if(value.getBiju().getName().equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
@@ -303,6 +368,13 @@ public class Obito extends NarutoRole {
 
         if (event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             if (event.getSlot() == 1) {
                 if (Loc.getNearbyPlayers(player, 20).size() == 0) {
                     player.sendMessage(CC.prefix("§cIl n'y a personne autour de vous."));
@@ -364,6 +436,12 @@ public class Obito extends NarutoRole {
                 return;
             }
 
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             Location playerLocation = player.getLocation();
             Location damagerLocation = target.getLocation();
 
@@ -393,6 +471,12 @@ public class Obito extends NarutoRole {
                     player.sendMessage(Messages.cooldown(sonohokaCooldown));
                     return;
                 }
+
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
 
                 player.teleport(manager.getKamuiSpawn());
                 this.oldLocation.put(player.getUniqueId(), oldLocation);
@@ -450,6 +534,12 @@ public class Obito extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.closeInventory();
 
@@ -521,6 +611,12 @@ public class Obito extends NarutoRole {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             izanagi = true;
             player.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 5));
             player.setHealth(player.getMaxHealth());
@@ -528,6 +624,12 @@ public class Obito extends NarutoRole {
         }
 
         if (args[0].equalsIgnoreCase("yameru")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
                 if (Bukkit.getPlayer(uuid) != null) {
                     Player target = Bukkit.getPlayer(uuid);

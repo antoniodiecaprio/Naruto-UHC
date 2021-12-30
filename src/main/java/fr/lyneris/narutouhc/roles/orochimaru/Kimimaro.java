@@ -58,8 +58,29 @@ public class Kimimaro extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §5Kimimaro\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp d'§5Orochimaru\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rShikotsumyaku§7”, lorsqu’il l’utilise un menu s’affiche avec plusieurs options :\n" +
+                "§e §f\n" +
+                "§7Epée en os : lorsqu’il utilise son pouvoir, il obtient un os aussi fort qu’une épée en diamant Tranchant 4, cependant son os disparaît 1 minute après l’avoir utilisé. Il peut utiliser ce pouvoir 5 fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7Forêt d’os : Lorsqu’il l’utilise, une forêt géante à base de quartz fait son apparition sur un rayon de 50 blocs tout autour de sa position, il peut le faire une seule fois dans la partie, celle-ci disparaît au bout de 3 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rMarque Maudite§7”, celui-ci lui permet de recevoir les effets §9Résistance 1§7, §dRégénération 1§7 et §c3 cœurs§7 supplémentaires régénérés, cependant il perd son effet de §bVitesse 1§7 et reçoit l’effet §8Lenteur 1§7, son pouvoir dure 2 minutes, suite à ses deux minutes il reçoit l’effet §lFaiblesse 1§7, perd son effet de §cForce 1§7, garde son effet de §8Lenteur 1§7, tout cela pendant 5 minutes et il possède un délai de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §cForce 1§7 et §bVitesse 1§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’identité de §5Sakon§7, §5Ukon§7, §5Kidômaru§7, §5Tayuya§7 et §5Jirôbô§7.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override

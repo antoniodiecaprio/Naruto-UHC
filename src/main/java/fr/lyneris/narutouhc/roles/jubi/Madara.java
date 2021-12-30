@@ -1,11 +1,13 @@
 package fr.lyneris.narutouhc.roles.jubi;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.particle.WorldUtils;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import fr.lyneris.uhc.utils.title.Title;
@@ -77,8 +79,43 @@ public class Madara extends NarutoRole implements Listener {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §dMadara\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec §dObito\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé \"§rSusano§7\" qui lui permet d'enflammer un ennemi dès qu'il le frappe, il gagne également l’effet §9Résistance 1§7, il reçoit aussi une épée Tranchant 7, il peut frappé avec son épée une fois toutes les 20 secondes, ce pouvoir dure 5 minutes et possède un délai d'utilisation de 20 minutes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item en son nom, lorsqu’il l’utilise, il lui confère les effets §bVitesse 2§7 et §cForce 1§7, il est infini et ne possède aucun délai.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item “§rChibaku Tensei§7”, à son utilisation, il est dirigé vers un menu dans lequel il a trois choix :\n" +
+                "§e §f\n" +
+                "§7→ Banshô Ten’in : Lorsqu’il l’utilise, il dispose d’une liste de tous les joueurs dans un rayon de 30 blocs autour de lui, en cliquant sur l’un des joueurs celui-ci sera téléporté instantanément à sa position, son pouvoir possède un délai de 5 minutes, il peut le faire 2 fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7→ Shinra Tensei : Lorsqu’il l’utilise, tous les joueurs et projectiles dans un rayon de 20 blocs seront propulsés à l’opposé de sa position, ils sont propulsés d’environ 10 blocs, son pouvoir possède un délai de 5 minutes, il peut le faire 2 fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7→ Tengai Shinsei : Lorsqu’il l’utilise, un bruit de wither se fait retentir dans un rayon de 50 blocs autour de lui, suite à cela une météorite s’écrase à la position à laquelle il a utilisé le pouvoir, elle dispose d’une force destructrice, il est très conseillé de fuir celle-ci.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une épée en diamant Tranchant 4 nommé “§rGunbai§7”\n" +
+                "§e §f\n" +
+                "§7§l▎ Commandes :\n" +
+                "§e §f\n" +
+                "§r→ /ns detect§7, celle-ci lui permet de voir tous les joueurs dans un rayon de 200 blocs, lorsqu’il clique sur l’un des joueurs écrit dans son chat, il peut alors traquer la personne pendant 5 minutes, son pouvoir est utilisable seulement 2 fois dans la partie.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §6Résistance au Feu§7 et §c2 cœurs§7 supplémentaires.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’identité d’§dObito§7.\n" +
+                "§e §f\n" +
+                "§7• Il possède la particularité de parler avec §dObito§7 dans le chat, il lui suffit simplement d’écrire dans le chat avec l’aide du préfixe \"!\" pour pouvoir communiquer avec lui.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §cKaton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -100,6 +137,12 @@ public class Madara extends NarutoRole implements Listener {
                 player.sendMessage(Messages.cooldown(susanoCooldown));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             usingSusano = true;
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 5 * 20 * 60, 0, false, false));
             player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).setName(Item.specialItem("Epee")).addEnchant(Enchantment.DAMAGE_ALL, 7).toItemStack());
@@ -109,6 +152,12 @@ public class Madara extends NarutoRole implements Listener {
         }
 
         if (Item.interactItem(event, "Madara")) {
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             if (player.hasPotionEffect(PotionEffectType.SPEED) && player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE)) {
                 player.removePotionEffect(PotionEffectType.SPEED);
                 player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
@@ -204,6 +253,12 @@ public class Madara extends NarutoRole implements Listener {
                     return;
                 }
 
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
+
                 for (Entity entity : player.getNearbyEntities(20, 20, 20)) {
                     Location initialLocation = player.getLocation().clone();
                     Vector fromPlayerToTarget = entity.getLocation().toVector().clone().subtract(initialLocation.toVector());
@@ -221,6 +276,12 @@ public class Madara extends NarutoRole implements Listener {
                 if (usedMeteorite) {
                     return;
                 }
+
+                if(Kisame.isBlocked(player)) {
+                    player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                    return;
+                }
+                NarutoUHC.usePower(player);
 
                 createMeteorite(player);
             }
@@ -246,6 +307,12 @@ public class Madara extends NarutoRole implements Listener {
                 player.sendMessage(Messages.cooldown(banshoCooldown));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             target.teleport(player);
             target.sendMessage(prefix("&cMadara &fvous a téléporté à sa position."));
@@ -292,6 +359,12 @@ public class Madara extends NarutoRole implements Listener {
                 player.sendMessage(prefix("&cIl n'y a personne autour de vous."));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             player.sendMessage(prefix("&fVoici la liste des joueurs autour de vous:"));
             for (Player nearbyPlayer : Loc.getNearbyPlayers(player, 200)) {
                 TextComponent text = new TextComponent(CC.translate("&8- &c" + nearbyPlayer.getName()));
@@ -326,6 +399,12 @@ public class Madara extends NarutoRole implements Listener {
                 player.sendMessage(prefix("&cVous êtes devez être à moins de 200 blocks de ce joueur pour utiliser ce pouvoir."));
                 return;
             }
+
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             detectTarget = target.getUniqueId();
             player.sendMessage(prefix("&fVous traquez désormais &a" + target.getName()));

@@ -208,6 +208,20 @@ public class NarutoListener implements Listener {
     }
 
     @EventHandler
+    public void onRoleInteractLeft(PlayerPickupItemEvent event) {
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerPickupItem(event, event.getPlayer());
+    }
+
+    @EventHandler
+    public void onRoleInteractLeft(PlayerBucketEmptyEvent event) {
+        if (NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()) == null) return;
+        NarutoUHC.getNaruto().getRoleManager().getRole(event.getPlayer()).onPlayerBucketEmpty(event, event.getPlayer());
+    }
+
+
+
+    @EventHandler
     public void onRoleDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         if (NarutoUHC.getNaruto().getRoleManager().getRole((Player) event.getEntity()) == null) return;
@@ -271,6 +285,15 @@ public class NarutoListener implements Listener {
             NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerJoin(event, event.getPlayer());
         }
     }
+
+    @EventHandler
+    public void onPickup(PlayerPickupItemEvent event) {
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerPickupItem(event, event.getPlayer());
+        }
+    }
+
 
     @EventHandler
     public void allPlayerRoleConsume(PlayerItemConsumeEvent event) {

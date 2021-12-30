@@ -24,6 +24,7 @@ fr\lyneris\narutouhc\biju\impl\Kokuo$KokuoRunnable.class
 fr\lyneris\narutouhc\roles\shinobu\Hinata.class
 fr\lyneris\narutouhc\roles\taka\Jugo$SasukeSkin.class
 fr\lyneris\narutouhc\packet\PacketManager.class
+fr\lyneris\narutouhc\roles\akatsuki\Itachi$IzanamiTarget.class
 fr\lyneris\narutouhc\commands\RevealCommand.class
 fr\lyneris\narutouhc\roles\taka\Sasuke$1.class
 fr\lyneris\narutouhc\module\NarutoModule.class
@@ -41,6 +42,7 @@ fr\lyneris\narutouhc\roles\sankyodai\Gaara.class
 fr\lyneris\narutouhc\crafter\NarutoRole.class
 fr\lyneris\narutouhc\packet\ForetOsGenerator.class
 fr\lyneris\narutouhc\particle\WorldUtils.class
+fr\lyneris\narutouhc\roles\akatsuki\Itachi$IzanamiPlayer.class
 fr\lyneris\narutouhc\roles\taka\Sasuke.class
 fr\lyneris\narutouhc\packet\RayTrace.class
 fr\lyneris\narutouhc\roles\akatsuki\Nagato.class

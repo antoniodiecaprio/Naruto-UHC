@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.orochimaru;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
@@ -65,8 +67,27 @@ public class Kidomaru extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §5Kidômaru\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp d'§5Orochimaru\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un arc Puissance 4.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rKyodaigumo§7”, celui-ci lui permet de faire apparaître une araignée géante statique au dessus de lui, celle-ci fera apparaître en continue des araignées venimeuses ce qui crée une pluie d’araignées, elles attaqueront tous les joueurs hormis lui, son item possède un délai de 15 minutes et il dure 1 minute.\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un item nommé “§rMarque Maudite§7”, celui-ci lui permet de recevoir l’effet §cForce 1§7 et de perdre son effet de faiblesse, son pouvoir dure 5 minutes et possède un délai de 30 minutes, à la fin de l’utilisation il perd §c2 cœurs§7 pendant 15 minutes.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de 60% de chance qu’une de ses flèches infliges 15% de dégâts supplémentaires et 20% de chance qu’elles infliges l’effet §0Cécité 1§7 pendant 3 secondes.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §lFaiblesse 1§7.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -95,6 +116,11 @@ public class Kidomaru extends NarutoRole {
                 player.sendMessage(Messages.cooldown(kyodaigumoCooldown));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             double nearestDistance = Integer.MAX_VALUE;
             for (Player players : Role.getAliveOnlinePlayers()) {
@@ -163,6 +189,11 @@ public class Kidomaru extends NarutoRole {
                 player.sendMessage(Messages.cooldown(marqueCooldown));
                 return;
             }
+            if(Kisame.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
 
             player.removePotionEffect(PotionEffectType.WEAKNESS);
             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20 * 60, 0, false, false));

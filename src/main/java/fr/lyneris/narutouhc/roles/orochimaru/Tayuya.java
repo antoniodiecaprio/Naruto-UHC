@@ -55,8 +55,23 @@ public class Tayuya extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §5Tayuya\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp d'§5Orochimaru\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Elle dispose de l’item nommé “§rFlûte démoniaque§7”, celui-ci lui permet de faire apparaître 3 golems de fer et 5 endermites, leur but sera de la protéger, son item possède un délai de 30 minutes.\n" +
+                "      \n" +
+                "§7• Elle dispose d’un item nommé “§rMarque Maudite§7”, celui-ci lui permet de recevoir l’effet §9Résistance 1§7, son pouvoir dure 5 minutes et possède un délai de 10 minutes, à la fin de l’utilisation elle perd §c1 cœurs§7 permanents.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularité :\n" +
+                "§e §f\n" +
+                "§7• Elle a à sa disposition 10% de vitesse en plus que la normale.\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -74,7 +89,7 @@ public class Tayuya extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -96,7 +111,7 @@ public class Tayuya extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

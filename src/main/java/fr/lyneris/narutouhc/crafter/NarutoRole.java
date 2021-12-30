@@ -25,7 +25,7 @@ public abstract class NarutoRole {
 
     public abstract String getRoleName();
 
-    public abstract List<String> getDescription();
+    public abstract String getDescription();
 
     public abstract NarutoRoles getRole();
 
@@ -158,4 +158,12 @@ public abstract class NarutoRole {
         return CC.prefix(var1);
     }
 
+    public void onAllPlayerPickupItem(PlayerPickupItemEvent event, Player player) {
+    }
+
+    public void onPlayerPickupItem(PlayerPickupItemEvent event, Player player) {
+    }
+
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event, Player player) {
+    }
 }

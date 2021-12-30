@@ -37,8 +37,25 @@ public class RockLee extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aRock Lee\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item \"§rTrois Portes§7\", lorsqu’il clique sur l’item il obtient l'effet §bVitesse 1§7 pendant 2 minutes mais perdra aussi §c1 cœur§7. \n" +
+                "      \n" +
+                "§7• Il dispose de l'item \"§rSix Portes§7\", lorsqu’il clique sur l’item, il obtient les effets §cForce 1§7 et §bVitesse 1§7 pendant 5 minutes cependant il perd §c1 cœur§7 permanent et des particules vertes émaneront de §aRock Lee§7. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il connaît l'identité de §aGaï Maito§7. \n" +
+                "§e §f\n" +
+                "§7• Si §aGaï Maito§7 viens à mourir, alors §aRock Lee§7 recevra l’item §rHuit Portes§7 (voir fiche §aGaï Maito§7). \n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -70,7 +87,7 @@ public class RockLee extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -85,7 +102,7 @@ public class RockLee extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -100,7 +117,7 @@ public class RockLee extends NarutoRole {
 
             usedEight = true;
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -127,7 +144,7 @@ public class RockLee extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);

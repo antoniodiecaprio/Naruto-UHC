@@ -37,14 +37,41 @@ public class Suigetsu extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §6Suigetsu\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec le camp de §6Taka\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un livre Depth Strider 3. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §9Résistance 1§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de 10% de chance qu’un coup ne lui mette pas de dégâts.\n" +
+                "§e §f\n" +
+                "§7• Dans l’eau, il dispose de l’effet §9Résistance 2§7, il peut respirer sous l’eau et s’il enlève son armure, il peut se mettre en invisible et une fois invisible, il ne peut recevoir de dégâts venant d’un joueur et il ne peut infliger de dégâts.\n" +
+                "§e §f\n" +
+                "§7• Son camp se retrouvera souvent allié avec un autre camp, c’est pour cela qu’au début de la partie, son camp fait partie du camp d’§5Orochimaru§7. Si §5Orochimaru§7 vient à mourir alors son camp sera sans allié, suite à ça, si §cItachi§7 vient à mourir, son camp s’alliera avec l’§cAkatsuki§7 et donc il connaîtra  l’identité de §cNagato§7. Si §dTobi§7 et §dMadara§7 rassemble les 9 biju pour former Jûbi, il s’alliera au camp §aShinobi§7.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité d’§5Orochimaru§7.\n" +
+                "§e §f\n" +
+                "§7• A la mort d’§5Orochimaru§7, il obtient l’identité de §6Sasuke§7.\n" +
+                "§e §f\n" +
+                "§7• A la mort de §bZabuza§7, il obtient l’épée de celui-ci nommée “§rKubikiribôchô§7”.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §9Suiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
     public void onDistribute(Player player) {
         Role.knowsRole(player, NarutoRoles.OROCHIMARU);
-        player.getInventory().addItem(new ItemBuilder(Material.BOOK).addStoredEnchantment(Enchantment.DEPTH_STRIDER, 3).toItemStack());
+        player.getInventory().addItem(new ItemBuilder(Material.ENCHANTED_BOOK).addStoredEnchantment(Enchantment.DEPTH_STRIDER, 3).toItemStack());
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, false, false));
     }

@@ -54,8 +54,31 @@ public class Kisame extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §cKisame\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec l'§cAkatsuki\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose d’un livre Agilité aquatique 3. \n" +
+                "§e §f\n" +
+                "§7• Il dispose d’une épée en diamant nommée \"§rSamehada§7\" enchantée Tranchant 4, elle permet de retirer les pouvoirs des joueurs ayant été touché par celle-ci, l'effet dure 1 minute et est utilisable par tous les joueurs de la partie. \n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités : \n" +
+                "§e §f\n" +
+                "§7• Il dispose des effets §cForce 1§7 et §9Résistance 1§7.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il inflige §c50 cœurs§7 de dommages, il reçoit les effets §eAbsorption 2§7 pendant 5 secondes, §dRégénération 2§7 pendant 40 secondes et §6Résistance au feu 2§7 pendant 40 secondes, ce pouvoir se répète à chaque fois qu’il inflige les §c50 cœurs§7 de dommages. \n" +
+                "      \n" +
+                "§7• Il possède la capacité de respirer sous l’eau.\n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité d’§cItachi§7.\n" +
+                "§e §f\n" +
+                "§7• Il dispose de la nature de Chakra : §9Suiton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------\n";
     }
 
     @Override

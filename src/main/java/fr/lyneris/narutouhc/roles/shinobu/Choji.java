@@ -57,8 +57,33 @@ public class Choji extends NarutoRole {
     }
 
     @Override
-    public List<String> getDescription() {
-        return new ArrayList<>();
+    public String getDescription() {
+        return "§7§m--------------------------------------\n" +
+                "§e §f\n" +
+                "§7▎ Rôle: §aChôji\n" +
+                "§7▎ Objectif: §rSon but est de gagner avec les §aShinobi\n" +
+                "§e §f\n" +
+                "§7§l▎ Items :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’item “§rDécuplement Partiel§7\", celui-ci permet de recevoir l’effet §cForce 2§7 pendant 20 secondes, il possède un délai de 10 minutes.\n" +
+                "    \n" +
+                "§7• Il dispose également de l’item “§rBoulet Humain§7”, celui-ci permet de recevoir l’effet §bVitesse 2§7 pendant 1 minute, il possède un délai de 15 minutes.\n" +
+                "    \n" +
+                "§7• Il dispose de 3 steaks nommés “§rAkimichi§7”, lorsqu’il les mange, ils lui permettent de recevoir l’effet §cForce 2§7 et §9Résistance 1§7 pendant 30 secondes, des particules d'eau forment des ailes lorsqu’il mange ses steaks, après avoir utilisé ce pouvoir, il reçoit l’effet §8Lenteur 1§7 pendant 1 minute.\n" +
+                "§e §f\n" +
+                "§7§l▎ Particularités :\n" +
+                "§e §f\n" +
+                "§7• Il dispose de l’effet §cForce 1§7 permanent.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il est à moins de 1,5 sur sa barre de faim, il perd son effet de §cForce§7.\n" +
+                "§e §f\n" +
+                "§7• Lorsqu’il est à la moitié de sa barre de faim, il obtient les effets §2Hunger 1§7 et §8Lenteur 1§7. \n" +
+                "§e §f\n" +
+                "§7• Il connaît l’identité de §aIno§7.\n" +
+                "      \n" +
+                "§7• Il dispose de la nature de Chakra : §6Doton\n" +
+                "§e §f\n" +
+                "§7§m--------------------------------------";
     }
 
     @Override
@@ -75,7 +100,7 @@ public class Choji extends NarutoRole {
 
         if (Item.interactItem(event.getItem(), "Akimichi")) {
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -104,7 +129,7 @@ public class Choji extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
@@ -122,7 +147,7 @@ public class Choji extends NarutoRole {
                 return;
             }
             if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous êtes sous l'emprise de Samehada."));
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
