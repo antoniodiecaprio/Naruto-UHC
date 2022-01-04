@@ -103,7 +103,7 @@ public class Kabuto extends NarutoRole {
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
         if (event.getInventory().getName().equals("Edo Tensei")) {
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -151,7 +151,7 @@ public class Kabuto extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
         if (Item.interactItem(event.getItem(), "Edo Tensei")) {
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -174,7 +174,7 @@ public class Kabuto extends NarutoRole {
         }
 
         if (Item.interactItem(event.getItem(), "Senpô")) {
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -221,7 +221,7 @@ public class Kabuto extends NarutoRole {
             return;
         }
 
-        if(Kisame.isBlocked(player)) {
+        if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
             player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
             return;
         }

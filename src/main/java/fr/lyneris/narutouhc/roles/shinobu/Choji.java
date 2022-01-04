@@ -99,7 +99,7 @@ public class Choji extends NarutoRole {
     public void onPlayerItemConsume(PlayerItemConsumeEvent event, Player player) {
 
         if (Item.interactItem(event.getItem(), "Akimichi")) {
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -128,7 +128,7 @@ public class Choji extends NarutoRole {
                 player.sendMessage(Messages.cooldown(decuplementCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -146,7 +146,7 @@ public class Choji extends NarutoRole {
                 player.sendMessage(Messages.cooldown(bouletCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

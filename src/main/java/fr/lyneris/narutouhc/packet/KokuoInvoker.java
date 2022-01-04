@@ -54,7 +54,7 @@ public class KokuoInvoker {
                 goal.a(1, new PathfinderGoalMeleeAttack((EntityCreature) nmsEntity, EntityHuman.class, 1.0D, false));
                 goal.a(2, new PathfinderGoalLookAtPlayer((EntityInsentient) nmsEntity, EntityHuman.class, 8.0F));
                 target.a(4, new PathFinderAttackPlayer((EntityCreature) nmsEntity, EntityHuman.class));
-                target.a(3, new PathfinderGoalNearestAttackableTarget<EntityHuman>((EntityCreature) nmsEntity, EntityHuman.class, true));
+                target.a(3, new PathfinderGoalNearestAttackableTarget<>((EntityCreature) nmsEntity, EntityHuman.class, true));
             }
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -60,7 +60,7 @@ public class ChakraManager implements Listener {
         if (!Role.getRole((Player) event.getEntity()).getChakra().equals(Chakra.FUTON))
             return;
         if (!event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) return;
-        event.setDamage(event.getFinalDamage() * 0.8);
+        event.setDamage(event.getDamage() * 0.8);
     }
 
     private class ChakraTask extends BukkitRunnable {

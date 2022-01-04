@@ -78,7 +78,7 @@ public class Kiba extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -140,7 +140,7 @@ public class Kiba extends NarutoRole {
                 player.sendMessage(CC.prefix("§c" + target.getName() + " n'est pas dans un rayon de 20 blocks autour de vous."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

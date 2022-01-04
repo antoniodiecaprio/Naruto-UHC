@@ -1,9 +1,11 @@
 package fr.lyneris.narutouhc.roles.akatsuki;
 
 import fr.lyneris.common.utils.Tasks;
+import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Messages;
 import fr.lyneris.narutouhc.utils.Role;
@@ -95,6 +97,13 @@ public class Hidan extends NarutoRole {
                 return;
             }
 
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
+            player.sendMessage(CC.prefix("&fVous avez utilisé votre item &aPlateforme"));
             sphereblock(event.getBlockPlaced().getLocation().clone().subtract(0, 1, 0), 2);
             this.hoeCooldown = 30 * 60;
         }
@@ -125,7 +134,7 @@ public class Hidan extends NarutoRole {
         if(target.getLocation().distance(player.getLocation()) >= 100) {
             player.sendMessage(prefix("&c" + target.getName() + " &fest plus de 100 blocks de vous. De ce fait vous prenez le dégât de ce coup."));
         } else {
-            target.damage(event.getFinalDamage());
+            target.damage(event.getDamage());
             event.setDamage(0);
         }
     }

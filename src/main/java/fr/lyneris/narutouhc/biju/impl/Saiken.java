@@ -78,6 +78,7 @@ public class Saiken extends Biju implements Listener {
         slime.setCustomNameVisible(true);
         EntityLiving nmsEntity = ((CraftLivingEntity) slime).getHandle();
         ((CraftLivingEntity) nmsEntity.getBukkitEntity()).setRemoveWhenFarAway(false);
+        super.spawnEntity();
     }
 
     @EventHandler
@@ -86,6 +87,8 @@ public class Saiken extends Biju implements Listener {
             event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), getItem());
             this.slime = null;
             event.getDrops().clear();
+            Bukkit.broadcastMessage(CC.prefix("&a" + getName() + " &fa été tué."));
+
             Tasks.runLater(() -> {
                 if (this.getMaster() == null) {
                     spawnEntity();
@@ -120,7 +123,7 @@ public class Saiken extends Biju implements Listener {
 
     @Override
     public ItemStack getItem() {
-        return Item.getInteractItem("Isobu");
+        return Item.getInteractItem("Saiken");
     }
 
     @Override
@@ -141,16 +144,18 @@ public class Saiken extends Biju implements Listener {
     public class SaikenRunnable extends BukkitRunnable {
 
         int timer = 0;
-        int spawn = (int) (Math.random() * 1200);
+        int spawn = (int) (Math.random() * 30);
 
         @Override
         public void run() {
+                timer++;
+        
 
-            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() * 60 + spawn) - 30) {
+            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn) - 30) {
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fva apparaître dans &a30 &fsecondes."));
             }
 
-            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() * 60 + spawn)) {
+            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn)) {
                 spawnEntity();
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fvient d'apparaître."));
                 cancel();

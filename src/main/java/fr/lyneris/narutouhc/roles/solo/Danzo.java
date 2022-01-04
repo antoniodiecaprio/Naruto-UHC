@@ -32,7 +32,7 @@ public class Danzo extends NarutoRole {
             int random = (int) (Math.random() * 20);
             if(random == 1) {
                 player.sendMessage(prefix("&fVous avez mis &a25% &fde dégâts en plus."));
-                event.setDamage(event.getFinalDamage()*1.25);
+                event.setDamage(event.getDamage()*1.25);
             }
         }
     }
@@ -103,7 +103,7 @@ public class Danzo extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

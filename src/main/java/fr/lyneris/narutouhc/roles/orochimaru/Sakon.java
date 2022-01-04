@@ -235,7 +235,7 @@ public class Sakon extends NarutoRole {
             if (senpoTimer > 0) {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -270,7 +270,7 @@ public class Sakon extends NarutoRole {
             if (barrierTimer > 0) {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -287,7 +287,7 @@ public class Sakon extends NarutoRole {
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
         Player ukon = Role.findPlayer(NarutoRoles.UKON);
         if(ukon.getLocation().distance(player.getLocation()) > 15) {
-            if(!(event.getFinalDamage() >= player.getHealth())) return;
+            if(!(event.getDamage() >= player.getHealth())) return;
             if(Ukon.died) {
                 ukon.setGameMode(GameMode.SURVIVAL);
                 ukon.setHealth(0);

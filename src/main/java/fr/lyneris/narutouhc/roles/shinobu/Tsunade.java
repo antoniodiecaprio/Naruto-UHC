@@ -73,7 +73,7 @@ public class Tsunade extends NarutoRole {
                 "§e §f\n" +
                 "§7• Elle dispose d'un item nommé \"§rKatsuyu§7\" qui permet de donner l’effet §dRégénération 3§7 à tous les joueurs autour d’elle, celui-ci possède un délai de 20 minutes, pour une durée d'une seule minute, son item possède un rayon maximum de 30 blocs. \n" +
                 "§e §f\n" +
-                "§7• Elle dispose de l’item \"§rByakugô§7\", celui-ci permet de lui donner l’effet §dRégénération 5§7, une fois avoir perdu un total de §c15 cœurs§7 sous l’effet de ce pouvoir, celui-ci s’arrête et elle perd §c2 cœurs§7 pendant 15 minutes, l’item possède un délai de 30 minutes. \n" +
+                "§7• Elle dispose de l’item \"§rByakugô§7\", celui-ci permet de lui donner l’effet §dRégénération 5§7, une fois avoir perdu un total de §c15 cœurs§7 sous l’effet de ce pouvoir, celui-ci s’arrête et elle perd §c2 cœurs§7 pendant 15 minutes, l’item possède un délai de 20 minutes. \n" +
                 "§e §f\n" +
                 "§7§l▎ Particularités :\n" +
                 "§e §f\n" +
@@ -97,7 +97,7 @@ public class Tsunade extends NarutoRole {
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
 
         if (usingByakugo) {
-            damageTaken += event.getFinalDamage();
+            damageTaken += event.getDamage();
         }
 
         if (damageTaken >= 30) {
@@ -133,7 +133,7 @@ public class Tsunade extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -165,7 +165,7 @@ public class Tsunade extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -178,7 +178,7 @@ public class Tsunade extends NarutoRole {
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 4, false, false));
 
-            byakugoCooldown = 30 * 60;
+            byakugoCooldown = 20 * 60;
 
         }
 

@@ -91,7 +91,7 @@ public class Konohamaru extends NarutoRole {
                 player.sendMessage(Messages.cooldown(rasenganCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

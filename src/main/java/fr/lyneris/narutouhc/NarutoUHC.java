@@ -33,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class NarutoUHC extends JavaPlugin {
@@ -78,6 +79,7 @@ public class NarutoUHC extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(chakra, this);
         this.getServer().getPluginManager().registerEvents(bijuListener, this);
         this.getServer().getPluginManager().registerEvents(new Reach(), this);
+        this.getServer().getPluginManager().registerEvents(pierreTombaleManager, this);
 
         this.getCommand("ns").setExecutor(new NarutoCommand());
         this.getCommand("reveal").setExecutor(new RevealCommand());
@@ -165,7 +167,7 @@ public class NarutoUHC extends JavaPlugin {
     }
 
     public static void usePower(Player player) {
-        Role.getAliveOnlinePlayers().forEach(player1 -> Role.getRole(player1).onAllPlayerPowerUse(player));
+        Role.getAliveOnlinePlayers().stream().filter(Objects::nonNull).filter(player1 -> Role.getRole(player1) != null).forEach(player1 -> Role.getRole(player1).onAllPlayerPowerUse(player));
     }
 
 }

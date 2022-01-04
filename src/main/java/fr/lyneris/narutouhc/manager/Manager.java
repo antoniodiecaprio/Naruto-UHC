@@ -92,8 +92,6 @@ public class Manager {
 
                     roleInstance.onDistribute(Bukkit.getPlayer(uuid));
                     roles.remove(role);
-                    Bukkit.broadcastMessage("name :" + Bukkit.getPlayer(uuid));
-                    Bukkit.broadcastMessage("role :" + roleInstance.getRoleName());
 
                 } catch (Exception e) {
                     e.printStackTrace();

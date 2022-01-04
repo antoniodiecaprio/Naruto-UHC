@@ -88,7 +88,7 @@ public class Tayuya extends NarutoRole {
                 player.sendMessage(Messages.cooldown(marqueCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -110,7 +110,7 @@ public class Tayuya extends NarutoRole {
                 player.sendMessage(Messages.cooldown(fluteCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

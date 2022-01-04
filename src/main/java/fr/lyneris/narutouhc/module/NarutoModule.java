@@ -158,6 +158,7 @@ public class NarutoModule implements Module {
     @Override
     public void onStart() {
         Bijus.initBijus();
+        NarutoUHC.getNaruto().getPierreTombaleManager().onStart();
     }
 
     @Override

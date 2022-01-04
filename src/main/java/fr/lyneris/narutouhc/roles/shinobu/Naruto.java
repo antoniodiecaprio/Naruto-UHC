@@ -117,7 +117,7 @@ public class Naruto extends NarutoRole {
 //                    return;
 //                }
 //
-//            if(Kisame.isBlocked(player)) {
+//            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
 //                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
 //                return;
 //            }
@@ -143,7 +143,7 @@ public class Naruto extends NarutoRole {
                     Messages.getCooldown(kisuoiriCooldown).queue(player);
                     return;
                 }
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -423,13 +423,7 @@ public class Naruto extends NarutoRole {
             if (!usedKurama) {
                 player.sendMessage(CC.prefix("§cVous  n'êtes pas en train d'utiliser l'item Kurama"));
                 return;
-            }
-            if(Kisame.isBlocked(player)) {
-                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
-                return;
-            }
-            NarutoUHC.usePower(player);
-            boolean var1 = false;
+            }boolean var1 = false;
 
             NarutoRole targetRole = NarutoUHC.getNaruto().getRoleManager().getRole(target);
 
@@ -438,13 +432,19 @@ public class Naruto extends NarutoRole {
                 return;
             }
 
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
+                player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
+                return;
+            }
+            NarutoUHC.usePower(player);
+
             if (narutoUHC.getRoleManager().getCamp(target) != Camp.SHINOBI) {
                 var1 = true;
             }
 
-            if (targetRole.getRoleName().equals("SAI")) {
+            if (targetRole.getRole().equals(NarutoRoles.SAI)) {
                 var1 = Role.findPlayer(NarutoRoles.SASUKE) != null && Role.findPlayer(NarutoRoles.SASUKE).getLocation().distance(target.getLocation()) <= 30;
-            } else if (targetRole.getRoleName().equals("ITACHI") || targetRole.getRoleName().equals("KARIN") || targetRole.getRoleName().equals("OBITO")) {
+            } else if (targetRole.getRole().equals(NarutoRoles.ITACHI) || targetRole.getRole().equals(NarutoRoles.KARIN) || targetRole.getRole().equals(NarutoRoles.OBITO)) {
                 var1 = false;
             }
 
@@ -468,7 +468,7 @@ public class Naruto extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

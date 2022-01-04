@@ -15,7 +15,7 @@ public class SchematicManager {
         try {
             CuboidClipboard clipBoard = SchematicFormat.MCEDIT.load(new File(path));
             for (int i = 0; i < 20; i++) {
-                Location location = new Location(Bukkit.getWorld("world"), x, y, z);
+                Location location = new Location(Bukkit.getWorld("uhc_world"), x, y, z);
                 clipBoard.paste(new EditSession(BukkitUtil.getLocalWorld(location.getWorld()), Integer.MAX_VALUE), BukkitUtil.toVector(location), true);
             }
         } catch (Exception e) {

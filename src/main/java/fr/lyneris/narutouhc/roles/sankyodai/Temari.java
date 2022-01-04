@@ -6,10 +6,7 @@ import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
 import fr.lyneris.narutouhc.roles.akatsuki.Kisame;
-import fr.lyneris.narutouhc.utils.CC;
-import fr.lyneris.narutouhc.utils.Item;
-import fr.lyneris.narutouhc.utils.Loc;
-import fr.lyneris.narutouhc.utils.Messages;
+import fr.lyneris.narutouhc.utils.*;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -83,6 +80,8 @@ public class Temari extends NarutoRole {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0, false, false));
         player.getInventory().addItem(new ItemBuilder(Material.NETHER_STAR).setName(Item.interactItem("Kamatari")).toItemStack());
         player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD).addEnchant(Enchantment.DAMAGE_ALL, 4).setName(Item.specialItem("Éventail")).toItemStack());
+        Role.knowsRole(player, NarutoRoles.GAARA);
+        Role.knowsRole(player, NarutoRoles.KANKURO);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class Temari extends NarutoRole {
                 player.sendMessage(Messages.cooldown(eventailCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -125,7 +124,7 @@ public class Temari extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

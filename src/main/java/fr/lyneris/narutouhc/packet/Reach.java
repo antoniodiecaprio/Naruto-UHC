@@ -35,7 +35,7 @@ public class Reach implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
-        lastDamage.put(event.getDamager().getUniqueId(), event.getFinalDamage());
+        lastDamage.put(event.getDamager().getUniqueId(), event.getDamage());
     }
 
     @EventHandler
@@ -51,7 +51,7 @@ public class Reach implements Listener {
                 return;
             }
             if (getLookingAt(player, p) && canHit.getOrDefault(player.getUniqueId(), true)) {
-                p.damage(lastDamage.getOrDefault(player.getUniqueId(), 10.0));
+                p.damage(lastDamage.getOrDefault(player.getUniqueId(), 3.0));
                 p.setVelocity(player.getLocation().getDirection().multiply(0.9).setY(0.3));
                 canHit.put(player.getUniqueId(), false);
                 Bukkit.getScheduler().runTaskLater(NarutoUHC.getNaruto(), () -> canHit.put(player.getUniqueId(), true), 60*20);

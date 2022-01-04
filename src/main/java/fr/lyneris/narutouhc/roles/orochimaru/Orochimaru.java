@@ -152,7 +152,7 @@ public class Orochimaru extends NarutoRole {
                 player.sendMessage(prefix("&cVous êtes déjà sous l'effet de Manda."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -233,7 +233,7 @@ public class Orochimaru extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -296,7 +296,7 @@ public class Orochimaru extends NarutoRole {
     @Override
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
 
-        if(event.getFinalDamage() > player.getHealth() && revive) {
+        if(event.getDamage() > player.getHealth() && revive) {
             event.setCancelled(true);
             World world = Bukkit.getWorld("uhc_world");
             int x = (int) (Math.random() * (world.getWorldBorder().getSize() / 2));

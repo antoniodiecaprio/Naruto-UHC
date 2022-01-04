@@ -137,7 +137,7 @@ public class Madara extends NarutoRole implements Listener {
                 player.sendMessage(Messages.cooldown(susanoCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -152,7 +152,7 @@ public class Madara extends NarutoRole implements Listener {
         }
 
         if (Item.interactItem(event, "Madara")) {
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -253,7 +253,7 @@ public class Madara extends NarutoRole implements Listener {
                     return;
                 }
 
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -277,7 +277,7 @@ public class Madara extends NarutoRole implements Listener {
                     return;
                 }
 
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -308,7 +308,7 @@ public class Madara extends NarutoRole implements Listener {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -359,7 +359,7 @@ public class Madara extends NarutoRole implements Listener {
                 player.sendMessage(prefix("&cIl n'y a personne autour de vous."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -400,7 +400,7 @@ public class Madara extends NarutoRole implements Listener {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

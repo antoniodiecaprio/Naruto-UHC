@@ -121,7 +121,7 @@ public class Obito extends NarutoRole {
     public void onAllPlayerDamage(EntityDamageEvent event, Player player) {
         int health = (int) player.getHealth();
         double resistance = ((player.getMaxHealth() - health) * 2);
-        event.setDamage(event.getFinalDamage() * (1 - (resistance / 100)));
+        event.setDamage(event.getDamage() * (1 - (resistance / 100)));
     }
 
     @Override
@@ -190,20 +190,20 @@ public class Obito extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
 
-        if(Item.specialItem(event.getItem(), "Traqueur")) {
-            if(bijus == null) {
+        if (Item.specialItem(event.getItem(), "Traqueur")) {
+            if (bijus == null) {
                 player.sendMessage(prefix("&cVous n'avez selectionné aucun Biju."));
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
 
-            if(bijus.getBiju().getMaster() == null) {
-                if(bijus.getBiju().getMaster() == null) {
+            if (bijus.getBiju().getMaster() == null) {
+                if (bijus.getBiju().getMaster() == null) {
                     player.sendMessage(prefix("&fVous traquez désormais " + bijus.getBiju().getName() + " &fqui se situe en :"));
                     Location loc = bijus.getBiju().getLivingEntity().getLocation();
                     player.sendMessage(CC.prefix("&a" + loc.getBlockX() + "&f, &a" + loc.getBlockY() + "&f, &a" + loc.getBlockZ()));
@@ -217,12 +217,12 @@ public class Obito extends NarutoRole {
             }
         }
 
-        if(Item.interactItem(event, "Biju")) {
-            if(!Bijus.start) {
+        if (Item.interactItem(event, "Biju")) {
+            if (!Bijus.start) {
                 player.sendMessage(CC.prefix("&cLes bijus ne sont toujours pas apparu."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -248,7 +248,7 @@ public class Obito extends NarutoRole {
                 player.sendMessage(prefix("&cVous avez utilisé votre Izanagi, vous ne pouvez pas utiliser le Susano."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -305,7 +305,7 @@ public class Obito extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -326,10 +326,10 @@ public class Obito extends NarutoRole {
     @Override
     public void onPlayerInventoryClick(InventoryClickEvent event, Player player) {
 
-        if(event.getInventory().getName().equals("Biju")) {
+        if (event.getInventory().getName().equals("Biju")) {
             event.setCancelled(true);
-            if(event.getSlot() != 0) {
-                if(Kisame.isBlocked(player)) {
+            if (event.getSlot() != 0) {
+                if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -337,13 +337,13 @@ public class Obito extends NarutoRole {
 
                 Biju biju = null;
                 for (Bijus value : Bijus.values()) {
-                    if(value.getBiju().getName().equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
+                    if (value.getBiju().getName().equals(event.getCurrentItem().getItemMeta().getDisplayName())) {
                         biju = value.getBiju();
                         break;
                     }
                 }
                 assert biju != null;
-                if(biju.getMaster() == null) {
+                if (biju.getMaster() == null) {
                     player.sendMessage(prefix("&fVous traquez désormais " + biju.getName() + " &fqui se situe en :"));
                     Location loc = biju.getLivingEntity().getLocation();
                     player.sendMessage(CC.prefix("&a" + loc.getBlockX() + "&f, &a" + loc.getBlockY() + "&f, &a" + loc.getBlockZ()));
@@ -357,7 +357,7 @@ public class Obito extends NarutoRole {
                 player.sendMessage(prefix("&fFaites un clic &adroit &favec votre boussoule pour actualiser les coordonnées."));
                 Bijus bijus = null;
                 for (Bijus value : Bijus.values()) {
-                    if(value.getBiju().getName().equals(biju.getName())) {
+                    if (value.getBiju().getName().equals(biju.getName())) {
                         bijus = value;
                         break;
                     }
@@ -369,7 +369,7 @@ public class Obito extends NarutoRole {
         if (event.getInventory().getName().equals("Genjutsu")) {
             event.setCancelled(true);
 
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -436,7 +436,7 @@ public class Obito extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -472,7 +472,7 @@ public class Obito extends NarutoRole {
                     return;
                 }
 
-                if(Kisame.isBlocked(player)) {
+                if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -535,7 +535,7 @@ public class Obito extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -611,7 +611,7 @@ public class Obito extends NarutoRole {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -624,23 +624,24 @@ public class Obito extends NarutoRole {
         }
 
         if (args[0].equalsIgnoreCase("yameru")) {
-            if(Kisame.isBlocked(player)) {
+            if (fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
 
             for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
-                if (Bukkit.getPlayer(uuid) != null) {
-                    Player target = Bukkit.getPlayer(uuid);
-                    if (target.getWorld().getName().equals("kamui") && oldLocation.get(uuid) != null) {
-                        target.teleport(oldLocation.get(uuid));
-                        target.sendMessage(CC.prefix("§aObito §fa décidé de vous téléporter sur le monde normal."));
-                        player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fdans le monde normal."));
+                if (Bukkit.getPlayer(uuid) == null) continue;
 
-                    }
-                }
+                Player target = Bukkit.getPlayer(uuid);
+                if (!(target.getWorld().getName().equals("kamui") && oldLocation.get(uuid) != null)) continue;
+
+                target.teleport(oldLocation.get(uuid));
+                target.sendMessage(CC.prefix("§aObito §fa décidé de vous téléporter sur le monde normal."));
+                player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fdans le monde normal."));
+
             }
+
         }
 
     }

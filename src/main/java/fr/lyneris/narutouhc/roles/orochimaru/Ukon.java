@@ -77,7 +77,7 @@ public class Ukon extends NarutoRole {
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
         Player sakon = Role.findPlayer(NarutoRoles.SAKON);
         if(sakon.getLocation().distance(player.getLocation()) > 15) {
-            if(!(event.getFinalDamage() >= player.getHealth())) return;
+            if(!(event.getDamage() >= player.getHealth())) return;
             if(Sakon.died) {
                 sakon.setGameMode(GameMode.SURVIVAL);
                 sakon.setHealth(0);
@@ -111,7 +111,7 @@ public class Ukon extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCet item est déjà en cours d'utilisation."));
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -139,7 +139,7 @@ public class Ukon extends NarutoRole {
                 player.sendMessage(CC.prefix("§cSakon doit être au maximum à 40 blocks de vous."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

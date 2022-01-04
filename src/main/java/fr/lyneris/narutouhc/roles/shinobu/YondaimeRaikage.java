@@ -92,7 +92,7 @@ public class YondaimeRaikage extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event.getItem(), "Armure de foudre")) {
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

@@ -295,7 +295,7 @@ import java.util.UUID;
                 player.sendMessage(Messages.cooldown(shukakuCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -375,7 +375,7 @@ import java.util.UUID;
                 player.sendMessage(prefix("&cVous devez être à moins de 30 blocks de ce joueur."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -644,7 +644,7 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 30 sables pour utiliser ce pouvoir."));
                         return;
                     }
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -658,7 +658,7 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 45 sables pour utiliser ce pouvoir."));
                         return;
                     }
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -672,7 +672,7 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 64 sables pour utiliser ce pouvoir."));
                         return;
                     }
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -686,7 +686,7 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 64 sables pour utiliser ce pouvoir."));
                         return;
                     }
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -700,7 +700,7 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 32 sables pour utiliser ce pouvoir."));
                         return;
                     }
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -714,7 +714,7 @@ import java.util.UUID;
                         player.sendMessage(CC.prefix("&cIl vous faut un total de 96 sables pour utiliser ce pouvoir."));
                         return;
                     }
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(CC.prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }

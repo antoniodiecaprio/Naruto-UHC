@@ -257,7 +257,7 @@ public class Deidara extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -309,7 +309,7 @@ public class Deidara extends NarutoRole {
         if (!arrows.contains((Arrow) event.getEntity())) return;
 
         if (state == BowState.C1) {
-            if(Kisame.isBlocked(shooter)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(shooter)) {
                 shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -321,7 +321,7 @@ public class Deidara extends NarutoRole {
         }
 
         if (state == BowState.C3) {
-            if(Kisame.isBlocked(shooter)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(shooter)) {
                 shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -351,7 +351,7 @@ public class Deidara extends NarutoRole {
                 shooter.sendMessage(Messages.cooldown(c1Cooldown));
                 return;
             }
-            if(Kisame.isBlocked(shooter)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(shooter)) {
                 shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -370,7 +370,7 @@ public class Deidara extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(shooter)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(shooter)) {
                 shooter.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

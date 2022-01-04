@@ -104,7 +104,7 @@ public class Kankuro extends NarutoRole {
     @Override
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (Item.interactItem(event, "Marionnettes")) {
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -187,7 +187,7 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -209,7 +209,7 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -233,7 +233,7 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -256,7 +256,7 @@ public class Kankuro extends NarutoRole {
                     player.sendMessage(prefix("&cCe joueur n'est pas connecté&f."));
                     return;
                 }
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }

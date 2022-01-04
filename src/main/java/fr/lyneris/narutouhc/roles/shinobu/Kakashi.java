@@ -155,7 +155,7 @@ public class Kakashi extends NarutoRole {
                 player.sendMessage(Messages.cooldown(pakkunCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -267,7 +267,7 @@ public class Kakashi extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous utilisez déjà ce pouvoir sur quelqu'un"));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -331,7 +331,7 @@ public class Kakashi extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -370,7 +370,7 @@ public class Kakashi extends NarutoRole {
                     player.sendMessage(Messages.cooldown(sonohokaCooldown));
                     return;
                 }
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -433,7 +433,7 @@ public class Kakashi extends NarutoRole {
             }
 
             player.closeInventory();
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -458,7 +458,7 @@ public class Kakashi extends NarutoRole {
     public void onSubCommand(Player player, String[] args) {
 
         if (!args[0].equalsIgnoreCase("yameru")) return;
-        if(Kisame.isBlocked(player)) {
+        if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
             player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
             return;
         }

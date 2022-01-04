@@ -60,7 +60,7 @@ public class NarutoListener implements Listener {
             int var1 = NarutoUHC.getNaruto().getManager().getResistance().get(event.getEntity().getUniqueId());
             if (var1 != 0) {
                 int var2 = 1 - (var1 / 100);
-                event.setDamage(event.getFinalDamage() * var2);
+                event.setDamage(event.getDamage() * var2);
             }
         }
 
@@ -90,7 +90,7 @@ public class NarutoListener implements Listener {
             int var1 = NarutoUHC.getNaruto().getManager().getStrength().get(event.getDamager().getUniqueId());
             if (var1 != 0) {
                 int var2 = 1 + (var1 / 100);
-                event.setDamage(event.getFinalDamage() * var2);
+                event.setDamage(event.getDamage() * var2);
             }
         }
     }
@@ -272,8 +272,12 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDeath(event, event.getEntity());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDeath(event, event.getEntity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -281,16 +285,24 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerJoin(event, event.getPlayer());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerJoin(event, event.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @EventHandler
     public void onPickup(PlayerPickupItemEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerPickupItem(event, event.getPlayer());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerPickupItem(event, event.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -298,8 +310,12 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void allPlayerRoleConsume(PlayerItemConsumeEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerItemConsume(event, event.getPlayer());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerItemConsume(event, event.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -307,8 +323,12 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerMove(event, event.getPlayer());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerMove(event, event.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -333,16 +353,24 @@ public class NarutoListener implements Listener {
     @EventHandler
     public void onRide(EntityMountEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerEntityMountEvent(event, (Player) event.getEntity());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerEntityMountEvent(event, (Player) event.getEntity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @EventHandler
     public void onAllPlayerInteract(PlayerInteractEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerItemInteract(event, event.getPlayer());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerItemInteract(event, event.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -350,8 +378,12 @@ public class NarutoListener implements Listener {
     public void onAllDamageOnEntity(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDamageOnEntity(event, (Player) event.getDamager());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDamageOnEntity(event, (Player) event.getDamager());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -359,16 +391,24 @@ public class NarutoListener implements Listener {
     public void onAllDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDamage(event, (Player) event.getEntity());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerDamage(event, (Player) event.getEntity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @EventHandler
     public void onUnRide(VehicleExitEvent event) {
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
-            NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerVehicleExitEvent(event, (Player) event.getExited());
+            try {
+                if (NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer) == null) return;
+                NarutoUHC.getNaruto().getRoleManager().getRole(onlinePlayer).onAllPlayerVehicleExitEvent(event, (Player) event.getExited());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

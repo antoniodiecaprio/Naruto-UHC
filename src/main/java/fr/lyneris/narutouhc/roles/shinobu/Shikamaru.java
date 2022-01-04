@@ -255,7 +255,7 @@ public class Shikamaru extends NarutoRole {
                     player.sendMessage(CC.prefix("§cVous avez déjà utilisé ce pouvoir."));
                 }
 
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -285,7 +285,7 @@ public class Shikamaru extends NarutoRole {
             event.setCancelled(true);
             if (event.getSlot() == 0) {
                 player.closeInventory();
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -317,7 +317,7 @@ public class Shikamaru extends NarutoRole {
                 if (!event.getCurrentItem().hasItemMeta()) return;
                 if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
                 player.closeInventory();
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -359,7 +359,7 @@ public class Shikamaru extends NarutoRole {
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             player.closeInventory();
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -407,7 +407,7 @@ public class Shikamaru extends NarutoRole {
             if (!event.getCurrentItem().getItemMeta().hasDisplayName()) return;
             player.closeInventory();
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

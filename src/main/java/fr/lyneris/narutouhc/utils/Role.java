@@ -26,13 +26,13 @@ public class Role {
     public static Player findPlayer(NarutoRoles var1) {
         Player player = null;
         for (UUID uuid : UHC.getUHC().getGameManager().getPlayers()) {
-            if (NarutoUHC.getNaruto().getRoleManager().getRole(uuid) != null) {
-                if (NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getRole().equals(var1)) {
-                    player = Bukkit.getPlayer(uuid);
-                    break;
-                }
-            }
+            if (NarutoUHC.getNaruto().getRoleManager().getRole(uuid) == null) continue;
+            if (!(Bukkit.getPlayer(uuid) != null && Bukkit.getPlayer(uuid).getGameMode() != GameMode.SPECTATOR)) continue;
+            if (!NarutoUHC.getNaruto().getRoleManager().getRole(uuid).getRole().equals(var1)) continue;
+            player = Bukkit.getPlayer(uuid);
+            break;
         }
+
         return player;
     }
 
@@ -101,7 +101,7 @@ public class Role {
     public static int getItemAmount(Player player, Material material) {
         int toReturn = 0;
         for (ItemStack content : player.getInventory().getContents()) {
-            if(content != null && content.getType() == material) {
+            if (content != null && content.getType() == material) {
                 toReturn += content.getAmount();
             }
         }
@@ -119,6 +119,7 @@ public class Role {
             player.getInventory().getItem(player.getInventory().first(material)).setAmount(player.getInventory().getItem(player.getInventory().first(material)).getAmount() - (remove - 64));
         }
     }
+
     public static void attemptWin() {
         if (won) return;
         HashMap<Camp, Integer> camp = new HashMap<>();

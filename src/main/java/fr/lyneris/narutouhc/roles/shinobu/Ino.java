@@ -207,11 +207,12 @@ public class Ino extends NarutoRole {
                 player.sendMessage(Messages.offline(args[1]));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
             NarutoUHC.usePower(player);
+
             transfer = target.getUniqueId();
             target.sendMessage(CC.prefix("§aIno §fa utilisé son pouvoir de transfert sur vous. De ce fait lors de votre mort, vous pourrez envoyer un message de dernière volontée. Attention, si vous mourrez dans §c20 minutes§f ou plus, vous ne pourrez pas utiliser cette dernière volontée."));
             player.sendMessage(CC.prefix("§fVous avez utilisé votre pouvoir sur §a" + target.getName()));
@@ -235,7 +236,7 @@ public class Ino extends NarutoRole {
                 player.sendMessage(CC.prefix("§cIl n'y a personne dans votre liste."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

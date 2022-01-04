@@ -5,6 +5,7 @@ import fr.lyneris.narutouhc.crafter.Camp;
 import fr.lyneris.narutouhc.crafter.Chakra;
 import fr.lyneris.narutouhc.crafter.NarutoRole;
 import fr.lyneris.narutouhc.manager.NarutoRoles;
+import fr.lyneris.narutouhc.utils.Blocked;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Role;
@@ -21,12 +22,7 @@ import java.util.List;
 
 public class Kisame extends NarutoRole {
 
-    public static List<String> blocked = new ArrayList<>();
     public int heartDamage = 0;
-
-    public static boolean isBlocked(Player player) {
-        return blocked.contains(player.getName());
-    }
 
     public NarutoRoles getRole() {
         return NarutoRoles.KISAME;
@@ -35,7 +31,7 @@ public class Kisame extends NarutoRole {
     @Override
     public void onPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player player) {
         if (event.getEntity() instanceof Player) {
-            heartDamage += event.getFinalDamage();
+            heartDamage += event.getDamage();
         }
 
         if (heartDamage >= 50) {
@@ -94,11 +90,11 @@ public class Kisame extends NarutoRole {
     @Override
     public void onAllPlayerDamageOnEntity(EntityDamageByEntityEvent event, Player damager) {
         if (Item.specialItem(damager.getItemInHand(), "Samehada")) {
-            if (blocked.contains(event.getEntity().getName())) return;
-            blocked.add(event.getEntity().getName());
+            if (fr.lyneris.narutouhc.utils.Blocked.blocked.contains(event.getEntity().getName())) return;
+            fr.lyneris.narutouhc.utils.Blocked.blocked.add(event.getEntity().getName());
             event.getEntity().sendMessage(CC.prefix("§cSamehada §fa utilisé son épée sur vous, vous ne pouvez plus utiliser vos pouvoirs pendant §c1 minute§f."));
             damager.sendMessage(prefix("&fVous avez utilisé votre épée sur &a" + event.getEntity().getName()));
-            Tasks.runLater(() -> blocked.remove(event.getEntity().getName()), 60 * 20);
+            Tasks.runLater(() -> Blocked.blocked.remove(event.getEntity().getName()), 60 * 20);
         }
     }
 

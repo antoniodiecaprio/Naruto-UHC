@@ -82,7 +82,7 @@ public class Minato extends NarutoRole {
                 "§e §f\n" +
                 "§7• Il dispose d'un arc spécial nommé \"§rShurikenJutsu§7\" celui-ci lui permet de se téléporter à l'emplacement où la flèche atterrit. Il est le seul à pouvoir l'utiliser.\n" +
                 "§e §f\n" +
-                "§7• Il dispose d’un item nommé \"§rShurikenJutsu§7\", le même nom que son arc, lorsqu’il utilise son item en étant accroupis (en sneak), un message apparaît dans le chat lui demandant s’il souhaite poser une balise (shuriken dans l’univers), pour accepter il lui suffit de cliquer sur le message. Une fois cela fait, il doit cliquer normalement sur son item et une liste de tous les joueurs autour de lui dans un rayon de 20 blocs s’affiche. S’il clique sur l’un des joueur, un autre menu s’affiche avec toutes ses balises numérotés de 1 à 5 puisqu’il dispose d’un maximum de 5 balises, lorsqu’il clique sur l’une d’entre elles, le joueur ciblé sera téléporté sur la balise sélectionnée. Ce pouvoir possède un délai de 5 minutes.\n" +
+                "§7• Il dispose d’un item nommé \"§rShurikenJutsu§7\", le même nom que son arc, lorsqu’il utilise son item en étant accroupis (en sneak), un message apparaît dans le chat lui demandant s’il souhaite poser une balise (shuriken dans l’univers), pour accepter il lui suffit de cliquer sur le message. Une fois cela fait, il doit cliquer normalement sur son item et une liste de tous les joueurs autour de lui dans un rayon de 20 blocs s’affiche. S’il clique sur l’un des joueur, un autre menu s’affiche avec toutes ses balises numérotés de 1 à 5 puisqu’il dispose d’un maximum de 5 balises, lorsqu’il clique sur l’une d’entre elles, le joueur ciblé sera téléporté sur la balise sélectionnée. Ce pouvoir possède un délai de 15 minutes.\n" +
                 "§e §f\n" +
                 "§7• Il dispose d'un item nommé \"§rKurama§7\", lorsqu’il clique sur celui-ci, l'item permet de recevoir §cForce 1§7 et §bVitesse 2§7 pendant 5 minutes, après avoir cliqué sur cet item, il pourra effectuer la commande ci-dessous.  \n" +
                 "§e §f\n" +
@@ -118,7 +118,7 @@ public class Minato extends NarutoRole {
                 player.sendMessage(Messages.cooldown(kuramaCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -134,7 +134,7 @@ public class Minato extends NarutoRole {
         if (Item.interactItem(event.getItem(), "Shuriken Jutsu")) {
 
             if (player.isSneaking()) {
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -179,7 +179,7 @@ public class Minato extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -202,7 +202,7 @@ public class Minato extends NarutoRole {
             if (!event.getCurrentItem().hasItemMeta()) return;
 
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -220,7 +220,7 @@ public class Minato extends NarutoRole {
                 return;
             }
 
-            baliseCooldown = 5 * 60;
+            baliseCooldown = 15 * 60;
             target.teleport(balise);
             player.sendMessage(CC.prefix("§fVous avez téléporté §a" + target.getName() + " §fsur une de vos balises"));
             target.sendMessage(CC.prefix("§cMinato §fvous a téléporté sur une de ses balises."));
@@ -292,7 +292,7 @@ public class Minato extends NarutoRole {
                 player.sendMessage(CC.prefix("§cVous  n'êtes pas en train d'utiliser l'item Kurama"));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -309,9 +309,9 @@ public class Minato extends NarutoRole {
                 var1 = true;
             }
 
-            if (targetRole.getRoleName().equalsIgnoreCase("SAI")) {
+            if (targetRole.getRole().equals(NarutoRoles.SAI)) {
                 var1 = Role.findPlayer(NarutoRoles.SASUKE) != null && Role.findPlayer(NarutoRoles.SASUKE).getLocation().distance(target.getLocation()) <= 30;
-            } else if (targetRole.getRoleName().equalsIgnoreCase("ITACHI") || targetRole.getRoleName().equalsIgnoreCase("KARIN") || targetRole.getRoleName().equalsIgnoreCase("OBITO")) {
+            } else if (targetRole.getRole().equals(NarutoRoles.ITACHI) || targetRole.getRole().equals(NarutoRoles.KARIN) || targetRole.getRole().equals(NarutoRoles.OBITO)) {
                 var1 = false;
             }
 
@@ -328,7 +328,7 @@ public class Minato extends NarutoRole {
             if (balises.size() >= 5) {
                 player.sendMessage(CC.prefix("§cVous avez déjà posé 5 balises."));
             } else {
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }

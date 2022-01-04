@@ -19,6 +19,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -27,7 +28,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
-public class PierreTombaleManager {
+public class PierreTombaleManager implements Listener {
 
     private final NarutoUHC narutoUHC;
     private int pierreTombale;
@@ -58,23 +59,24 @@ public class PierreTombaleManager {
     }
 
     public void spawn(Pierre pierre) {
-        World world = Bukkit.getWorld("world");
+        World world = Bukkit.getWorld("uhc_world");
         int x = (int) (Math.random() * 300);
         int z = (int) (Math.random() * 300);
         int y = world.getHighestBlockYAt(x, z) - 1;
         Location loc = new Location(world, x, y, z);
-        if(loc.getBlock().getType() != Material.DIRT || loc.getBlock().getType() != Material.GRASS) {
+        if(loc.getBlock().getType() != Material.DIRT && loc.getBlock().getType() != Material.GRASS) {
             spawn(pierre);
             return;
         }
 
         SchematicManager.pasteSchematic(narutoUHC.getDataFolder().getAbsolutePath() + "/PierreTombale.schematic", loc);
 
-        Location first = new Location(world, x + 10, y + 10, z + 10);
-        Location second = new Location(world, x - 10, y - 10, z - 10);
+        Location first = new Location(world, x + 5, y + 5, z + 5);
+        Location second = new Location(world, x - 5, y - 5, z - 5);
         Cuboid cuboid = new Cuboid(first, second);
-        Chest block = (Chest) cuboid.getBlocks().stream().filter(block1 -> block1.getType() == Material.CHEST).findFirst().orElse(null);
-        if (block != null) {
+        Block b =  cuboid.getBlocks().stream().filter(block1 -> block1.getType() == Material.CHEST).findFirst().orElse(null);
+        if (b != null) {
+            Chest block = (Chest) b.getState();
             block.getBlockInventory().addItem(pierre.getItemStack());
         }
     }
@@ -106,14 +108,20 @@ public class PierreTombaleManager {
         if(!(event.getDamager() instanceof Player)) return;
 
         if(Item.interactItem(((Player) event.getDamager()).getItemInHand(), "Nuibaru")) {
-            if(first != null) {
-                Location first = Bukkit.getPlayer(this.first).getLocation();
+
+            int random = (int) (Math.random() * 25);
+            if(random == 1) {
+                NarutoUHC.getNaruto().getManager().setStuned(event.getEntity().getUniqueId(), true, 3);
+                event.getEntity().sendMessage(CC.prefix("&fVous avez été immobilisé &a3 secondes &fpar le possesseur de &aNuibaru&f."));
+                event.getDamager().sendMessage(CC.prefix("&fVous avez immobilisé &a" + event.getEntity().getName() + " &fpendant &a3 secondes&f."));
+            }
+
+            if(first != null && first != event.getEntity().getUniqueId()) {
                 Location second = event.getEntity().getLocation();
-                event.getEntity().teleport(first);
                 Bukkit.getPlayer(this.first).teleport(second);
 
-                Bukkit.getPlayer(this.first).sendMessage(CC.prefix("Votre position a été échangée avec celle de &a" + event.getEntity().getName()));
-                event.getEntity().sendMessage(CC.prefix("Votre position a été échangée avec celle de &a" + Bukkit.getPlayer(this.first)));
+                Bukkit.getPlayer(this.first).sendMessage(CC.prefix("Vous avez été téléporté sur la position de &a" + event.getEntity().getName()));
+                event.getEntity().sendMessage(CC.prefix("&a" + Bukkit.getPlayer(this.first).getName() + " &fa été téléporté sur votre position."));
                 this.first = null;
                 return;
             }
@@ -130,15 +138,15 @@ public class PierreTombaleManager {
         if(Item.interactItem(((Player) event.getDamager()).getItemInHand(), "Hiramekarei")) {
             if(!firstHit.contains(event.getDamager().getUniqueId())) {
                 firstHit.add(event.getDamager().getUniqueId());
-                event.setDamage(event.getFinalDamage() * 1.5);
+                event.setDamage(event.getDamage() * 1.5);
                 event.getDamager().sendMessage(CC.prefix("&fVotre coup à mis &a50% &fde dégâts en plus."));
             }
         }
 
         if(Item.interactItem(((Player) event.getDamager()).getItemInHand(), "Kiba")) {
             int random = (int) (Math.random() * 4);
-            if(random <= 3) {
-                event.setDamage(event.getFinalDamage() * 1.25);
+            if(random <= 2) {
+                event.setDamage(event.getDamage() * 1.25);
                 event.getDamager().sendMessage(CC.prefix("&fVotre coup à mis &a25% &fde dégâts en plus."));
             }
 
@@ -150,8 +158,8 @@ public class PierreTombaleManager {
         if(Item.interactItem(((Player) event.getDamager()).getItemInHand(), "Kabutowari")) {
             if(!kabutowariCooldown.contains(event.getDamager().getUniqueId())) {
                 Tasks.runLater(() -> {
-                    ((Player) event.getEntity()).damage(event.getFinalDamage());
-                    event.getEntity().setVelocity(event.getEntity().getLocation().getDirection().multiply(0.6).setY(0.2));
+                    ((Player) event.getEntity()).damage(event.getDamage());
+                    event.getEntity().setVelocity(event.getEntity().getLocation().getDirection().multiply(-0.6).setY(0.2));
                     event.getDamager().sendMessage(CC.prefix("&fVotre coup à été &adupliqué&f."));
                 }, 10);
                 kabutowariCooldown.add(event.getDamager().getUniqueId());
@@ -162,10 +170,10 @@ public class PierreTombaleManager {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if(Item.interactItem(event.getItem(), "Hiramekarei")) {
+        if(Item.interactItem(event.getItem(), "Kabutowari")) {
             if(event.getAction().name().contains("LEFT")) return;
             Block block = event.getPlayer().getTargetBlock((Set<Material>) null, 6);
-            if(block != null) {
+            if(block != null && block.getType() != Material.BEDROCK) {
                 block.setType(Material.AIR);
             }
         }
@@ -174,13 +182,13 @@ public class PierreTombaleManager {
             Loc.getNearbyPlayers(event.getPlayer(), 50).forEach(player -> {
                 if(Reach.getLookingAt(event.getPlayer(), player)) {
                     if (this.shibukiCooldown.contains(event.getPlayer().getUniqueId())) {
-                        player.sendMessage(CC.prefix("&cCet item possède un cooldown de 30 secondes."));
+                        event.getPlayer().sendMessage(CC.prefix("&cCet item possède un cooldown de 30 secondes."));
                     } else {
                         shibukiCooldown.add(event.getPlayer().getUniqueId());
                         player.getWorld().createExplosion(player.getLocation(), 2);
                         Tasks.runLater(() -> {
                             shibukiCooldown.remove(event.getPlayer().getUniqueId());
-                            player.sendMessage(CC.prefix("&fVotre cooldown pour l'item &aShibuki &fvient d'expirer."));
+                            event.getPlayer().sendMessage(CC.prefix("&fVotre cooldown pour l'item &aShibuki &fvient d'expirer."));
                         }, 30*20);
                     }
                 }
@@ -203,7 +211,7 @@ public class PierreTombaleManager {
                     spawn(value);
                 }
             }
-        }.runTaskLater(narutoUHC, pierreTombale);
+        }.runTaskLater(narutoUHC, pierreTombale * 20L);
     }
 
     public enum Pierre {

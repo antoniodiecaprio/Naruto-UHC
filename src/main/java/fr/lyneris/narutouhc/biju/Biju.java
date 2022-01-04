@@ -82,7 +82,7 @@ public abstract class Biju {
 
         for (Bijus biju : Bijus.values()) {
             for (ItemStack content : player.getInventory().getContents()) {
-                if (content.equals(biju.getBiju().getItem())) {
+                if (content != null && content.equals(biju.getBiju().getItem())) {
                     toReturn = biju.getBiju();
                     break;
                 }

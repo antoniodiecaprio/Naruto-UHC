@@ -184,8 +184,8 @@ public class Hiruzen extends NarutoRole implements Listener {
             avancementTarget.sendMessage(prefix("&aHiruzen &fest mort alors qu'il utilisait son &cShiki Fûjin &fsur vous."));
             int random = (int) (Math.random() * 3);
             if (random == 0) {
-                Kisame.blocked.add(avancementTarget.getName());
-                Tasks.runLater(() -> Kisame.blocked.add(avancementTarget.getName()), 20*60*20);
+                Blocked.blocked.add(avancementTarget.getName());
+                Tasks.runLater(() -> Blocked.blocked.add(avancementTarget.getName()), 20*60*20);
                 avancementTarget.sendMessage(prefix("&cVous ne pouvez plus utiliser de pouvoirs pendant 20 minutes."));
             } else if (random == 1) {
                 avancementTarget.sendMessage(prefix("&cVous obtenez Slowness pour toute la game."));
@@ -224,7 +224,7 @@ public class Hiruzen extends NarutoRole implements Listener {
 
             if (this.power == 1) {
                 List<Entity> burning = new ArrayList<>();
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -324,7 +324,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 this.karyuuCooldown = 6 * 60;
             }
             if (this.power == 2) {
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -401,7 +401,7 @@ public class Hiruzen extends NarutoRole implements Listener {
             }
 
             if (this.power == 3) {
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -431,7 +431,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 this.deihekiCooldown = 6 * 60;
             }
             if (this.power == 4) {
-                if(Kisame.isBlocked(player)) {
+                if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                     player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                     return;
                 }
@@ -457,7 +457,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 player.sendMessage(Messages.cooldown(enmaCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -513,7 +513,7 @@ public class Hiruzen extends NarutoRole implements Listener {
                 player.sendMessage(prefix("&cVous avez déjà utilisé ce pouvoir."));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

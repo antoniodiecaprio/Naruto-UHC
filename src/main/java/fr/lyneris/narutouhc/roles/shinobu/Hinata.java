@@ -108,7 +108,7 @@ public class Hinata extends NarutoRole {
                 player.sendMessage(Messages.cooldown(byakuganCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -134,7 +134,7 @@ public class Hinata extends NarutoRole {
                 player.sendMessage(Messages.cooldown(byakuganCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -175,7 +175,7 @@ public class Hinata extends NarutoRole {
         if (naruto == null) return;
 
         if (naruto.getLocation().distance(player.getLocation()) <= 15) {
-            event.setDamage(event.getFinalDamage() * 1.1);
+            event.setDamage(event.getDamage() * 1.1);
         }
 
     }

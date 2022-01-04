@@ -99,6 +99,7 @@ public class SonGoku extends Biju implements Listener {
         magma_cube.setCustomNameVisible(true);
         EntityLiving nmsEntity = ((CraftLivingEntity) magma_cube).getHandle();
         ((CraftLivingEntity) nmsEntity.getBukkitEntity()).setRemoveWhenFarAway(false);
+        super.spawnEntity();
     }
 
     @EventHandler
@@ -115,6 +116,8 @@ public class SonGoku extends Biju implements Listener {
             event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), getItem());
             this.magma_cube = null;
             event.getDrops().clear();
+            Bukkit.broadcastMessage(CC.prefix("&a" + getName() + " &fa été tué."));
+
             Tasks.runLater(() -> {
                 if(this.getMaster() == null) {
                     spawnEntity();
@@ -133,16 +136,18 @@ public class SonGoku extends Biju implements Listener {
     public class SonGokuRunnable extends BukkitRunnable {
 
         int timer = 0;
-        int spawn = (int) (Math.random() * 1200);
+        int spawn = (int) (Math.random() * 30);
 
         @Override
         public void run() {
+                timer++;
+        
 
-            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() * 60 + spawn) - 30) {
+            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn) - 30) {
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fva apparaître dans &a30 &fsecondes."));
             }
 
-            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() * 60 + spawn)) {
+            if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn)) {
                 spawnEntity();
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fvient d'apparaître."));
                 cancel();

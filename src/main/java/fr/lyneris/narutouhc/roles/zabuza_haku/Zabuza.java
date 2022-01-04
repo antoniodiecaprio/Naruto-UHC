@@ -90,7 +90,7 @@ public class Zabuza extends NarutoRole {
         if(Item.specialItem(player.getItemInHand(), Item.specialItem("Kubikiribôchô"))) {
             int random = (int) (Math.random() * 10);
             if(random == 2) {
-                player.setHealth(player.getHealth() + event.getFinalDamage());
+                player.setHealth(player.getHealth() + event.getDamage());
                 player.sendMessage(prefix("&fVous avez régénéré les dégâts que vous avez infligez à &a" + event.getEntity().getName()));
             }
         }
@@ -109,7 +109,7 @@ public class Zabuza extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

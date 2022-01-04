@@ -123,7 +123,7 @@ public class Jugo extends NarutoRole {
     public void onPlayerInteract(PlayerInteractEvent event, Player player) {
         if (!Item.interactItem(event, "Marque Maudite")) return;
 
-        if(Kisame.isBlocked(player)) {
+        if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
             player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
             return;
         }

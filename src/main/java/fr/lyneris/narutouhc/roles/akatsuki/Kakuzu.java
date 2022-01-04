@@ -87,7 +87,7 @@ public class Kakuzu extends NarutoRole {
     public void onPlayerDamage(EntityDamageEvent event, Player player) {
         if (healthUse >= 4) return;
         if (healthCooldown) return;
-        if (player.getHealth() - event.getFinalDamage() <= 1) {
+        if (player.getHealth() - event.getDamage() <= 1) {
             event.setDamage(0.01);
             if (chakra == Chakra.DOTON) {
                 chakra = Chakra.RAITON;
@@ -118,7 +118,7 @@ public class Kakuzu extends NarutoRole {
                 return;
             }
 
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }

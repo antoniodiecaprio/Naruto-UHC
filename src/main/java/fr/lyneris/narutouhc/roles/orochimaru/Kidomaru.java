@@ -116,7 +116,7 @@ public class Kidomaru extends NarutoRole {
                 player.sendMessage(Messages.cooldown(kyodaigumoCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -189,7 +189,7 @@ public class Kidomaru extends NarutoRole {
                 player.sendMessage(Messages.cooldown(marqueCooldown));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
@@ -218,7 +218,7 @@ public class Kidomaru extends NarutoRole {
     public void onArrowHitPlayerEvent(EntityDamageByEntityEvent event, Player player, Player shooter, Arrow arrow) {
         int random = (int) (Math.random() * 5);
         if (random >= 0 && random <= 4) {
-            event.setDamage(event.getFinalDamage() * 1.5);
+            event.setDamage(event.getDamage() * 1.5);
             shooter.sendMessage(CC.prefix("§fVotre flèche a infligé l'effet §a15% §fde dégâts en plus à §a" + player.getName()));
         }
         if (random == 1) {

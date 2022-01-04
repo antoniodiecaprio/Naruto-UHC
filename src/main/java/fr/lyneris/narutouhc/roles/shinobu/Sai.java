@@ -176,7 +176,7 @@ public class Sai extends NarutoRole {
                         break;
                     }
 
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -205,7 +205,7 @@ public class Sai extends NarutoRole {
                         break;
                     }
 
-                    if(Kisame.isBlocked(player)) {
+                    if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                         player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                         return;
                     }
@@ -280,7 +280,7 @@ public class Sai extends NarutoRole {
                 player.sendMessage(CC.prefix("§cCe joueur n'est pas connecté"));
                 return;
             }
-            if(Kisame.isBlocked(player)) {
+            if(fr.lyneris.narutouhc.utils.Blocked.isBlocked(player)) {
                 player.sendMessage(prefix("&cVous ne pouvez pas utiliser de pouvoir."));
                 return;
             }
