@@ -49,7 +49,6 @@ fr\lyneris\narutouhc\roles\taka\Sasuke.class
 fr\lyneris\narutouhc\packet\RayTrace.class
 fr\lyneris\narutouhc\roles\akatsuki\Nagato.class
 fr\lyneris\narutouhc\roles\shinobu\Shikamaru.class
-fr\lyneris\narutouhc\crafter\SchematicManager.class
 fr\lyneris\narutouhc\roles\sankyodai\Gaara$3.class
 fr\lyneris\narutouhc\biju\impl\Isobu$IsobuRunnable.class
 fr\lyneris\narutouhc\module\ChakraManager$ChakraTask.class

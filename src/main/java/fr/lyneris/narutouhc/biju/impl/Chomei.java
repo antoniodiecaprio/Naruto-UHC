@@ -3,8 +3,10 @@ package fr.lyneris.narutouhc.biju.impl;
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
 import fr.lyneris.narutouhc.biju.Biju;
-import fr.lyneris.narutouhc.utils.*;
+import fr.lyneris.narutouhc.utils.CC;
+import fr.lyneris.narutouhc.utils.Damage;
 import fr.lyneris.narutouhc.utils.Item;
+import fr.lyneris.narutouhc.utils.Messages;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +19,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -35,26 +36,9 @@ public class Chomei extends Biju implements Listener {
 
     @Override
     public void setupBiju() {
-        int value = (int) (Math.random() * 3);
 
         World world = Bukkit.getWorld("uhc_world");
-        if (value == 0) {
-            int x = NarutoUHC.getRandom().nextInt(150, 300);
-            int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        } else if (value == 1) {
-            int x = -NarutoUHC.getRandom().nextInt(150, 300);
-            int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        } else if (value == 2) {
-            int x = NarutoUHC.getRandom().nextInt(150, 300);
-            int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        } else {
-            int x = -NarutoUHC.getRandom().nextInt(150, 300);
-            int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        }
+        spawn = new Location(world, (Math.random() * 300), 100 + 2, (Math.random() * 300));
         new IsobuRunnable().runTaskTimer(NarutoUHC.getNaruto(), 0L, 20L);
     }
 
@@ -113,16 +97,13 @@ public class Chomei extends Biju implements Listener {
 
     @EventHandler
     public void hitFireball(ProjectileHitEvent event) {
-        if (event.getEntity() instanceof Fireball) {
-            Fireball f = (Fireball) event.getEntity();
-            if (f.getShooter() instanceof Ghast) {
-                Ghast ghast = (Ghast) f.getShooter();
-                if (ghast == this.ghast) {
-                    Location location = f.getLocation();
-                    location.getWorld().spawn(location, Creeper.class);
-                }
-            }
-        }
+        if (!(event.getEntity() instanceof Fireball)) return;
+        Fireball f = (Fireball) event.getEntity();
+        if (!(f.getShooter() instanceof Ghast)) return;
+        Ghast ghast = (Ghast) f.getShooter();
+        if (ghast != this.ghast) return;
+        Location location = f.getLocation();
+        location.getWorld().spawn(location, Creeper.class);
     }
 
     @Override
@@ -142,13 +123,10 @@ public class Chomei extends Biju implements Listener {
 
         @Override
         public void run() {
-                timer++;
-        
-
+            timer++;
             if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn) - 30) {
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fva apparaître dans &a30 &fsecondes."));
             }
-
             if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn)) {
                 spawnEntity();
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fvient d'apparaître."));

@@ -38,26 +38,8 @@ public class Saiken extends Biju implements Listener {
 
     @Override
     public void setupBiju() {
-        int value = (int) (Math.random() * 3);
-
         World world = Bukkit.getWorld("uhc_world");
-        if (value == 0) {
-            int x = NarutoUHC.getRandom().nextInt(150, 300);
-            int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        } else if (value == 1) {
-            int x = -NarutoUHC.getRandom().nextInt(150, 300);
-            int z = NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        } else if (value == 2) {
-            int x = NarutoUHC.getRandom().nextInt(150, 300);
-            int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        } else {
-            int x = -NarutoUHC.getRandom().nextInt(150, 300);
-            int z = -NarutoUHC.getRandom().nextInt(150, 300);
-            spawn = new Location(Bukkit.getWorld("uhc_world"), x, world.getHighestBlockYAt(x, z) + 2, z);
-        }
+        spawn = new Location(world, (Math.random() * 300), 100 + 2, (Math.random() * 300));
         new SaikenRunnable().runTaskTimer(NarutoUHC.getNaruto(), 0L, 20L);
     }
 
@@ -148,9 +130,7 @@ public class Saiken extends Biju implements Listener {
 
         @Override
         public void run() {
-                timer++;
-        
-
+            timer++;
             if (this.timer == (NarutoUHC.getNaruto().getBijuListener().getBijuStart() + spawn) - 30) {
                 Bukkit.broadcastMessage(CC.prefix(getName() + " &fva apparaître dans &a30 &fsecondes."));
             }

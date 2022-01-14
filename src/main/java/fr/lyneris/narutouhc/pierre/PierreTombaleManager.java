@@ -2,14 +2,14 @@ package fr.lyneris.narutouhc.pierre;
 
 import fr.lyneris.common.utils.Tasks;
 import fr.lyneris.narutouhc.NarutoUHC;
-import fr.lyneris.narutouhc.crafter.SchematicManager;
 import fr.lyneris.narutouhc.packet.Cuboid;
 import fr.lyneris.narutouhc.packet.Reach;
 import fr.lyneris.narutouhc.utils.CC;
 import fr.lyneris.narutouhc.utils.Item;
 import fr.lyneris.narutouhc.utils.Loc;
+import fr.lyneris.uhc.UHC;
 import fr.lyneris.uhc.utils.item.ItemBuilder;
-import net.minecraft.server.v1_8_R3.ItemPickaxe;
+import fr.lyneris.uhc.utils.schematics.Schematic;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
 import java.util.*;
 
 public class PierreTombaleManager implements Listener {
@@ -69,7 +70,7 @@ public class PierreTombaleManager implements Listener {
             return;
         }
 
-        SchematicManager.pasteSchematic(narutoUHC.getDataFolder().getAbsolutePath() + "/PierreTombale.schematic", loc);
+        new Schematic(new File(narutoUHC.getDataFolder().getAbsolutePath() + "/PierreTombale.schematic")).paste(loc, true);
 
         Location first = new Location(world, x + 5, y + 5, z + 5);
         Location second = new Location(world, x - 5, y - 5, z - 5);
